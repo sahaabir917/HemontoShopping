@@ -1,5 +1,8 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +14,10 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  InterstitialAd _interstitialAd;
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo();
+  int _coins = 0;
+  final _nativeAdController = NativeAdmobController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +44,17 @@ class _ProductPageState extends State<ProductPage> {
                 scrollDirection: Axis.vertical,
                 children: [
                   Container(
+                    padding: EdgeInsets.only(left: 15),
+                    child: Stack(
+                      children: <Widget> [
+                        Text("New Arrived",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),
+                      ],
+                    ),
+                  ),
+                  Container(
                     height: 230,
                     padding: EdgeInsets.all(10.0),
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: productState.productModel.products.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
@@ -114,6 +129,23 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                           ),
                         );
+                      },
+                      separatorBuilder: (context, index) {
+                        return index % 4 == 0
+                            ? Container(
+                              width: 230,
+                                margin: EdgeInsets.all(8),
+                                height: 230,
+                                color: Colors.green,
+                                child: NativeAdmob(
+                                  adUnitID: NativeAd.testAdUnitId,
+                                  controller: _nativeAdController,
+                                  type: NativeAdmobType.full,
+                                  loading: Center(
+                                      child: CircularProgressIndicator()),
+                                  error: Text('failed to load'),
+                                ))
+                            : Container();
                       },
                     ),
                   ),

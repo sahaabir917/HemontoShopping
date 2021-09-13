@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/views/login_page.dart';
 import 'package:hemontoshoppin/views/product_page.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'blocs/productbloc/product_bloc.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         home: ProductPage(),
         routes: {
           "/login_page" :(context) => LoginPage(),
+          "/product_page" : (context) => ProductPage(),
         },
       ),
     );

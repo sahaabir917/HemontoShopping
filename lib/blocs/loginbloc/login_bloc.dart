@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:hemontoshoppin/models/FailedModel.dart';
 import 'package:hemontoshoppin/models/LoginModel.dart';
 import 'package:hemontoshoppin/services/Services.dart';
 
@@ -10,6 +11,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent,LoginState>{
   ApiService apiservices = ApiService();
   LoginModel _loginModel;
+  FailedModel _failedModel;
   @override
   LoginState get initialState => LoginInitial();
 
@@ -17,9 +19,18 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
   Stream<LoginState> mapEventToState(LoginEvent event) async*{
     if(event is FetchLogin){
       yield checkingLogin();
-      _loginModel = await apiservices.UserLogin(event.username,event.password);
+      var apiCallBackModel = await apiservices.UserLogin(event.username,event.password);
+      if(apiCallBackModel is LoginModel){
+        _loginModel = apiCallBackModel;
+        yield LoginInOperationSuccess(apiCallBackModel);
+      }
+      else if (apiCallBackModel is FailedModel){
+        _failedModel = apiCallBackModel;
+        yield LoginFailed(apiCallBackModel);
+        print(_failedModel);
+      }
       print(_loginModel);
-      yield LoginInOperationSuccess(_loginModel);
+
     }
   }
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "669757886481",
+    "project_id": "hemontoshopping",
+    "storage_bucket": "hemontoshopping.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669757886481:android:313401a4590f48fbdce1b0",
+        "android_client_info": {
+          "package_name": "com.example.hemontoshoppin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669757886481-sra9vlpoe8goc3ohb4ccai75s4n433pn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hemontoshoppin",
+            "certificate_hash": "cdc72afea3935426e36f3030f0ff5ead1da96009"
+          }
+        },
+        {
+          "client_id": "669757886481-lr36ebmfvlfkpdm4dr9v83q8bcq5bf9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsXWAgk47AzV1eVyuIrx59VilgHEZuf1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669757886481-lr36ebmfvlfkpdm4dr9v83q8bcq5bf9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
