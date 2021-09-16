@@ -38,6 +38,39 @@ class ApiService {
     }
   }
 
+  Future<dynamic> getProductWithLogin(String token, String userId) async {
+
+      var body = {"user_id":userId};
+
+      var response = await client.post(
+          Uri.parse('https://ecotech.xixotech.net/public/api/productwithlogin'),
+          headers: {
+            'Authorization': "Bearer ${token}",
+            "Content-Type": "application/json"
+          },
+        body: jsonEncode(body),
+          );
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        ProductModel productModel = productModelFromJson(response.body);
+        print(jsonString);
+        return productModel;
+      } else if(response.statusCode == 401){
+        var jsonString = {"status" : false, "message" : "session out"};
+        FailedModel failedModel = FailedModel.fromJson(jsonString);
+        print(response.statusCode);
+        preferenceHelper.setJwtToken(null);
+        preferenceHelper.setIsLoggedIn(false);
+        return failedModel;
+      }
+      else{
+        print(response.statusCode);
+      }
+
+
+
+  }
+
   Future<dynamic> UserLogin(String username, String password) async {
 
     var body = {"email": "${username}", "password": "${password}"};
@@ -59,6 +92,18 @@ class ApiService {
       preferenceHelper.setJwtToken(null);
       preferenceHelper.setIsLoggedIn(false);
       return failedModel;
+    }
+  }
+
+  Future<ProductModel> getMostPopularProduct() async {
+    const _baseUrl = "ecotech.xixotech.net";
+    const String _path = "/public/api/mostpopularProducts";
+    Uri uri = Uri.http(_baseUrl, _path);
+    Response response = await http.get(uri);
+    if (response.statusCode == 200) {
+      ProductModel productModel = productModelFromJson(response.body);
+      print(response.body);
+      return productModel;
     }
   }
 }

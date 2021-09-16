@@ -10,23 +10,49 @@ String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
   ProductModel({
-    this.products,
+    this.data,
   });
 
-  List<Product> products;
+  List<Datum> data;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-    products: List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "products": List<dynamic>.from(products.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
-class Product {
-  Product({
+class Datum {
+  Datum({
+    this.products,
+    this.favourite,
+  });
+
+  Products products;
+  bool favourite;
+
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    products: Products.fromJson(json["products"]),
+    favourite: json["favourite"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "products": products.toJson(),
+    "favourite": favourite,
+  };
+}
+
+class Products {
+  Products({
     this.id,
+    this.userId,
+    this.productId,
+    this.cartQuantity,
+    this.isOrdered,
+    this.createdAt,
+    this.updatedAt,
     this.categoryId,
     this.subcategoryId,
     this.brandId,
@@ -39,13 +65,10 @@ class Product {
     this.discountPrice,
     this.videoLink,
     this.status,
-    this.createdAt,
-    this.updatedAt,
     this.categoryName,
     this.subcategoryName,
     this.brandName,
     this.brandLogo,
-    this.productId,
     this.colorOne,
     this.colorTwo,
     this.colorThree,
@@ -53,10 +76,16 @@ class Product {
     this.imageOne,
     this.imageTwo,
     this.imageThree,
-    this.isFavourite,
+    this.mostOrdered,
   });
 
   String id;
+  String userId;
+  String productId;
+  String cartQuantity;
+  String isOrdered;
+  dynamic createdAt;
+  dynamic updatedAt;
   String categoryId;
   String subcategoryId;
   String brandId;
@@ -69,24 +98,27 @@ class Product {
   String discountPrice;
   dynamic videoLink;
   String status;
-  dynamic createdAt;
-  dynamic updatedAt;
   String categoryName;
   String subcategoryName;
   String brandName;
   String brandLogo;
-  String productId;
-  String colorOne;
-  String colorTwo;
-  String colorThree;
+  dynamic colorOne;
+  dynamic colorTwo;
+  dynamic colorThree;
   String pId;
   String imageOne;
   String imageTwo;
   String imageThree;
-  bool isFavourite;
+  String mostOrdered;
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory Products.fromJson(Map<String, dynamic> json) => Products(
     id: json["id"],
+    userId: json["user_id"]== null ? "" : json["user_id"],
+    productId: json["product_id"],
+    cartQuantity: json["cart_quantity"]== null ? "" : json["cart_quantity"],
+    isOrdered: json["isOrdered"] == null ? "" : json["isOrdered"],
+    createdAt: json["created_at"] == null ? "" : json["created_at"],
+    updatedAt: json["updated_at"] == null ? "" : json["updated_at"],
     categoryId: json["category_id"],
     subcategoryId: json["subcategory_id"],
     brandId: json["brand_id"],
@@ -99,13 +131,10 @@ class Product {
     discountPrice: json["discount_price"],
     videoLink: json["video_link"],
     status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
     categoryName: json["category_name"],
     subcategoryName: json["subcategory_name"],
     brandName: json["brand_name"],
     brandLogo: json["brand_logo"],
-    productId: json["product_id"],
     colorOne: json["color_one"],
     colorTwo: json["color_two"],
     colorThree: json["color_three"],
@@ -113,11 +142,17 @@ class Product {
     imageOne: json["image_one"],
     imageTwo: json["image_two"],
     imageThree: json["image_three"],
-    isFavourite: json["isFavourite"] == null ? false : json["isFavourite"],
+    mostOrdered: json["most_ordered"] == null ? "" : json["most_ordered"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "user_id": userId == null ? "" : userId,
+    "product_id": productId,
+    "cart_quantity": cartQuantity == null ? "" : cartQuantity,
+    "isOrdered": isOrdered == null ? "" : isOrdered,
+    "created_at": createdAt == null ? "" : createdAt,
+    "updated_at": updatedAt == null ? "" : updatedAt,
     "category_id": categoryId,
     "subcategory_id": subcategoryId,
     "brand_id": brandId,
@@ -130,13 +165,10 @@ class Product {
     "discount_price": discountPrice,
     "video_link": videoLink,
     "status": status,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
     "category_name": categoryName,
     "subcategory_name": subcategoryName,
     "brand_name": brandName,
     "brand_logo": brandLogo,
-    "product_id": productId,
     "color_one": colorOne,
     "color_two": colorTwo,
     "color_three": colorThree,
@@ -144,6 +176,6 @@ class Product {
     "image_one": imageOne,
     "image_two": imageTwo,
     "image_three": imageThree,
-    "isFavourite": isFavourite == null ? false : isFavourite,
+    "most_ordered": mostOrdered== null ? "" : mostOrdered,
   };
 }

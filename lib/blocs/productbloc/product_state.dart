@@ -14,6 +14,12 @@ class ProductOperationSuccess extends ProductState{
   ProductOperationSuccess(this.productModel);
 }
 
-class ProductFavourite extends ProductState{
+class LoadedMostPopularProduct extends ProductState{
+  final ProductModel mostPopularProducts;
 
+  LoadedMostPopularProduct(this.mostPopularProducts);
 }
+
+class FetchFailedProduct extends ProductState{}
+
+class ProductFavourite extends ProductState{}
