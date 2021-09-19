@@ -20,6 +20,15 @@ class LoadedMostPopularProduct extends ProductState{
   LoadedMostPopularProduct(this.mostPopularProducts);
 }
 
+class SingleProductLoaded extends ProductState {
+  final Products  products;
+
+  SingleProductLoaded(this.products);
+
+}
+
+class setProductItemSuccess extends ProductState{}
+
 class FetchFailedProduct extends ProductState{}
 
 class ProductFavourite extends ProductState{}

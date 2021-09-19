@@ -15,4 +15,14 @@ class LikeProduct extends ProductEvent{
   LikeProduct(this.index);
 }
 
+class SetProductItem extends ProductEvent{
+  final int index;
+
+  SetProductItem(this.index);
+
+}
+
+class getProductItem extends ProductEvent{}
+
+
 

@@ -21,6 +21,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   var token;
   var userId;
 
+  Products _productItem;
+
   @override
   ProductState get initialState => ProductInitial();
 
@@ -62,6 +64,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       yield ProductLoading();
       _mostPopularProductModel = await apiservices.getMostPopularProduct();
       yield LoadedMostPopularProduct(_mostPopularProductModel);
+    } else if (event is SetProductItem) {
+      _productItem = _productModel.data[event.index].products;
+      yield setProductItemSuccess();
+    } else if (event is getProductItem) {
+      // yield ProductLoading();
+      yield SingleProductLoaded(_productItem);
     }
   }
 

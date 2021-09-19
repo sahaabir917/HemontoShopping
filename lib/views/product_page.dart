@@ -41,8 +41,6 @@ class _ProductPageState extends State<ProductPage> {
         body: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-
-
             //new arrived products
             BlocBuilder<ProductBloc, ProductState>(
               bloc: BlocProvider.of<ProductBloc>(context),
@@ -74,89 +72,103 @@ class _ProductPageState extends State<ProductPage> {
                           itemCount: productState.productModel.data.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Container(
-                              width: 230,
-                              padding: EdgeInsets.only(right: 0),
-                              child: Card(
-                                elevation: 4,
-                                child: Stack(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(40.0),
-                                      child: Container(
-                                        child: Image.network(
-                                            "https://ecotech.xixotech.net/public/" +
-                                                productState
-                                                    .productModel
-                                                    .data[index]
-                                                    .products
-                                                    .imageOne),
+                            return InkWell(
+                              onTap: () {
+                                // BlocProvider<ProductBloc>(context).of
+                                BlocProvider.of<ProductBloc>(context)
+                                    .add(SetProductItem(index));
+                              },
+                              child: Container(
+                                width: 230,
+                                padding: EdgeInsets.only(right: 0),
+                                child: Card(
+                                  elevation: 4,
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(40.0),
+                                        child: Container(
+                                          child: Image.network(
+                                              "https://ecotech.xixotech.net/public/" +
+                                                  productState
+                                                      .productModel
+                                                      .data[index]
+                                                      .products
+                                                      .imageOne),
+                                        ),
                                       ),
-                                    ),
-                                    Positioned(
-                                        left: 0,
-                                        child: Container(
-                                            child: productState.productModel
-                                                    .data[index].favourite
-                                                ? IconButton(
-                                                    icon: Icon(
-                                                        Icons.favorite_border),
-                                                    onPressed: () {
-                                                      checkLoginStatus(
-                                                          context, index);
-                                                    },
-                                                  )
-                                                : IconButton(
-                                                    icon: Icon(Icons.favorite),
-                                                    onPressed: () {
-                                                      checkLoginStatus(
-                                                          context, index);
-                                                    },
-                                                  ))),
-                                    Positioned(
-                                        right: 0,
-                                        child: Container(
-                                          child: IconButton(
-                                            icon: Icon(Icons.shopping_cart),
-                                            onPressed: () {},
-                                          ),
-                                        )),
-                                    Positioned(
-                                        bottom: 40,
-                                        child: Container(
-                                          width: 230,
-                                          child: Padding(
-                                              padding: EdgeInsets.only(top: 0),
-                                              child: Text(
-                                                productState
-                                                    .productModel
-                                                    .data[index]
-                                                    .products
-                                                    .productName,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold),
-                                              )),
-                                        )),
-                                    Positioned(
-                                        bottom: 10,
-                                        child: Container(
-                                          width: 230,
-                                          height: 25,
-                                          child: Padding(
-                                              padding: EdgeInsets.only(top: 5),
-                                              child: Text("\$"+
-                                                productState
-                                                    .productModel
-                                                    .data[index]
-                                                    .products
-                                                    .sellingPrice,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              )),
-                                        )),
-                                  ],
+                                      Positioned(
+                                          left: 0,
+                                          child: Container(
+                                              child: productState.productModel
+                                                      .data[index].favourite
+                                                  ? IconButton(
+                                                      icon: Icon(Icons
+                                                          .favorite_border),
+                                                      onPressed: () {
+                                                        checkLoginStatus(
+                                                            context, index);
+                                                      },
+                                                    )
+                                                  : IconButton(
+                                                      icon:
+                                                          Icon(Icons.favorite),
+                                                      onPressed: () {
+                                                        checkLoginStatus(
+                                                            context, index);
+                                                      },
+                                                    ))),
+                                      Positioned(
+                                          right: 0,
+                                          child: Container(
+                                            child: IconButton(
+                                              icon: Icon(Icons.shopping_cart),
+                                              onPressed: () {},
+                                            ),
+                                          )),
+                                      Positioned(
+                                          bottom: 40,
+                                          child: Container(
+                                            width: 230,
+                                            child: Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 0),
+                                                child: Text(
+                                                  productState
+                                                      .productModel
+                                                      .data[index]
+                                                      .products
+                                                      .productName,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                          )),
+                                      Positioned(
+                                          bottom: 10,
+                                          child: Container(
+                                            width: 230,
+                                            height: 25,
+                                            child: Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 5),
+                                                child: Text(
+                                                  "\$" +
+                                                      productState
+                                                          .productModel
+                                                          .data[index]
+                                                          .products
+                                                          .sellingPrice,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )),
+                                          )),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -198,10 +210,27 @@ class _ProductPageState extends State<ProductPage> {
                   scheduleMicrotask(() => Navigator.of(context).push(
                       MaterialPageRoute(builder: (ctx) => ProductPage())));
                   return CircularProgressIndicator();
+                } else if (productState is SetProductItem) {
+                  return Container(
+                    child: Text("Loading"),
+                  );
+                } else if (productState is setProductItemSuccess) {
+                  scheduleMicrotask(() =>
+                      Navigator.of(context).pushNamed("/product_details"));
+                  return CircularProgressIndicator();
+                } else if (productState is SingleProductLoaded) {
+                  // BlocProvider.of<MostPopularBloc>(context)
+                  //     .add(FetchMostPopularProduct());
+                  // BlocProvider.of<ProductBloc>(context).add(FetchWithoutLoginProduct());
+                  return Container(
+                    child: Text(productState.toString()),
+                  );
                 }
               },
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             //most popular products
             BlocBuilder<MostPopularBloc, MostPopularState>(
               bloc: BlocProvider.of<MostPopularBloc>(context),
@@ -301,7 +330,10 @@ class _ProductPageState extends State<ProductPage> {
                                                     .productName,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold),
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               )),
                                         )),
                                     Positioned(
@@ -311,12 +343,13 @@ class _ProductPageState extends State<ProductPage> {
                                           height: 25,
                                           child: Padding(
                                               padding: EdgeInsets.only(top: 5),
-                                              child: Text("\$"+
-                                                  mostpopularState
-                                                      .productModel
-                                                      .data[index]
-                                                      .products
-                                                      .sellingPrice,
+                                              child: Text(
+                                                "\$" +
+                                                    mostpopularState
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .sellingPrice,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     color: Colors.black),
@@ -330,33 +363,31 @@ class _ProductPageState extends State<ProductPage> {
                           separatorBuilder: (context, index) {
                             return index % 4 == 0
                                 ? Container(
-                                width: 230,
-                                margin: EdgeInsets.all(8),
-                                height: 230,
-                                color: Colors.green,
-                                child: NativeAdmob(
-                                  adUnitID: NativeAd.testAdUnitId,
-                                  controller: _nativeAdController,
-                                  type: NativeAdmobType.full,
-                                  loading: Center(
-                                      child: CircularProgressIndicator()),
-                                  error: Text('failed to load'),
-                                ))
+                                    width: 230,
+                                    margin: EdgeInsets.all(8),
+                                    height: 230,
+                                    color: Colors.green,
+                                    child: NativeAdmob(
+                                      adUnitID: NativeAd.testAdUnitId,
+                                      controller: _nativeAdController,
+                                      type: NativeAdmobType.full,
+                                      loading: Center(
+                                          child: CircularProgressIndicator()),
+                                      error: Text('failed to load'),
+                                    ))
                                 : Container();
                           },
                         ),
                       ),
                     ],
                   );
-                }
-                else if(mostpopularState is MostPopularProductLoading){
+                } else if (mostpopularState is MostPopularProductLoading) {
                   return Container(
                     child: CircularProgressIndicator(),
                   );
                 }
               },
             ),
-
           ],
         ),
       ),
@@ -394,8 +425,7 @@ class _ProductPageState extends State<ProductPage> {
       }
     } else {
       BlocProvider.of<ProductBloc>(context).add(FetchWithoutLoginProduct());
-      BlocProvider.of<MostPopularBloc>(context)
-          .add(FetchMostPopularProduct());
+      BlocProvider.of<MostPopularBloc>(context).add(FetchMostPopularProduct());
     }
   }
 }

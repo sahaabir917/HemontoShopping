@@ -7,6 +7,7 @@ import 'package:hemontoshoppin/views/product_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'blocs/productbloc/product_bloc.dart';
 import 'blocs/mostpopularbloc/mostpopular_bloc.dart';
+import 'views/productviews/ProductDetailsPage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +35,12 @@ class MyApp extends StatelessWidget {
         routes: {
           "/login_page" :(context) => LoginPage(),
           "/product_page" : (context) => ProductPage(),
+          "/product_details" : (context) => ProductDetailsPage(),
         },
       ),
     );
   }
 }
+
+
 
