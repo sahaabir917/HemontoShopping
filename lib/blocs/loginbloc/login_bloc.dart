@@ -12,6 +12,7 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
   ApiService apiservices = ApiService();
   LoginModel _loginModel;
   FailedModel _failedModel;
+  bool isLogin;
   @override
   LoginState get initialState => LoginInitial();
 
@@ -32,6 +33,17 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
       print(_loginModel);
 
     }
+
+    else if(event is SetLoginStatus){
+      isLogin = event.loginStatus;
+      if(isLogin == false){
+        yield NoLogin(isLogin);
+      }
+      else{
+        yield AlreadyLogin(isLogin);
+      }
+    }
+
   }
 
 }

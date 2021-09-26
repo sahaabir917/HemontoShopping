@@ -12,3 +12,10 @@ class FetchLogin extends LoginEvent{
 
 
 }
+
+class SetLoginStatus extends LoginEvent{
+  final bool loginStatus;
+
+  SetLoginStatus(this.loginStatus);
+
+}

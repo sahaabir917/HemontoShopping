@@ -20,3 +20,16 @@ class LoginFailed extends LoginState{
 
 }
 
+class NoLogin extends LoginState{
+  final bool isLogin;
+
+  NoLogin(this.isLogin);
+
+}
+
+class AlreadyLogin extends LoginState{
+  final bool isLogin;
+
+  AlreadyLogin(this.isLogin);
+}
+

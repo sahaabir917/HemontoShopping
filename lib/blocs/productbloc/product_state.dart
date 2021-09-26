@@ -14,6 +14,13 @@ class ProductOperationSuccess extends ProductState{
   ProductOperationSuccess(this.productModel);
 }
 
+class LoadedSingleProduct extends ProductState{
+  final ProductModel productModel;
+
+  LoadedSingleProduct(this.productModel);
+
+}
+
 class LoadedMostPopularProduct extends ProductState{
   final ProductModel mostPopularProducts;
 
@@ -27,8 +34,19 @@ class SingleProductLoaded extends ProductState {
 
 }
 
+class GetSingleProductId extends ProductState{
+
+  final String productId;
+
+  GetSingleProductId(this.productId);
+
+}
+
+
 class setProductItemSuccess extends ProductState{}
 
 class FetchFailedProduct extends ProductState{}
 
 class ProductFavourite extends ProductState{}
+
+class setSingleProductIdSucess extends ProductState{}

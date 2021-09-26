@@ -17,7 +17,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ApiService withLoginProductApiService = ApiService();
   ProductModel _productModel;
   ProductModel _mostPopularProductModel;
+  ProductModel _singleProductModel;
   FailedModel _failedModel;
+  String _singleProductId;
   var token;
   var userId;
 
@@ -30,6 +32,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Stream<ProductState> mapEventToState(ProductEvent event) async* {
     if (event is FetchWithoutLoginProduct) {
       yield ProductLoading();
+      // userId = await getUserId();
+      // print("preferencehelperuserid ${userId}");
       _productModel = await apiservices.getProductWithOutLogin();
       print(_productModel);
       yield ProductOperationSuccess(_productModel);
@@ -49,17 +53,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         yield FetchFailedProduct();
       }
     } else if (event is LikeProduct) {
-      yield ProductLoading();
       var returnedModel;
-      if (_productModel.data[event.index].favourite == true) {
-        userId = await getUserId();
-        token = await getJwtToken();
-        // returnedModel = await apiservices.getProductWithLogin(token, userId);
-        _productModel.data[event.index].favourite = false;
-      } else {
-        _productModel.data[event.index].favourite = true;
-      }
-      yield ProductOperationSuccess(_productModel);
+      userId = await getUserId();
+      token = await getJwtToken();
+      await apiservices.updateLikeProduct(token, userId, event.product_id);
     } else if (event is FetchWithLoginMostPopularProduct) {
       yield ProductLoading();
       _mostPopularProductModel = await apiservices.getMostPopularProduct();
@@ -70,6 +67,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     } else if (event is getProductItem) {
       // yield ProductLoading();
       yield SingleProductLoaded(_productItem);
+    } else if (event is SetProductId) {
+      _singleProductId = event.productId;
+      yield setSingleProductIdSucess();
+    } else if (event is getProductId) {
+      yield GetSingleProductId(_singleProductId);
+    } else if (event is LoadingSingleProduct) {
+      yield ProductLoading();
+      userId = await getUserId();
+      _singleProductModel =
+          await apiservices.getProductDetails(event.productId, userId);
+      yield LoadedSingleProduct(_singleProductModel);
     }
   }
 

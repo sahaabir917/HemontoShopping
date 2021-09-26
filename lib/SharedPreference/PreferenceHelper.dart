@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:hemontoshoppin/models/LoginModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceHelper {
@@ -8,9 +11,9 @@ class PreferenceHelper {
     pref.clear();
   }
 
-  void setUserData(String userData) async {
+  void setUserData(LoginModel userData) async {
     pref = await SharedPreferences.getInstance();
-    pref.setString("userData", userData);
+    pref.setString("userData", jsonEncode(userData));
   }
 
   void setIsLoggedIn(bool isLogin) async {
@@ -28,6 +31,18 @@ class PreferenceHelper {
   void setUserId(String id) async{
     pref = await SharedPreferences.getInstance();
     pref.setString("user_id",id);
+    pref.commit();
+  }
+
+  void LogoutData() async {
+    pref = await SharedPreferences.getInstance();
+    // pref.setString("jwtToken", null);
+    pref.remove("jwtToken");
+    // pref.setString("user_id",null);
+    pref.remove("user_id");
+    pref.setBool("isLogin", false);
+    setIsLoggedIn(false);
+    pref.remove("userData");
     pref.commit();
   }
 

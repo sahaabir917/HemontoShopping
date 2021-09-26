@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
-import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hemontoshoppin/views/product_page.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
 
@@ -57,40 +56,56 @@ class _LoginPageState extends State<LoginPage> {
                         hintStyle: TextStyle(color: Colors.white70),
                         icon: Icon(Icons.remove_red_eye_outlined)),
                   ),
-                  RaisedButton(onPressed: () {
-                    var email = emailController.text;
-                    var password = passwordController.text;
-                    BlocProvider.of<LoginBloc>(context).add(
-                        FetchLogin(email, password));
-                  }),
+                  RaisedButton(
+                      child: Text("login"),
+                      color: Colors.redAccent,
+                      onPressed: () {
+                        var email = emailController.text;
+                        var password = passwordController.text;
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(FetchLogin(email, password));
+                      }),
                   BlocBuilder<LoginBloc, LoginState>(
                     bloc: BlocProvider.of<LoginBloc>(context),
                     builder: (context, loginState) {
-                      if(loginState is LoginInitial){
+                      if (loginState is LoginInitial) {
                         return Container(
                           height: 10,
                           width: 10,
-                          child: Text("dklajd",style: TextStyle(color: Colors.white),),
+                          child: Text(
+                            "dklajd",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         );
-                      }
-                      else if(loginState is checkingLogin ){
+                      } else if (loginState is checkingLogin) {
                         return CircularProgressIndicator();
-                      }
-                      else if (loginState is LoginInOperationSuccess) {
-                        scheduleMicrotask(() => Navigator.of(context).push( MaterialPageRoute(builder: (ctx) => ProductPage()) ));
+                      } else if (loginState is LoginInOperationSuccess) {
+                        scheduleMicrotask(() => Navigator.of(context)
+                            .pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => ProductPage()),
+                                (Route<dynamic> route) => false));
                         return CircularProgressIndicator();
-                      }
-                      else if (loginState is LoginFailed) {
-                       return Text(loginState.failedModel.message!=null?loginState.failedModel.message : "Login Failed" );
-                       //  Fluttertoast.showToast(
-                       //      msg: 'You cannot change the answer again!',
-                       //      toastLength: Toast.LENGTH_SHORT,
-                       //      gravity: ToastGravity.BOTTOM,
-                       //      backgroundColor: Colors.lightBlueAccent,
-                       //      textColor: Colors.white);
-                       //  return Container();
-                      }
-                      else {
+                      } else if (loginState is LoginFailed) {
+                        return Text(loginState.failedModel.message != null
+                            ? loginState.failedModel.message
+                            : "Login Failed");
+                        //  Fluttertoast.showToast(
+                        //      msg: 'You cannot change the answer again!',
+                        //      toastLength: Toast.LENGTH_SHORT,
+                        //      gravity: ToastGravity.BOTTOM,
+                        //      backgroundColor: Colors.lightBlueAccent,
+                        //      textColor: Colors.white);
+                        //  return Container();
+                      } else if (loginState is NoLogin) {
+                        return Container(
+                          child: Text(""),
+                        );
+                      } else if (loginState is AlreadyLogin) {
+                        return Container(
+                          child: Text(""),
+                        );
+                      } else {
                         print(loginState.toString());
                       }
                     },
@@ -104,8 +119,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-    gotoProductPage() {
-      Navigator.of(context).pushNamed("/product_page");
-    }
+  gotoProductPage() {
+    Navigator.of(context).pushNamed("/product_page");
   }
-
+}

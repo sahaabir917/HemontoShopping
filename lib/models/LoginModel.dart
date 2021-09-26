@@ -20,9 +20,9 @@ class LoginModel {
   User user;
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-    success: json["success"],
-    token: json["token"],
-    user: User.fromJson(json["user"]),
+    success: json["success"]?? "",
+    token: json["token"]?? "",
+    user: User.fromJson(json["user"]?? ""),
   );
 
   Map<String, dynamic> toJson() => {
@@ -50,12 +50,12 @@ class User {
   DateTime updatedAt;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    emailVerifiedAt: json["email_verified_at"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    id: json["id"]?? "",
+    name: json["name"]?? "",
+    email: json["email"]?? "",
+    emailVerifiedAt: json["email_verified_at"]?? "",
+    createdAt: DateTime.parse(json["created_at"]?? ""),
+    updatedAt: DateTime.parse(json["updated_at"]?? ""),
   );
 
   Map<String, dynamic> toJson() => {

@@ -7,12 +7,22 @@ class FetchWithoutLoginProduct extends ProductEvent{}
 
 class FetchWithLoginProduct extends ProductEvent{}
 
+
+
 class FetchWithLoginMostPopularProduct extends ProductEvent{}
 
-class LikeProduct extends ProductEvent{
-  final int index;
+class LoadingSingleProduct extends ProductEvent{
+  final String productId;
 
-  LikeProduct(this.index);
+  LoadingSingleProduct(this.productId);
+
+}
+
+class LikeProduct extends ProductEvent{
+  final String product_id;
+
+  LikeProduct(this.product_id);
+
 }
 
 class SetProductItem extends ProductEvent{
@@ -21,6 +31,14 @@ class SetProductItem extends ProductEvent{
   SetProductItem(this.index);
 
 }
+
+class SetProductId extends ProductEvent{
+  final String productId;
+
+  SetProductId(this.productId);
+}
+
+class getProductId extends ProductEvent{}
 
 class getProductItem extends ProductEvent{}
 
