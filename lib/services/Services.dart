@@ -5,6 +5,7 @@ import 'package:hemontoshoppin/models/FailedModel.dart';
 import 'package:hemontoshoppin/models/LoginModel.dart';
 import 'package:hemontoshoppin/models/category/CategoryModel.dart';
 import 'package:hemontoshoppin/models/productModel.dart';
+import 'package:hemontoshoppin/models/subcategory/SubcategoryModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -150,4 +151,38 @@ class ApiService {
       return categoryModel;
     }
   }
+
+
+  Future<SubcategoryModel> getSubcategories(String categoryId) async {
+    var body = {"category_id" : categoryId};
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/getsubcategoriesbycategory'),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      SubcategoryModel subcategoryModel = subcategoryModelFromJson(response.body);
+      print(response.body);
+      return subcategoryModel;
+    }
+  }
+
+  Future<ProductModel> getSubcatByProduct(String subId, String userId) async {
+    var body = {"subcategory_id" : subId,"user_id" : userId};
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/filterByCategoryProduct'),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      ProductModel subByProduct = productModelFromJson(response.body);
+      print("subcatbyproduct" + response.body);
+      return subByProduct;
+    }
+  }
+
 }

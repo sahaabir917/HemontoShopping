@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hemontoshoppin/blocs/categorybloc/category_bloc.dart';
+import 'package:hemontoshoppin/blocs/subcategory_bloc/subcategory_bloc.dart';
+import 'package:hemontoshoppin/blocs/subcategorywiseproductbloc/subcategorywiseproduct_bloc.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key key}) : super(key: key);
@@ -15,24 +19,27 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              title: Text("All Product"),
-              excludeHeaderSemantics: true,
-              expandedHeight: 50.0,
-              forceElevated: innerBoxIsScrolled,
-            ),
-          ];
-        },
-        body: SingleChildScrollView(
-            child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
+      appBar: AppBar(
+        title: Text("All Categories"),
+      ),
+      // resizeToAvoidBottomInset: true,
+      // body: NestedScrollView(
+      //   floatHeaderSlivers: true,
+      //   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+      //     return <Widget>[
+      //       SliverAppBar(
+      //         title: Text("All Product"),
+      //         excludeHeaderSemantics: true,
+      //         expandedHeight: 50.0,
+      //         forceElevated: innerBoxIsScrolled,
+      //       ),
+      //     ];
+      //   },
+      body: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SingleChildScrollView(
+            child: Container(
               width: 120,
               color: Colors.tealAccent,
               child: BlocBuilder<CategoryBloc, CategoryState>(
@@ -52,9 +59,12 @@ class _CategoryPageState extends State<CategoryPage> {
                             return InkWell(
                               onTap: () {
                                 var singleCategory =
-                                    categoryState.categoryModel.data[index];
+                                categoryState.categoryModel.data[index];
                                 BlocProvider.of<CategoryBloc>(context)
                                     .add(SetSelectedItemPosition(index));
+                                BlocProvider.of<SubCategoryBloc>(context).add(
+                                    GetSubCategoriesByCategory(categoryState
+                                        .categoryModel.data[index].id));
                               },
                               child: Container(
                                 width: 190,
@@ -63,31 +73,34 @@ class _CategoryPageState extends State<CategoryPage> {
                                     AnimatedContainer(
                                         duration: Duration(microseconds: 500),
                                         height: (categoryState.categoryModel
-                                                    .data[index].isSelected ==
-                                                true)
+                                            .data[index].isSelected ==
+                                            true)
                                             ? 80
                                             : 0,
                                         color: (categoryState.categoryModel
-                                                    .data[index].isSelected ==
-                                                true)
+                                            .data[index].isSelected ==
+                                            true)
                                             ? Colors.blue
-                                            : Colors.white,
+                                            : Colors.blue,
                                         width: 5),
                                     Expanded(
                                       child: Container(
                                         color: (categoryState.categoryModel
-                                                    .data[index].isSelected ==
-                                                true)
-                                            ? Colors.white
-                                            : Colors.tealAccent,
+                                            .data[index].isSelected ==
+                                            true)
+                                            ? Colors.tealAccent
+                                            : Colors.black12,
                                         height: 80,
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               top: 25, left: 10, right: 10),
-                                          child: Text(categoryState
+                                          child: (!categoryState.categoryModel.data[index].isSelected)?Text(categoryState
                                               .categoryModel
                                               .data[index]
-                                              .categoryName),
+                                              .categoryName):Text(categoryState
+                                              .categoryModel
+                                              .data[index]
+                                              .categoryName,style: TextStyle(fontWeight: FontWeight.bold),),
                                         ),
                                       ),
                                     ),
@@ -98,11 +111,75 @@ class _CategoryPageState extends State<CategoryPage> {
                           });
                     }
                   }),
-            )
-          ],
-        )),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+                child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                    child: BlocBuilder<SubCategoryBloc, SubcategoryState>(
+                        bloc: BlocProvider.of<SubCategoryBloc>(context),
+                        builder: (context, subcategoryState) {
+                          if (subcategoryState is SubcategoryInital) {
+                            return Container();
+                          } else if (subcategoryState is SubcategoryLoaded) {
+                            return subcategoryState.subcategoryModel.subcategories.length>0?
+                              GridView.builder(
+                                  gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 1.5,
+                                    crossAxisSpacing: 0,
+                                    mainAxisSpacing: 0,
+                                  ),
+                                  itemCount: subcategoryState
+                                      .subcategoryModel.subcategories.length,
+                                  itemBuilder: (ctx, i) => GridTile(
+                                    child: InkWell(
+                                      onTap: (){
+                                        BlocProvider.of<SubCategoryWiseProductBloc>(context).add(FetchProductBySubCategory(subcategoryState.subcategoryModel.subcategories[i].subId));
+                                        scheduleMicrotask(() =>
+                                            Navigator.of(context).pushNamed("/subcat_wise_product"));
+                                        },
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Card(
+                                          elevation: 5,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              subcategoryState.subcategoryModel
+                                                  .subcategories[i].subcategoryName,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )): Center(child: Text("No data Found",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),) ;
+                          }
+                          else if(subcategoryState is SubCategoryLoading){
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        }))),
+          ),
+        ],
       ),
     );
+  }
+
+  int hexColor(String color) {
+    String newColor = '0xff' + color;
+    newColor = newColor.replaceAll("#", '');
+    int finalColor = int.parse(newColor);
+    return finalColor;
   }
 
   @override

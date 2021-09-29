@@ -24,7 +24,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       yield CategoryOperationSuccess(_categoryModel);
     }
     if (event is SetSelectedItemPosition) {
-
       var size = _categoryModel.data.length-1;
       print("size ${size}");
       for(var i=0;i<=size;i++){

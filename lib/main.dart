@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hemontoshoppin/blocs/cartbloc/cart_bloc.dart';
 import 'package:hemontoshoppin/blocs/categorybloc/category_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
+import 'package:hemontoshoppin/blocs/subcategory_bloc/subcategory_bloc.dart';
+import 'package:hemontoshoppin/blocs/subcategorywiseproductbloc/subcategorywiseproduct_bloc.dart';
 import 'package:hemontoshoppin/views/category/category_page.dart';
 import 'package:hemontoshoppin/views/login_page.dart';
 import 'package:hemontoshoppin/views/product_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hemontoshoppin/views/productviews/product_with_subcat_page.dart';
 import 'blocs/productbloc/product_bloc.dart';
 import 'blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'views/productviews/ProductDetailsPage.dart';
@@ -26,6 +30,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginBloc>(create: (context) => LoginBloc() ,),
         BlocProvider<MostPopularBloc>(create: (context) => MostPopularBloc() ,),
         BlocProvider<CategoryBloc>(create:(context) => CategoryBloc(),),
+        BlocProvider<SubCategoryBloc>(create: (context) =>SubCategoryBloc(),),
+        BlocProvider<SubCategoryWiseProductBloc>(create: (context) => SubCategoryWiseProductBloc(),),
+        BlocProvider<CartBloc>(create: (context) => CartBloc(),)
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -40,6 +47,7 @@ class MyApp extends StatelessWidget {
           "/product_page" : (context) => ProductPage(),
           "/product_details" : (context) => ProductDetailsPage(),
           "/category_page" : (context) => CategoryPage(),
+          "/subcat_wise_product" :(context) =>ProductWithSubCategory(),
         },
       ),
     );
