@@ -6,6 +6,7 @@ import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategory_bloc/subcategory_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategorywiseproductbloc/subcategorywiseproduct_bloc.dart';
+import 'package:hemontoshoppin/views/cart/cart_page.dart';
 import 'package:hemontoshoppin/views/category/category_page.dart';
 import 'package:hemontoshoppin/views/login_page.dart';
 import 'package:hemontoshoppin/views/product_page.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           "/product_details" : (context) => ProductDetailsPage(),
           "/category_page" : (context) => CategoryPage(),
           "/subcat_wise_product" :(context) =>ProductWithSubCategory(),
+          "/cart_page" : (context) => CartPage(),
         },
       ),
     );

@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hemontoshoppin/SharedPreference/PreferenceHelper.dart';
+import 'package:hemontoshoppin/blocs/cartbloc/cart_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
+import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'drawer/main_drawer.dart';
@@ -57,6 +60,7 @@ class _ProductPageState extends State<ProductPage> {
                             IconButton(
                                 icon: Icon(Icons.logout),
                                 onPressed: () {
+                                  isLogin = false;
                                   preferenceHelper.LogoutData();
                                   BlocProvider.of<LoginBloc>(context)
                                       .add(SetLoginStatus(false));
@@ -65,13 +69,81 @@ class _ProductPageState extends State<ProductPage> {
                                   BlocProvider.of<ProductBloc>(context)
                                       .add(FetchWithoutLoginProduct());
                                 }),
+
+                            BlocBuilder<CartBloc, CartState>(
+                                bloc: BlocProvider.of<CartBloc>(context),
+                                builder: (context, cartState) {
+                                  if (cartState is CartInitial) {
+                                    return Stack(
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon:
+                                              Icon(Icons.shopping_cart_rounded),
+                                          onPressed: () {},
+                                        ),
+                                        Positioned(
+                                            right: 8,
+                                            top: 4,
+                                            child: Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.redAccent,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Text(
+                                                "",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    );
+                                  } else if (cartState
+                                      is UserCartOperationSucess) {
+                                    return Stack(
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon:
+                                              Icon(Icons.shopping_cart_rounded),
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, "/cart_page");
+                                          },
+                                        ),
+                                        Positioned(
+                                            right: 8,
+                                            top: 4,
+                                            child: Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.redAccent,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Text(
+                                                cartState
+                                                    .userCartModel.data.length
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    );
+                                  } else {
+                                    return Container(
+                                        child: Text(cartState.toString()));
+                                  }
+                                })
+
                             // Text(isLogin.toString()),
                           ],
                         );
-                      }
-
-                      else {
-                     return   Container(
+                      } else {
+                        return Container(
                           height: 2,
                           child: Text(""),
                         );
@@ -171,7 +243,32 @@ class _ProductPageState extends State<ProductPage> {
                                             child: Container(
                                               child: IconButton(
                                                 icon: Icon(Icons.shopping_cart),
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  if (!isLogin) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "You have to login first",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIos: 1);
+                                                  } else if (isLogin) {
+                                                    showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            CustomCartBottomSheet(
+                                                                productState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .productId));
+                                                  }
+                                                },
                                               ),
                                             )),
                                         Positioned(
@@ -267,7 +364,7 @@ class _ProductPageState extends State<ProductPage> {
                     );
                   } else if (productState is setProductItemSuccess) {
                     scheduleMicrotask(() =>
-                        Navigator.of(context).pushNamed("/product_details"));
+                        Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
                     return CircularProgressIndicator();
                   } else if (productState is SingleProductLoaded) {
                     return Container(
@@ -275,14 +372,14 @@ class _ProductPageState extends State<ProductPage> {
                     );
                   } else if (productState is SetProductId) {
                     scheduleMicrotask(() =>
-                        Navigator.of(context).pushNamed("/product_details"));
+                        Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
                   } else if (productState is getProductId) {
                     return Container(
                       child: Text(productState.toString()),
                     );
                   } else if (productState is setSingleProductIdSucess) {
                     scheduleMicrotask(() =>
-                        Navigator.of(context).pushNamed("/product_details"));
+                        Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
                     return CircularProgressIndicator();
                   } else {
                     return Container(
@@ -359,7 +456,32 @@ class _ProductPageState extends State<ProductPage> {
                                             child: Container(
                                               child: IconButton(
                                                 icon: Icon(Icons.shopping_cart),
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  if (!isLogin) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "You have to login first",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIos: 1);
+                                                  } else if (isLogin) {
+                                                    showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            CustomCartBottomSheet(
+                                                                mostpopularState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .productId));
+                                                  }
+                                                },
                                               ),
                                             )),
                                         Positioned(
@@ -475,6 +597,7 @@ class _ProductPageState extends State<ProductPage> {
         BlocProvider.of<ProductBloc>(context).add(FetchWithLoginProduct());
         BlocProvider.of<MostPopularBloc>(context)
             .add(FetchMostPopularProduct());
+        BlocProvider.of<CartBloc>(context).add(FetchUserCart());
       } else {
         isLogin = false;
         BlocProvider.of<LoginBloc>(context).add(SetLoginStatus(isLogin));

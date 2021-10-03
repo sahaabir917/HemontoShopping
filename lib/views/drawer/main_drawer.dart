@@ -102,41 +102,41 @@ class _MainDrawerState extends State<MainDrawer> {
               ),
             ),
             SizedBox(height: 20,),
-            Visibility(
-              visible: loginModel == null?false : true,
-              child:Container(
-                height: 40,
-                color: Colors.greenAccent,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 30,top: 5,bottom: 5),
-                  child: Container(
-                    height: 20,
-                    child: InkWell(
-                      onTap: () async {
-                       preferenceHelper.LogoutData();
-                       // BlocProvider.of<ProductBloc>(context).add(LikeProduct(1));
-                       await checkLoginStatus();
-                        if(isLogin){
-
-                        }
-                        else{
-                          setState(() {
-                            Navigator.pushNamed(context, '/login_page');
-                          });
-                        }
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Image.asset("assets/images/fav.png",height: 25,),
-                          SizedBox(width: 20,),
-                          Text("Logout",style: TextStyle(fontWeight: FontWeight.w500),),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ),
+            // Visibility(
+            //   visible: loginModel == null?false : true,
+            //   child:Container(
+            //     height: 40,
+            //     color: Colors.greenAccent,
+            //     child: Padding(
+            //       padding: EdgeInsets.only(left: 30,top: 5,bottom: 5),
+            //       child: Container(
+            //         height: 20,
+            //         child: InkWell(
+            //           onTap: () async {
+            //            preferenceHelper.LogoutData();
+            //            // BlocProvider.of<ProductBloc>(context).add(LikeProduct(1));
+            //            await checkLoginStatus();
+            //             if(isLogin){
+            //
+            //             }
+            //             else{
+            //               setState(() {
+            //                 Navigator.pushNamed(context, '/login_page');
+            //               });
+            //             }
+            //           },
+            //           child: Row(
+            //             children: <Widget>[
+            //               Image.asset("assets/images/fav.png",height: 25,),
+            //               SizedBox(width: 20,),
+            //               Text("Logout",style: TextStyle(fontWeight: FontWeight.w500),),
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   )
+            // ),
             Container(
               height: 40,
               color: Colors.greenAccent,

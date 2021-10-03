@@ -6,6 +6,7 @@ import 'package:hemontoshoppin/models/LoginModel.dart';
 import 'package:hemontoshoppin/models/category/CategoryModel.dart';
 import 'package:hemontoshoppin/models/productModel.dart';
 import 'package:hemontoshoppin/models/subcategory/SubcategoryModel.dart';
+import 'package:hemontoshoppin/models/usercart/UserCartModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,13 +41,12 @@ class ApiService {
     }
   }
 
-  Future<ProductModel> getProductDetails(String productId,String userId) async {
-    var body = {"product_id" : productId, "user_id":userId};
+  Future<ProductModel> getProductDetails(
+      String productId, String userId) async {
+    var body = {"product_id": productId, "user_id": userId};
     var response = await client.post(
       Uri.parse('https://ecotech.xixotech.net/public/api/searchProductById'),
-        headers: {
-          "Content-Type": "application/json"
-        },
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(body),
     );
     if (response.statusCode == 200) {
@@ -152,30 +152,28 @@ class ApiService {
     }
   }
 
-
   Future<SubcategoryModel> getSubcategories(String categoryId) async {
-    var body = {"category_id" : categoryId};
+    var body = {"category_id": categoryId};
     var response = await client.post(
-      Uri.parse('https://ecotech.xixotech.net/public/api/getsubcategoriesbycategory'),
-      headers: {
-        "Content-Type": "application/json"
-      },
+      Uri.parse(
+          'https://ecotech.xixotech.net/public/api/getsubcategoriesbycategory'),
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(body),
     );
     if (response.statusCode == 200) {
-      SubcategoryModel subcategoryModel = subcategoryModelFromJson(response.body);
+      SubcategoryModel subcategoryModel =
+          subcategoryModelFromJson(response.body);
       print(response.body);
       return subcategoryModel;
     }
   }
 
   Future<ProductModel> getSubcatByProduct(String subId, String userId) async {
-    var body = {"subcategory_id" : subId,"user_id" : userId};
+    var body = {"subcategory_id": subId, "user_id": userId};
     var response = await client.post(
-      Uri.parse('https://ecotech.xixotech.net/public/api/filterByCategoryProduct'),
-      headers: {
-        "Content-Type": "application/json"
-      },
+      Uri.parse(
+          'https://ecotech.xixotech.net/public/api/filterByCategoryProduct'),
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(body),
     );
     if (response.statusCode == 200) {
@@ -185,4 +183,61 @@ class ApiService {
     }
   }
 
+  Future<dynamic> getUserCart(token, userId) async {
+    var body = {"user_id": userId};
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/getUserCart'),
+      headers: {
+        'Authorization': "Bearer ${token}",
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      UserCartModel userCartModel = userCartModelFromJson(response.body);
+      print(jsonString);
+      return userCartModel;
+    }
+    else if (response.statusCode == 401) {
+      var jsonString = {"status": false, "message": "session out"};
+      FailedModel failedModel = FailedModel.fromJson(jsonString);
+      print(response.statusCode);
+      preferenceHelper.LogoutData();
+      return failedModel;
+    }
+    else {
+      print(response.statusCode);
+    }
+  }
+
+  Future<dynamic> addToCart(token, userId, productId, productQuantity) async{
+    var body = {"user_id": userId,"product_id": productId,"cart_quantity": productQuantity,"isOrdered": "no"};
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/carts'),
+      headers: {
+        'Authorization': "Bearer ${token}",
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      UserCartModel userCartModel = userCartModelFromJson(response.body);
+      print(jsonString);
+      return userCartModel;
+    }
+    else if (response.statusCode == 401) {
+      var jsonString = {"status": false, "message": "session out"};
+      FailedModel failedModel = FailedModel.fromJson(jsonString);
+      print(response.statusCode);
+      preferenceHelper.LogoutData();
+      return failedModel;
+    }
+    else {
+      print(response.statusCode);
+    }
+  }
 }

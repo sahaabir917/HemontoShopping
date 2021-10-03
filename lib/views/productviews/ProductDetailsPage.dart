@@ -8,6 +8,7 @@ import 'package:hemontoshoppin/SharedPreference/PreferenceHelper.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
+import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -450,6 +451,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       ),
                                     ),
                                   ),
+                                  onTap: (){
+                                    if(loginState is AlreadyLogin){
+                                      showModalBottomSheet(
+                                          isScrollControlled:
+                                          true,
+                                          backgroundColor:
+                                          Colors.transparent,
+                                          context: context,
+                                          builder: (context) =>
+                                              CustomCartBottomSheet(
+                                                  productState.productModel.data[0].products.productId));
+                                    }
+                                    else if(loginState is NoLogin){
+                                      Navigator.pushNamed(context, "/login_page");
+                                    }
+                                  },
                                 ),
                               )    //add to cart btn
                             ],
@@ -469,173 +486,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
         )
 
-
-        // BlocBuilder<LoginBloc, LoginState>(
-        //     bloc: BlocProvider.of<LoginBloc>(
-        //         context),
-        //     builder: (context, loginState) {
-        //       if(loginState is AlreadyLogin){
-        //        return Container(
-        //           height: 50,
-        //           child: BlocBuilder<ProductBloc, ProductState>(
-        //               bloc: BlocProvider.of<ProductBloc>(context),
-        //               builder: (context, productState) {
-        //                 if (productState is LoadedSingleProduct) {
-        //                   return Container(
-        //                     height: 50,
-        //                     child: Row(
-        //                       children: <Widget>[
-        //                         Expanded(
-        //                           child: InkWell(
-        //                             child: Container(
-        //                               color: Colors.grey[800],
-        //                               child: Center(
-        //                                 child: Padding(
-        //                                   padding: EdgeInsets.all(8.0),
-        //                                   child: Row(
-        //                                     children: [
-        //                                       BlocBuilder<LoginBloc, LoginState>(
-        //                                           bloc: BlocProvider.of<LoginBloc>(
-        //                                               context),
-        //                                           builder: (context, loginState) {
-        //                                             if (loginState is NoLogin) {
-        //                                               return Container();
-        //                                             }
-        //                                             else {
-        //                                               return productState.productModel
-        //                                                   .data[0].favourite
-        //                                                   ? IconButton(
-        //                                                 icon: Icon(
-        //                                                   Icons.favorite_border,
-        //                                                   size: 20,
-        //                                                 ),
-        //                                                 onPressed: () {
-        //                                                   BlocProvider.of<
-        //                                                       ProductBloc>(
-        //                                                       context)
-        //                                                       .add(LikeProduct(
-        //                                                       productState
-        //                                                           .productModel
-        //                                                           .data[0]
-        //                                                           .products
-        //                                                           .productId));
-        //                                                   productState
-        //                                                       .productModel
-        //                                                       .data[0]
-        //                                                       .favourite = false;
-        //                                                   setState(() {});
-        //                                                 },
-        //                                               )
-        //                                                   : IconButton(
-        //                                                 icon: Icon(
-        //                                                   Icons.favorite,
-        //                                                   size: 20,
-        //                                                 ),
-        //                                                 onPressed: () {
-        //                                                   BlocProvider.of<
-        //                                                       ProductBloc>(
-        //                                                       context)
-        //                                                       .add(LikeProduct(
-        //                                                       productState
-        //                                                           .productModel
-        //                                                           .data[0]
-        //                                                           .products
-        //                                                           .productId));
-        //                                                   // BlocProvider.of<ProductBloc>(context).add(getProductId());
-        //                                                   productState
-        //                                                       .productModel
-        //                                                       .data[0]
-        //                                                       .favourite = true;
-        //                                                   setState(() {});
-        //                                                 },
-        //                                               );
-        //                                             }
-        //                                           }),
-        //                                       SizedBox(
-        //                                         width: 10,
-        //                                       ),
-        //                                       Text("Add to favourite",
-        //                                           style: TextStyle(
-        //                                               color: Colors.white,
-        //                                               fontWeight: FontWeight.bold)),
-        //                                     ],
-        //                                   ),
-        //                                 ),
-        //                               ),
-        //                             ),
-        //                             onTap: () {
-        //                               BlocProvider.of<ProductBloc>(context).add(
-        //                                   LikeProduct(productState.productModel
-        //                                       .data[0].products.productId));
-        //                               if (productState
-        //                                   .productModel.data[0].favourite ==
-        //                                   true) {
-        //                                 productState.productModel.data[0].favourite =
-        //                                 false;
-        //                                 setState(() {});
-        //                               } else if (productState
-        //                                   .productModel.data[0].favourite ==
-        //                                   false) {
-        //                                 productState.productModel.data[0].favourite =
-        //                                 true;
-        //                                 setState(() {});
-        //                               }
-        //                             },
-        //                           ),
-        //                         ),
-        //                         Expanded(
-        //                           child: InkWell(
-        //                             child: Container(
-        //                               color: Colors.red[400],
-        //                               child: Center(
-        //                                 child: Padding(
-        //                                   padding: EdgeInsets.all(8.0),
-        //                                   child: Row(
-        //                                     children: [
-        //                                       SizedBox(
-        //                                         width: 10,
-        //                                       ),
-        //                                       Icon(Icons.shopping_cart_rounded),
-        //                                       SizedBox(
-        //                                         width: 20,
-        //                                       ),
-        //                                       Text("Add to cart",
-        //                                           style: TextStyle(
-        //                                               color: Colors.white,
-        //                                               fontWeight: FontWeight.bold)),
-        //                                     ],
-        //                                   ),
-        //                                 ),
-        //                               ),
-        //                             ),
-        //                           ),
-        //                         )
-        //                       ],
-        //                     ),
-        //                   );
-        //                 } else if (productState is ProductInitial) {
-        //                   return Text("");
-        //                 } else {
-        //                   return Container(
-        //                     child: Text(""),
-        //                   );
-        //                 }
-        //               }),
-        //         );
-        //       }
-        //       else if(loginState is NoLogin){
-        //         return Container(
-        //           child: Text(""),
-        //         );
-        //       }
-        //     })
-
       ),
     );
   }
 
   @override
   void initState() {
+    // isalreadyLogin = checkLoginStatus()
     // BlocProvider.of<ProductBloc>(context).add(getProductItem());
     BlocProvider.of<ProductBloc>(context).add(getProductId());
   }

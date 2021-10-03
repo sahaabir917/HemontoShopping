@@ -139,6 +139,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0+3"
+  flutter_sslcommerz:
+    dependency: "direct main"
+    description:
+      name: flutter_sslcommerz
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2-nullsafety.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -184,6 +191,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   matcher:
     dependency: transitive
     description:
