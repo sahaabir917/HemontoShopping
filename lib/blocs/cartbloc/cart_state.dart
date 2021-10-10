@@ -13,3 +13,7 @@ class UserCartOperationSucess extends CartState{
 }
 
 class AfterAddToCart extends CartState{}
+
+class cartUpdateSuccess extends CartState{}
+
+class fetchFailedCartProduct extends CartState{}

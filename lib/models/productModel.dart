@@ -47,12 +47,6 @@ class Datum {
 class Products {
   Products({
     this.id,
-    this.userId,
-    this.productId,
-    this.cartQuantity,
-    this.isOrdered,
-    this.createdAt,
-    this.updatedAt,
     this.categoryId,
     this.subcategoryId,
     this.brandId,
@@ -65,10 +59,14 @@ class Products {
     this.discountPrice,
     this.videoLink,
     this.status,
+    this.isPackage,
+    this.createdAt,
+    this.updatedAt,
     this.categoryName,
     this.subcategoryName,
     this.brandName,
     this.brandLogo,
+    this.productId,
     this.colorOne,
     this.colorTwo,
     this.colorThree,
@@ -76,16 +74,9 @@ class Products {
     this.imageOne,
     this.imageTwo,
     this.imageThree,
-    this.mostOrdered,
   });
 
   String id;
-  String userId;
-  String productId;
-  String cartQuantity;
-  String isOrdered;
-  dynamic createdAt;
-  dynamic updatedAt;
   String categoryId;
   String subcategoryId;
   String brandId;
@@ -96,29 +87,26 @@ class Products {
   String productSize;
   String sellingPrice;
   String discountPrice;
-  dynamic videoLink;
+  String videoLink;
   String status;
+  String isPackage;
+  dynamic createdAt;
+  dynamic updatedAt;
   String categoryName;
   String subcategoryName;
   String brandName;
   String brandLogo;
-  dynamic colorOne;
-  dynamic colorTwo;
-  dynamic colorThree;
+  String productId;
+  String colorOne;
+  String colorTwo;
+  String colorThree;
   String pId;
   String imageOne;
   String imageTwo;
   String imageThree;
-  String mostOrdered;
 
   factory Products.fromJson(Map<String, dynamic> json) => Products(
     id: json["id"],
-    userId: json["user_id"]== null ? "" : json["user_id"],
-    productId: json["product_id"],
-    cartQuantity: json["cart_quantity"]== null ? "" : json["cart_quantity"],
-    isOrdered: json["isOrdered"] == null ? "" : json["isOrdered"],
-    createdAt: json["created_at"] == null ? "" : json["created_at"],
-    updatedAt: json["updated_at"] == null ? "" : json["updated_at"],
     categoryId: json["category_id"],
     subcategoryId: json["subcategory_id"],
     brandId: json["brand_id"],
@@ -131,10 +119,14 @@ class Products {
     discountPrice: json["discount_price"],
     videoLink: json["video_link"],
     status: json["status"],
+    isPackage: json["isPackage"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
     categoryName: json["category_name"],
     subcategoryName: json["subcategory_name"],
     brandName: json["brand_name"],
     brandLogo: json["brand_logo"],
+    productId: json["product_id"],
     colorOne: json["color_one"],
     colorTwo: json["color_two"],
     colorThree: json["color_three"],
@@ -142,17 +134,10 @@ class Products {
     imageOne: json["image_one"],
     imageTwo: json["image_two"],
     imageThree: json["image_three"],
-    mostOrdered: json["most_ordered"] == null ? "" : json["most_ordered"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "user_id": userId == null ? "" : userId,
-    "product_id": productId,
-    "cart_quantity": cartQuantity == null ? "" : cartQuantity,
-    "isOrdered": isOrdered == null ? "" : isOrdered,
-    "created_at": createdAt == null ? "" : createdAt,
-    "updated_at": updatedAt == null ? "" : updatedAt,
     "category_id": categoryId,
     "subcategory_id": subcategoryId,
     "brand_id": brandId,
@@ -165,10 +150,14 @@ class Products {
     "discount_price": discountPrice,
     "video_link": videoLink,
     "status": status,
+    "isPackage": isPackage,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
     "category_name": categoryName,
     "subcategory_name": subcategoryName,
     "brand_name": brandName,
     "brand_logo": brandLogo,
+    "product_id": productId,
     "color_one": colorOne,
     "color_two": colorTwo,
     "color_three": colorThree,
@@ -176,6 +165,5 @@ class Products {
     "image_one": imageOne,
     "image_two": imageTwo,
     "image_three": imageThree,
-    "most_ordered": mostOrdered== null ? "" : mostOrdered,
   };
 }

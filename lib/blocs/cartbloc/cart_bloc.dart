@@ -15,6 +15,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   var token;
   var userId;
   var productId;
+  var cartId;
+  var incrementOrDecrement;
   var productQuantity;
   ApiService apiservices = ApiService();
   UserCartModel _userCartModel;
@@ -54,8 +56,32 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         // yield ProductOperationSuccess(returnedModel);
       } else if (returnedModel is FailedModel) {
         _failedModel = returnedModel;
-        // yield FetchFailedProduct();
+        yield fetchFailedCartProduct();
       }
+    }
+    else if(event is IncrementQuantity){
+      var returnedModel;
+      userId = await getUserId();
+      token = await getJwtToken();
+      cartId = event.cartId;
+      incrementOrDecrement = event.incrementOrDecrement;
+      returnedModel = await apiservices.updateCartQuantity(
+          token, userId,cartId,incrementOrDecrement);
+      if (returnedModel is UserCartModel) {
+        _userCartModel = returnedModel;
+        // yield cartUpdateSuccess();
+        yield UserCartOperationSucess(_userCartModel);
+      } else if (returnedModel is FailedModel) {
+        _failedModel = returnedModel;
+        yield fetchFailedCartProduct();
+      }
+    }
+    else if(event is CheckOut){
+      yield CartInitial();
+      var returnedModel;
+      userId = await getUserId();
+      token = await getJwtToken();
+      returnedModel = await apiservices.CheckOut(userId,token);
     }
   }
 

@@ -67,10 +67,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     } else if (event is getProductItem) {
       // yield ProductLoading();
       yield SingleProductLoaded(_productItem);
-    } else if (event is SetProductId) {
-      _singleProductId = event.productId;
-      yield setSingleProductIdSucess();
-    } else if (event is getProductId) {
+    }
+
+    // else if (event is SetProductId) {
+    //   _singleProductId = event.productId;
+    //   yield setSingleProductIdSucess();
+    // }
+
+    else if (event is getProductId) {
       yield GetSingleProductId(_singleProductId);
     } else if (event is LoadingSingleProduct) {
       yield ProductLoading();

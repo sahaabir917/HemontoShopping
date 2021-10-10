@@ -73,6 +73,7 @@ class Products {
     this.discountPrice,
     this.videoLink,
     this.status,
+    this.isPackage,
     this.categoryName,
     this.subcategoryName,
     this.brandName,
@@ -84,6 +85,7 @@ class Products {
     this.imageOne,
     this.imageTwo,
     this.imageThree,
+    this.cartId,
   });
 
   String id;
@@ -103,8 +105,9 @@ class Products {
   String productSize;
   String sellingPrice;
   String discountPrice;
-  dynamic videoLink;
+  String videoLink;
   String status;
+  String isPackage;
   String categoryName;
   String subcategoryName;
   String brandName;
@@ -116,6 +119,7 @@ class Products {
   String imageOne;
   String imageTwo;
   String imageThree;
+  String cartId;
 
   factory Products.fromJson(Map<String, dynamic> json) => Products(
     id: json["id"],
@@ -137,6 +141,7 @@ class Products {
     discountPrice: json["discount_price"],
     videoLink: json["video_link"],
     status: json["status"],
+    isPackage: json["isPackage"],
     categoryName: json["category_name"],
     subcategoryName: json["subcategory_name"],
     brandName: json["brand_name"],
@@ -148,6 +153,7 @@ class Products {
     imageOne: json["image_one"],
     imageTwo: json["image_two"],
     imageThree: json["image_three"],
+    cartId: json["cart_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -170,6 +176,7 @@ class Products {
     "discount_price": discountPrice,
     "video_link": videoLink,
     "status": status,
+    "isPackage": isPackage,
     "category_name": categoryName,
     "subcategory_name": subcategoryName,
     "brand_name": brandName,
@@ -181,5 +188,6 @@ class Products {
     "image_one": imageOne,
     "image_two": imageTwo,
     "image_three": imageThree,
+    "cart_id": cartId,
   };
 }

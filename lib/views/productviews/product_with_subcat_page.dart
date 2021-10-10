@@ -5,6 +5,7 @@ import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
+import 'package:hemontoshoppin/blocs/productdetailsbloc/product_details_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategory_bloc/subcategory_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategorywiseproductbloc/subcategorywiseproduct_bloc.dart';
 import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
@@ -182,7 +183,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                         .productModel.data.length >
                                     0
                                 ? Container(
-                                    height: 280,
+                                    height: 230,
                                     padding: EdgeInsets.all(10.0),
                                     child: ListView.separated(
                                       itemCount: subcatbyproductstate
@@ -191,9 +192,9 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () {
-                                            BlocProvider.of<ProductBloc>(
+                                            BlocProvider.of<ProductDetailsBloc>(
                                                     context)
-                                                .add(SetProductId(
+                                                .add(SetProductIds(
                                                     subcatbyproductstate
                                                         .productModel
                                                         .data[index]
@@ -201,7 +202,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                         .productId));
                                           },
                                           child: Container(
-                                            width: 230,
+                                            width: 170,
                                             padding: EdgeInsets.only(right: 0),
                                             child: Card(
                                               elevation: 4,
@@ -210,7 +211,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.all(
-                                                            40.0),
+                                                            35.0),
                                                     child: Container(
                                                       child: Image.network(
                                                           "https://ecotech.xixotech.net/public/" +
@@ -232,7 +233,8 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                           //hiding the shopping cart
 
                                                           return Positioned(
-                                                              right: 0,
+                                                              right: -5,
+                                                              top: -5,
                                                               child: InkWell(
                                                                 onTap: () {},
                                                                 child:
@@ -240,7 +242,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                   child:
                                                                       IconButton(
                                                                     icon: Icon(Icons
-                                                                        .shopping_cart),
+                                                                        .shopping_cart,size: 22,),
                                                                     onPressed:
                                                                         () {
                                                                       showModalBottomSheet(
@@ -265,7 +267,8 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                         } else if (loginState
                                                             is NoLogin) {
                                                           return Positioned(
-                                                              right: 0,
+                                                              right: -5,
+                                                              top: -5,
                                                               child: InkWell(
                                                                 onTap: () {},
                                                                 child:
@@ -273,7 +276,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                   child:
                                                                       IconButton(
                                                                     icon: Icon(Icons
-                                                                        .shopping_cart),
+                                                                        .shopping_cart,size: 22,),
                                                                     onPressed:
                                                                         () {
                                                                       Navigator.pushNamed(
@@ -286,35 +289,37 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                         }
                                                       }),
                                                   Positioned(
-                                                      bottom: 40,
+                                                      bottom: 35,
                                                       child: Container(
-                                                        width: 230,
+                                                        width: 170,
                                                         child: Padding(
                                                             padding:
                                                                 EdgeInsets.only(
-                                                                    top: 0),
+                                                                    top: 0,left: 2,right: 2),
                                                             child: Text(
                                                               subcatbyproductstate
                                                                   .productModel
                                                                   .data[index]
                                                                   .products
                                                                   .productName,
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.ellipsis,
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black,
-                                                                  fontSize: 15,
+                                                                  fontSize: 13,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
                                                             )),
                                                       )),
                                                   Positioned(
-                                                      bottom: 10,
+                                                      bottom: 6,
                                                       child: Container(
-                                                        width: 230,
+                                                        width: 170,
                                                         height: 25,
                                                         child: Padding(
                                                             padding:
@@ -333,7 +338,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                       .center,
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .black),
+                                                                      .black,fontSize: 12),
                                                             )),
                                                       )),
                                                 ],

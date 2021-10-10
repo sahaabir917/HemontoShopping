@@ -11,7 +11,6 @@ import 'package:hemontoshoppin/SharedPreference/PreferenceHelper.dart';
 import 'package:hemontoshoppin/blocs/cartbloc/cart_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 
-
 class CartPage extends StatefulWidget {
   const CartPage({Key key}) : super(key: key);
 
@@ -47,13 +46,13 @@ class _CartPageState extends State<CartPage> {
                         } else if (loginState is AlreadyLogin) {
                           return Row(
                             children: <Widget>[
-                              IconButton(
-                                  icon: Icon(Icons.logout),
-                                  onPressed: () {
-                                    preferenceHelper.LogoutData();
-                                    BlocProvider.of<LoginBloc>(context)
-                                        .add(SetLoginStatus(false));
-                                  }),
+                              // IconButton(
+                              //     icon: Icon(Icons.logout),
+                              //     onPressed: () {
+                              //       preferenceHelper.LogoutData();
+                              //       BlocProvider.of<LoginBloc>(context)
+                              //           .add(SetLoginStatus(false));
+                              //     }),
 
                               BlocBuilder<CartBloc, CartState>(
                                   bloc: BlocProvider.of<CartBloc>(context),
@@ -146,7 +145,7 @@ class _CartPageState extends State<CartPage> {
                 bloc: BlocProvider.of<CartBloc>(context),
                 builder: (context, cartState) {
                   if ((cartState is UserCartOperationSucess)) {
-                    if(cartState.userCartModel.data.length > 0){
+                    if (cartState.userCartModel.data.length > 0) {
                       return Padding(
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Container(
@@ -158,76 +157,126 @@ class _CartPageState extends State<CartPage> {
                               Container(
                                 child: ListView.builder(
                                     itemCount:
-                                    cartState.userCartModel.data.length,
+                                        cartState.userCartModel.data.length,
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return Card(
                                           child: Row(
-                                            mainAxisAlignment:
+                                        mainAxisAlignment:
                                             MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 85,
+                                            child: Image.network(
+                                                "https://ecotech.xixotech.net/public/" +
+                                                    cartState
+                                                        .userCartModel
+                                                        .data[index]
+                                                        .products
+                                                        .imageOne),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                height: 85,
-                                                child: Image.network(
-                                                    "https://ecotech.xixotech.net/public/" +
-                                                        cartState
-                                                            .userCartModel
-                                                            .data[index]
-                                                            .products
-                                                            .imageOne),
-                                              ),
-                                              SizedBox(width: 10,),
-                                              Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    child: Text(
-                                                      cartState
-                                                          .userCartModel
-                                                          .data[index]
-                                                          .products
-                                                          .productName,
-                                                      style: TextStyle(
-                                                          fontSize: 13,
-                                                          fontWeight:
+                                                child: Text(
+                                                  cartState
+                                                      .userCartModel
+                                                      .data[index]
+                                                      .products
+                                                      .productName,
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontWeight:
                                                           FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Text(cartState
-                                                          .userCartModel
-                                                          .data[index]
-                                                          .products
-                                                          .sellingPrice),
-                                                      Text("×"),
-                                                      Text(cartState.userCartModel
-                                                          .data[index].cartQuantity
-                                                          .toString()),
-                                                    ],
-                                                  ),
-                                                ],
+                                                ),
+                                                padding: EdgeInsets.only(left: 12),
                                               ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 12),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Text(cartState
+                                                        .userCartModel
+                                                        .data[index]
+                                                        .products
+                                                        .sellingPrice),
+                                                    Text("×"),
+                                                    Text(cartState.userCartModel
+                                                        .data[index].cartQuantity
+                                                        .toString()),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(height: 5,),
+                                              Row(
+                                                children: <Widget>[
+                                                  IconButton(
+                                                      icon: const Icon(
+                                                          Icons.add_box),
+                                                      onPressed: () {
+                                                        BlocProvider.of<CartBloc>(context).add(IncrementQuantity(cartState.userCartModel.data[index].products.cartId,"1"));
+                                                      }),
+                                                  SizedBox(width: 10,),
+                                                  Text(cartState
+                                                      .userCartModel
+                                                      .data[index]
+                                                      .products
+                                                      .cartQuantity),
+                                                  SizedBox(width: 10,),
+                                                  IconButton(
+                                                      icon: const Icon(
+                                                        Icons
+                                                            .indeterminate_check_box,
+                                                      ),
+                                                      onPressed: () {
+                                                        BlocProvider.of<CartBloc>(context).add(IncrementQuantity(cartState.userCartModel.data[index].products.cartId,"0"));
+                                                      }),
+                                                ],
+                                              )
                                             ],
-                                          ));
+                                          ),
+                                        ],
+                                      ));
                                     }),
                               )
                             ],
                           ),
                         ),
                       );
+                    } else {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * .8,
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Cart is empty",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            )),
+                      );
                     }
-                   else{
-                     return Container(child: Text("Cart is empty"),);
-                    }
+                  } else if (cartState is CartInitial) {
+                    return Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (cartState is fetchFailedCartProduct) {
+                    return Container();
                   }
-                  else{
+
+                  else {
                     return Container(
                       child: Text(cartState.toString()),
                     );
@@ -249,7 +298,8 @@ class _CartPageState extends State<CartPage> {
                 color: Colors.orange,
                 child: InkWell(
                   onTap: () {
-                    sslCommerzCustomizedCall(cartState.userCartModel.totalPrice);
+                    sslCommerzCustomizedCall(
+                        cartState.userCartModel.totalPrice);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -272,8 +322,30 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
               );
-            }
-            else {
+            } else if (cartState is CartInitial) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: 40,
+                color: Colors.orange,
+                child: InkWell(
+                  onTap: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.shopping_cart_rounded),
+                        onPressed: () {},
+                      ),
+                      Text(
+                        "Checkout ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            } else {
               return Container(
                 child: Text(cartState.toString()),
               );
@@ -283,8 +355,8 @@ class _CartPageState extends State<CartPage> {
       ),
     );
   }
-  Future<void> sslCommerzCustomizedCall(int totalPrice) async {
 
+  Future<void> sslCommerzCustomizedCall(int totalPrice) async {
     Sslcommerz sslcommerz = Sslcommerz(
         initializer: SSLCommerzInitialization(
             ipn_url: "https://ecotech.xixotech.net/public/checkouts/1",
@@ -303,6 +375,8 @@ class _CartPageState extends State<CartPage> {
       print("haserror");
     } else {
       SSLCTransactionInfoModel model = result;
+      BlocProvider.of<CartBloc>(context).add(CheckOut());
+      BlocProvider.of<CartBloc>(context).add(FetchUserCart());
       print("result ${result.toString()}");
     }
   }

@@ -74,6 +74,10 @@ class _CustomCartBottomSheetState extends State<CustomCartBottomSheet> {
                        backgroundColor: Colors.lightBlueAccent,
                        textColor: Colors.black);
                 }
+                else if(cartState is fetchFailedCartProduct){
+                  Navigator.pushNamed(context, "/login_page");
+                  return Container();
+                }
                 else {
                   Container(
                       child : Center(child: CircularProgressIndicator())

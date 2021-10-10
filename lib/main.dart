@@ -12,8 +12,10 @@ import 'package:hemontoshoppin/views/login_page.dart';
 import 'package:hemontoshoppin/views/product_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hemontoshoppin/views/productviews/product_with_subcat_page.dart';
+import 'blocs/favbloc/favbloc.dart';
 import 'blocs/productbloc/product_bloc.dart';
 import 'blocs/mostpopularbloc/mostpopular_bloc.dart';
+import 'blocs/productdetailsbloc/product_details_bloc.dart';
 import 'views/productviews/ProductDetailsPage.dart';
 
 Future<void> main() async {
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<CategoryBloc>(create:(context) => CategoryBloc(),),
         BlocProvider<SubCategoryBloc>(create: (context) =>SubCategoryBloc(),),
         BlocProvider<SubCategoryWiseProductBloc>(create: (context) => SubCategoryWiseProductBloc(),),
-        BlocProvider<CartBloc>(create: (context) => CartBloc(),)
+        BlocProvider<CartBloc>(create: (context) => CartBloc(),),
+        BlocProvider<ProductDetailsBloc>(create: (context) => ProductDetailsBloc(),),
+        BlocProvider<FavBloc>(create: (context) => FavBloc(),),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

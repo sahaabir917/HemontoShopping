@@ -11,6 +11,7 @@ import 'package:hemontoshoppin/blocs/cartbloc/cart_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
+import 'package:hemontoshoppin/blocs/productdetailsbloc/product_details_bloc.dart';
 import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -186,7 +187,7 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                         Container(
-                          height: 280,
+                          height: 230,
                           padding: EdgeInsets.all(10.0),
                           child: ListView.separated(
                             itemCount: productState.productModel.data.length,
@@ -194,19 +195,22 @@ class _ProductPageState extends State<ProductPage> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
-                                  BlocProvider.of<ProductBloc>(context).add(
-                                      SetProductId(productState.productModel
-                                          .data[index].products.productId));
+                                  BlocProvider.of<ProductDetailsBloc>(context)
+                                      .add(SetProductIds(productState
+                                          .productModel
+                                          .data[index]
+                                          .products
+                                          .productId));
                                 },
                                 child: Container(
-                                  width: 230,
+                                  width: 180,
                                   padding: EdgeInsets.only(right: 0),
                                   child: Card(
                                     elevation: 4,
                                     child: Stack(
                                       children: <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.all(40.0),
+                                          padding: const EdgeInsets.all(35.0),
                                           child: Container(
                                             child: Image.network(
                                                 "https://ecotech.xixotech.net/public/" +
@@ -217,32 +221,33 @@ class _ProductPageState extends State<ProductPage> {
                                                         .imageOne),
                                           ),
                                         ),
+                                        // Positioned(
+                                        //     left: 0,
+                                        //     child: Container(
+                                        //         child: productState.productModel
+                                        //                 .data[index].favourite
+                                        //             ? IconButton(
+                                        //                 icon: Icon(Icons
+                                        //                     .favorite_border),
+                                        //                 onPressed: () {
+                                        //                   checkLoginStatus(
+                                        //                       context, index);
+                                        //                 },
+                                        //               )
+                                        //             : IconButton(
+                                        //                 icon: Icon(
+                                        //                     Icons.favorite),
+                                        //                 onPressed: () {
+                                        //                   checkLoginStatus(
+                                        //                       context, index);
+                                        //                 },
+                                        //               ))),
                                         Positioned(
-                                            left: 0,
-                                            child: Container(
-                                                child: productState.productModel
-                                                        .data[index].favourite
-                                                    ? IconButton(
-                                                        icon: Icon(Icons
-                                                            .favorite_border),
-                                                        onPressed: () {
-                                                          checkLoginStatus(
-                                                              context, index);
-                                                        },
-                                                      )
-                                                    : IconButton(
-                                                        icon: Icon(
-                                                            Icons.favorite),
-                                                        onPressed: () {
-                                                          checkLoginStatus(
-                                                              context, index);
-                                                        },
-                                                      ))),
-                                        Positioned(
-                                            right: 0,
+                                            right: -5,
+                                            top: -5,
                                             child: Container(
                                               child: IconButton(
-                                                icon: Icon(Icons.shopping_cart),
+                                                icon: Icon(Icons.shopping_cart,size: 22,),
                                                 onPressed: () {
                                                   if (!isLogin) {
                                                     Fluttertoast.showToast(
@@ -272,12 +277,12 @@ class _ProductPageState extends State<ProductPage> {
                                               ),
                                             )),
                                         Positioned(
-                                            bottom: 40,
+                                            bottom: 35,
                                             child: Container(
-                                              width: 230,
+                                              width: 170,
                                               child: Padding(
                                                   padding:
-                                                      EdgeInsets.only(top: 0),
+                                                      EdgeInsets.only(top: 0,left: 2,right: 2),
                                                   child: Text(
                                                     productState
                                                         .productModel
@@ -285,17 +290,19 @@ class _ProductPageState extends State<ProductPage> {
                                                         .products
                                                         .productName,
                                                     textAlign: TextAlign.center,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 15,
+                                                        fontSize: 13,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   )),
                                             )),
                                         Positioned(
-                                            bottom: 10,
+                                            bottom: 6,
                                             child: Container(
-                                              width: 230,
+                                              width: 180,
                                               height: 25,
                                               child: Padding(
                                                   padding:
@@ -309,7 +316,7 @@ class _ProductPageState extends State<ProductPage> {
                                                             .sellingPrice,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                        color: Colors.black),
+                                                        color: Colors.black,fontSize: 12),
                                                   )),
                                             )),
                                       ],
@@ -321,9 +328,9 @@ class _ProductPageState extends State<ProductPage> {
                             separatorBuilder: (context, index) {
                               return index % 4 == 0
                                   ? Container(
-                                      width: 230,
-                                      margin: EdgeInsets.all(8),
-                                      height: 230,
+                                      width: 200,
+                                      margin: EdgeInsets.all(5),
+                                      height: 240,
                                       color: Colors.green,
                                       child: NativeAdmob(
                                         adUnitID: NativeAd.testAdUnitId,
@@ -363,25 +370,33 @@ class _ProductPageState extends State<ProductPage> {
                       child: Text("Loading"),
                     );
                   } else if (productState is setProductItemSuccess) {
-                    scheduleMicrotask(() =>
-                        Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
+                    scheduleMicrotask(() => Navigator.of(context).pushNamed(
+                        "/product_details",
+                        arguments: {"isLogin": isLogin}));
                     return CircularProgressIndicator();
                   } else if (productState is SingleProductLoaded) {
                     return Container(
                       child: Text(productState.toString()),
                     );
-                  } else if (productState is SetProductId) {
-                    scheduleMicrotask(() =>
-                        Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
-                  } else if (productState is getProductId) {
-                    return Container(
-                      child: Text(productState.toString()),
-                    );
-                  } else if (productState is setSingleProductIdSucess) {
-                    scheduleMicrotask(() =>
-                        Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
-                    return CircularProgressIndicator();
-                  } else {
+                  }
+                  // else if (productState is SetProductId) {
+                  //   scheduleMicrotask(() =>
+                  //       Navigator.of(context).pushNamed("/product_details",arguments: {"isLogin" : isLogin}));
+                  // }
+
+                  //  else if (productState is getProductId) {
+                  //   return Container(
+                  //     child: Text(productState.toString()),
+                  //   );
+                  // }
+                  // else if (productState is setSingleProductIdSucess) {
+                  //   scheduleMicrotask(() => Navigator.of(context).pushNamed(
+                  //       "/product_details",
+                  //       arguments: {"isLogin": isLogin}));
+                  //   return CircularProgressIndicator();
+                  // }
+
+                  else {
                     return Container(
                       child: Center(
                         child: Text(productState.toString()),
@@ -419,7 +434,7 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                         Container(
-                          height: 280,
+                          height: 230,
                           padding: EdgeInsets.all(10.0),
                           child: ListView.separated(
                             itemCount:
@@ -428,19 +443,22 @@ class _ProductPageState extends State<ProductPage> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
-                                  BlocProvider.of<ProductBloc>(context).add(
-                                      SetProductId(mostpopularState.productModel
-                                          .data[index].products.productId));
+                                  BlocProvider.of<ProductDetailsBloc>(context)
+                                      .add(SetProductIds(mostpopularState
+                                          .productModel
+                                          .data[index]
+                                          .products
+                                          .productId));
                                 },
                                 child: Container(
-                                  width: 230,
+                                  width: 170,
                                   padding: EdgeInsets.only(right: 0),
                                   child: Card(
                                     elevation: 4,
                                     child: Stack(
                                       children: <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.all(40.0),
+                                          padding: const EdgeInsets.all(35.0),
                                           child: Container(
                                             child: Image.network(
                                                 "https://ecotech.xixotech.net/public/" +
@@ -452,10 +470,11 @@ class _ProductPageState extends State<ProductPage> {
                                           ),
                                         ),
                                         Positioned(
-                                            right: 0,
+                                            right: -5,
+                                            top: -5,
                                             child: Container(
                                               child: IconButton(
-                                                icon: Icon(Icons.shopping_cart),
+                                                icon: Icon(Icons.shopping_cart,size: 22,),
                                                 onPressed: () {
                                                   if (!isLogin) {
                                                     Fluttertoast.showToast(
@@ -485,30 +504,32 @@ class _ProductPageState extends State<ProductPage> {
                                               ),
                                             )),
                                         Positioned(
-                                            bottom: 40,
+                                            bottom: 35,
                                             child: Container(
-                                              width: 230,
+                                              width: 170,
                                               child: Padding(
                                                   padding:
-                                                      EdgeInsets.only(top: 0),
+                                                      EdgeInsets.only(top: 0,left: 2,right: 2),
                                                   child: Text(
                                                     mostpopularState
                                                         .productModel
                                                         .data[index]
                                                         .products
                                                         .productName,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 15,
+                                                        fontSize: 13,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   )),
                                             )),
                                         Positioned(
-                                            bottom: 10,
+                                            bottom: 6,
                                             child: Container(
-                                              width: 230,
+                                              width: 170,
                                               height: 25,
                                               child: Padding(
                                                   padding:
@@ -522,7 +543,7 @@ class _ProductPageState extends State<ProductPage> {
                                                             .sellingPrice,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                        color: Colors.black),
+                                                        color: Colors.black,fontSize: 12),
                                                   )),
                                             )),
                                       ],
@@ -534,9 +555,9 @@ class _ProductPageState extends State<ProductPage> {
                             separatorBuilder: (context, index) {
                               return index % 4 == 0
                                   ? Container(
-                                      width: 230,
-                                      margin: EdgeInsets.all(8),
-                                      height: 230,
+                                      width: 200,
+                                      margin: EdgeInsets.all(5),
+                                      height: 240,
                                       color: Colors.green,
                                       child: NativeAdmob(
                                         adUnitID: NativeAd.testAdUnitId,
@@ -559,6 +580,27 @@ class _ProductPageState extends State<ProductPage> {
                   }
                 },
               ),
+
+              BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+                  bloc: BlocProvider.of<ProductDetailsBloc>(context),
+                  builder: (context, productdetailsState) {
+                     if (productdetailsState is setSingleProductIdsSucess) {
+                    scheduleMicrotask(() => Navigator.of(context).pushNamed(
+                    "/product_details",
+                    arguments: {"isLogin": isLogin}));
+                    return CircularProgressIndicator();
+                    }
+                     else if(productdetailsState is ProductDetailsInitial){
+                       return Container();
+                     }
+                     else if(productdetailsState is GetSingleProductIds){
+                       return Container();
+                     }
+                     else{
+                       return Container();
+                     }
+
+                  })
             ],
           ),
         ),

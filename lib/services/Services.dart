@@ -240,4 +240,63 @@ class ApiService {
       print(response.statusCode);
     }
   }
+
+  Future<dynamic> updateCartQuantity(token, userId,cartId,incrementOrDecrement) async{
+    var body = {"is_increment": incrementOrDecrement,"cart_id": cartId,"user_id" : userId};
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/updateCart'),
+      headers: {
+        'Authorization': "Bearer ${token}",
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      UserCartModel userCartModel = userCartModelFromJson(response.body);
+      print(jsonString);
+      return userCartModel;
+    }
+    else if (response.statusCode == 401) {
+      var jsonString = {"status": false, "message": "session out"};
+      FailedModel failedModel = FailedModel.fromJson(jsonString);
+      print(response.statusCode);
+      preferenceHelper.LogoutData();
+      return failedModel;
+    }
+    else {
+      print(response.statusCode);
+    }
+  }
+
+
+  Future<dynamic> CheckOut(userId, token) async{
+    var body = {"user_id": userId};
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/checkout'),
+      headers: {
+        'Authorization': "Bearer ${token}",
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print(jsonString);
+      return jsonString;
+    }
+    else if (response.statusCode == 401) {
+      var jsonString = {"status": false, "message": "session out"};
+      FailedModel failedModel = FailedModel.fromJson(jsonString);
+      print(response.statusCode);
+      preferenceHelper.LogoutData();
+      return failedModel;
+    }
+    else {
+      print(response.statusCode);
+    }
+  }
 }
