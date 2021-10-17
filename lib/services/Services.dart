@@ -41,6 +41,30 @@ class ApiService {
     }
   }
 
+  Future<ProductModel> getPackageProduct() async{
+    const _baseUrl = "ecotech.xixotech.net";
+    const String _path = "/public/api/packageproduct";
+    Uri uri = Uri.http(_baseUrl, _path);
+    Response response = await http.get(uri);
+    if (response.statusCode == 200) {
+      ProductModel productModel = productModelFromJson(response.body);
+      print(response.body);
+      return productModel;
+    }
+  }
+
+  Future<ProductModel> getDiscountedProduct() async{
+    const _baseUrl = "ecotech.xixotech.net";
+    const String _path = "/public/api/discountedproduct";
+    Uri uri = Uri.http(_baseUrl, _path);
+    Response response = await http.get(uri);
+    if (response.statusCode == 200) {
+      ProductModel productModel = productModelFromJson(response.body);
+      print(response.body);
+      return productModel;
+    }
+  }
+
   Future<ProductModel> getProductDetails(
       String productId, String userId) async {
     var body = {"product_id": productId, "user_id": userId};

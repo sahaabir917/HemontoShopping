@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hemontoshoppin/blocs/cartbloc/cart_bloc.dart';
 import 'package:hemontoshoppin/blocs/categorybloc/category_bloc.dart';
+import 'package:hemontoshoppin/blocs/discountedproduct/discounted_product_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
+import 'package:hemontoshoppin/blocs/packageproduct/package_product_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategory_bloc/subcategory_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategorywiseproductbloc/subcategorywiseproduct_bloc.dart';
 import 'package:hemontoshoppin/views/cart/cart_page.dart';
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<CartBloc>(create: (context) => CartBloc(),),
         BlocProvider<ProductDetailsBloc>(create: (context) => ProductDetailsBloc(),),
         BlocProvider<FavBloc>(create: (context) => FavBloc(),),
+        BlocProvider<PackageProductBloc>(create: (context) => PackageProductBloc(),),
+        BlocProvider<DiscountedProductBloc>(create: (context) => DiscountedProductBloc(),),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

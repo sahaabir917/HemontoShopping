@@ -8,8 +8,10 @@ import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hemontoshoppin/SharedPreference/PreferenceHelper.dart';
 import 'package:hemontoshoppin/blocs/cartbloc/cart_bloc.dart';
+import 'package:hemontoshoppin/blocs/discountedproduct/discounted_product_bloc.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
+import 'package:hemontoshoppin/blocs/packageproduct/package_product_bloc.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
 import 'package:hemontoshoppin/blocs/productdetailsbloc/product_details_bloc.dart';
 import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
@@ -581,6 +583,394 @@ class _ProductPageState extends State<ProductPage> {
                 },
               ),
 
+              //package products
+              BlocBuilder<PackageProductBloc, PackageProductState>(
+                bloc: BlocProvider.of<PackageProductBloc>(context),
+                builder: (context, packageProductState) {
+                  if ((packageProductState is PackageProductLoaded &&
+                      packageProductState.productModel.data.length > 0)) {
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Stack(
+                            children: <Widget>[
+                              Text(
+                                "Package Products",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 230,
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.separated(
+                            itemCount: packageProductState.productModel.data.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  BlocProvider.of<ProductDetailsBloc>(context)
+                                      .add(SetProductIds(packageProductState
+                                      .productModel
+                                      .data[index]
+                                      .products
+                                      .productId));
+                                },
+                                child: Container(
+                                  width: 180,
+                                  padding: EdgeInsets.only(right: 0),
+                                  child: Card(
+                                    elevation: 4,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(35.0),
+                                          child: Container(
+                                            child: Image.network(
+                                                "https://ecotech.xixotech.net/public/" +
+                                                    packageProductState
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .imageOne),
+                                          ),
+                                        ),
+                                        // Positioned(
+                                        //     left: 0,
+                                        //     child: Container(
+                                        //         child: productState.productModel
+                                        //                 .data[index].favourite
+                                        //             ? IconButton(
+                                        //                 icon: Icon(Icons
+                                        //                     .favorite_border),
+                                        //                 onPressed: () {
+                                        //                   checkLoginStatus(
+                                        //                       context, index);
+                                        //                 },
+                                        //               )
+                                        //             : IconButton(
+                                        //                 icon: Icon(
+                                        //                     Icons.favorite),
+                                        //                 onPressed: () {
+                                        //                   checkLoginStatus(
+                                        //                       context, index);
+                                        //                 },
+                                        //               ))),
+                                        Positioned(
+                                            right: -5,
+                                            top: -5,
+                                            child: Container(
+                                              child: IconButton(
+                                                icon: Icon(Icons.shopping_cart,size: 22,),
+                                                onPressed: () {
+                                                  if (!isLogin) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                        "You have to login first",
+                                                        toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                        ToastGravity.CENTER,
+                                                        timeInSecForIos: 1);
+                                                  } else if (isLogin) {
+                                                    showModalBottomSheet(
+                                                        isScrollControlled:
+                                                        true,
+                                                        backgroundColor:
+                                                        Colors.transparent,
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            CustomCartBottomSheet(
+                                                                packageProductState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .productId));
+                                                  }
+                                                },
+                                              ),
+                                            )),
+                                        Positioned(
+                                            bottom: 35,
+                                            child: Container(
+                                              width: 170,
+                                              child: Padding(
+                                                  padding:
+                                                  EdgeInsets.only(top: 0,left: 2,right: 2),
+                                                  child: Text(
+                                                    packageProductState
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .productName,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  )),
+                                            )),
+                                        Positioned(
+                                            bottom: 6,
+                                            child: Container(
+                                              width: 180,
+                                              height: 25,
+                                              child: Padding(
+                                                  padding:
+                                                  EdgeInsets.only(top: 5),
+                                                  child: Text(
+                                                    "\$" +
+                                                        packageProductState
+                                                            .productModel
+                                                            .data[index]
+                                                            .products
+                                                            .sellingPrice,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.black,fontSize: 12),
+                                                  )),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return index % 8 == 0
+                                  ? Container(
+                                  width: 200,
+                                  margin: EdgeInsets.all(5),
+                                  height: 240,
+                                  color: Colors.green,
+                                  child: NativeAdmob(
+                                    adUnitID: NativeAd.testAdUnitId,
+                                    controller: _nativeAdController,
+                                    type: NativeAdmobType.full,
+                                    loading: Center(
+                                        child: CircularProgressIndicator()),
+                                    error: Text('failed to load'),
+                                  ))
+                                  : Container();
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (packageProductState is PackageProductInitail) {
+                    return Container(
+                      child: Text(""),
+                    );
+                  }
+
+                },
+              ),
+
+              //discounted Products
+              BlocBuilder<DiscountedProductBloc, DiscountedProductState>(
+                bloc: BlocProvider.of<DiscountedProductBloc>(context),
+                builder: (context, discountedProductState) {
+                  if ((discountedProductState is DiscountedProductLoaded &&
+                      discountedProductState.productModel.data.length > 0)) {
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Stack(
+                            children: <Widget>[
+                              Text(
+                                "Discounted Products",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 230,
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.separated(
+                            itemCount: discountedProductState.productModel.data.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  BlocProvider.of<ProductDetailsBloc>(context)
+                                      .add(SetProductIds(discountedProductState
+                                      .productModel
+                                      .data[index]
+                                      .products
+                                      .productId));
+                                },
+                                child: Container(
+                                  width: 180,
+                                  padding: EdgeInsets.only(right: 0),
+                                  child: Card(
+                                    elevation: 4,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(35.0),
+                                          child: Container(
+                                            child: Image.network(
+                                                "https://ecotech.xixotech.net/public/" +
+                                                    discountedProductState
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .imageOne),
+                                          ),
+                                        ),
+                                        // Positioned(
+                                        //     left: 0,
+                                        //     child: Container(
+                                        //         child: productState.productModel
+                                        //                 .data[index].favourite
+                                        //             ? IconButton(
+                                        //                 icon: Icon(Icons
+                                        //                     .favorite_border),
+                                        //                 onPressed: () {
+                                        //                   checkLoginStatus(
+                                        //                       context, index);
+                                        //                 },
+                                        //               )
+                                        //             : IconButton(
+                                        //                 icon: Icon(
+                                        //                     Icons.favorite),
+                                        //                 onPressed: () {
+                                        //                   checkLoginStatus(
+                                        //                       context, index);
+                                        //                 },
+                                        //               ))),
+                                        Positioned(
+                                            right: -5,
+                                            top: -5,
+                                            child: Container(
+                                              child: IconButton(
+                                                icon: Icon(Icons.shopping_cart,size: 22,),
+                                                onPressed: () {
+                                                  if (!isLogin) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                        "You have to login first",
+                                                        toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                        ToastGravity.CENTER,
+                                                        timeInSecForIos: 1);
+                                                  } else if (isLogin) {
+                                                    showModalBottomSheet(
+                                                        isScrollControlled:
+                                                        true,
+                                                        backgroundColor:
+                                                        Colors.transparent,
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            CustomCartBottomSheet(
+                                                                discountedProductState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .productId));
+                                                  }
+                                                },
+                                              ),
+                                            )),
+                                        Positioned(
+                                            bottom: 35,
+                                            child: Container(
+                                              width: 170,
+                                              child: Padding(
+                                                  padding:
+                                                  EdgeInsets.only(top: 0,left: 2,right: 2),
+                                                  child: Text(
+                                                    discountedProductState
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .productName,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  )),
+                                            )),
+                                        Positioned(
+                                            bottom: 6,
+                                            child: Container(
+                                              width: 180,
+                                              height: 25,
+                                              child: Padding(
+                                                  padding:
+                                                  EdgeInsets.only(top: 5),
+                                                  child: Text(
+                                                    "\$" +
+                                                        discountedProductState
+                                                            .productModel
+                                                            .data[index]
+                                                            .products
+                                                            .sellingPrice,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.black,fontSize: 12),
+                                                  )),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return index % 8 == 0
+                                  ? Container(
+                                  width: 200,
+                                  margin: EdgeInsets.all(5),
+                                  height: 240,
+                                  color: Colors.green,
+                                  child: NativeAdmob(
+                                    adUnitID: NativeAd.testAdUnitId,
+                                    controller: _nativeAdController,
+                                    type: NativeAdmobType.full,
+                                    loading: Center(
+                                        child: CircularProgressIndicator()),
+                                    error: Text('failed to load'),
+                                  ))
+                                  : Container();
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (discountedProductState is DiscountedProductInitial) {
+                    return Container(
+                      child: Text(""),
+                    );
+                  }
+
+                },
+              ),
+
               BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
                   bloc: BlocProvider.of<ProductDetailsBloc>(context),
                   builder: (context, productdetailsState) {
@@ -640,18 +1030,26 @@ class _ProductPageState extends State<ProductPage> {
         BlocProvider.of<MostPopularBloc>(context)
             .add(FetchMostPopularProduct());
         BlocProvider.of<CartBloc>(context).add(FetchUserCart());
+        BlocProvider.of<PackageProductBloc>(context).add(FetchPackageProduct());
+        BlocProvider.of<DiscountedProductBloc>(context).add(FetchDiscountedProduct());
       } else {
         isLogin = false;
         BlocProvider.of<LoginBloc>(context).add(SetLoginStatus(isLogin));
         BlocProvider.of<MostPopularBloc>(context)
             .add(FetchMostPopularProduct());
         BlocProvider.of<ProductBloc>(context).add(FetchWithoutLoginProduct());
+        BlocProvider.of<PackageProductBloc>(context).add(FetchPackageProduct());
+        BlocProvider.of<DiscountedProductBloc>(context).add(FetchDiscountedProduct());
+
       }
     } else {
       isLogin = false;
       BlocProvider.of<LoginBloc>(context).add(SetLoginStatus(isLogin));
       BlocProvider.of<ProductBloc>(context).add(FetchWithoutLoginProduct());
       BlocProvider.of<MostPopularBloc>(context).add(FetchMostPopularProduct());
+      BlocProvider.of<PackageProductBloc>(context).add(FetchPackageProduct());
+      BlocProvider.of<DiscountedProductBloc>(context).add(FetchDiscountedProduct());
+
     }
   }
 }
