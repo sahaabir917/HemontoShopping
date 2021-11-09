@@ -91,8 +91,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                   )),
                                             ],
                                           );
-                                        }
-                                        else if (cartState
+                                        } else if (cartState
                                             is UserCartOperationSucess) {
                                           return Stack(
                                             children: <Widget>[
@@ -125,9 +124,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                   )),
                                             ],
                                           );
-                                        }
-                                        else if(cartState is fetchFailedCartProduct){
-                                          Navigator.pushNamed(context, "/login_page");
+                                        } else if (cartState
+                                            is fetchFailedCartProduct) {
+                                          Navigator.pushNamed(
+                                              context, "/login_page");
                                           return Container();
                                         }
                                       })
@@ -147,25 +147,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               body: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
                 bloc: BlocProvider.of<ProductDetailsBloc>(context),
                 builder: (context, productdetailsState) {
-
-                  if(productdetailsState is ProductDetailsInitial){
+                  if (productdetailsState is ProductDetailsInitial) {
                     return Container(
                       child: Text(productdetailsState.toString()),
                     );
-                  }
-                  else if(productdetailsState is GetSingleProductIds ){
-                      BlocProvider.of<ProductDetailsBloc>(context)
-                          .add(LoadingSingleProducts(productdetailsState.productId));
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                  }
-                  else if(productdetailsState is ProductDetailsLoading){
+                  } else if (productdetailsState is GetSingleProductIds) {
+                    BlocProvider.of<ProductDetailsBloc>(context).add(
+                        LoadingSingleProducts(productdetailsState.productId));
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
-                  else if (productdetailsState is LoadedSingleProducts) {
+                  } else if (productdetailsState is ProductDetailsLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (productdetailsState is LoadedSingleProducts) {
                     return Padding(
                       padding: EdgeInsets.all(2),
                       child: Stack(
@@ -204,7 +200,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         decoration: BoxDecoration(
                                             color: Colors.red[50],
                                             borderRadius:
-                                            BorderRadius.circular(10)),
+                                                BorderRadius.circular(10)),
                                       ),
                                     ),
                                     SizedBox(
@@ -212,11 +208,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          productdetailsState.productModel.data[0]
-                                              .products.productName,
+                                          productdetailsState.productModel
+                                              .data[0].products.productName,
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
@@ -232,48 +228,50 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                   child: Text(""),
                                                 );
                                               } else if (loginState
-                                              is AlreadyLogin) {
+                                                  is AlreadyLogin) {
                                                 return Row(
                                                   children: <Widget>[
-                                                    productdetailsState.productModel
-                                                        .data[0].favourite
+                                                    productdetailsState
+                                                            .productModel
+                                                            .data[0]
+                                                            .favourite
                                                         ? IconButton(
-                                                        icon: Icon(Icons
-                                                            .favorite_border),
-                                                        onPressed: () {
-                                                          BlocProvider.of<
-                                                              ProductBloc>(
-                                                              context)
-                                                              .add(LikeProduct(productdetailsState
-                                                              .productModel
-                                                              .data[0]
-                                                              .products
-                                                              .productId));
-                                                          productdetailsState
-                                                              .productModel
-                                                              .data[0]
-                                                              .favourite = false;
-                                                          setState(() {});
-                                                        })
+                                                            icon: Icon(Icons
+                                                                .favorite_border),
+                                                            onPressed: () {
+                                                              BlocProvider.of<
+                                                                          ProductBloc>(
+                                                                      context)
+                                                                  .add(LikeProduct(productdetailsState
+                                                                      .productModel
+                                                                      .data[0]
+                                                                      .products
+                                                                      .productId));
+                                                              productdetailsState
+                                                                  .productModel
+                                                                  .data[0]
+                                                                  .favourite = false;
+                                                              setState(() {});
+                                                            })
                                                         : IconButton(
-                                                        icon: Icon(
-                                                            Icons.favorite),
-                                                        onPressed: () {
-                                                          BlocProvider.of<
-                                                              ProductBloc>(
-                                                              context)
-                                                              .add(LikeProduct(productdetailsState
-                                                              .productModel
-                                                              .data[0]
-                                                              .products
-                                                              .productId));
-                                                          // BlocProvider.of<ProductBloc>(context).add(getProductId());
-                                                          productdetailsState
-                                                              .productModel
-                                                              .data[0]
-                                                              .favourite = true;
-                                                          setState(() {});
-                                                        }),
+                                                            icon: Icon(
+                                                                Icons.favorite),
+                                                            onPressed: () {
+                                                              BlocProvider.of<
+                                                                          ProductBloc>(
+                                                                      context)
+                                                                  .add(LikeProduct(productdetailsState
+                                                                      .productModel
+                                                                      .data[0]
+                                                                      .products
+                                                                      .productId));
+                                                              // BlocProvider.of<ProductBloc>(context).add(getProductId());
+                                                              productdetailsState
+                                                                  .productModel
+                                                                  .data[0]
+                                                                  .favourite = true;
+                                                              setState(() {});
+                                                            }),
                                                     // Text(isLogin.toString()),
                                                   ],
                                                 );
@@ -292,22 +290,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     Container(
                                         height: 40,
                                         width:
-                                        MediaQuery.of(context).size.width,
+                                            MediaQuery.of(context).size.width,
                                         child: Card(
                                             color: Colors.white70,
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Text(
                                                     "Product Code : ",
                                                     style: TextStyle(
                                                         fontSize: 15,
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                   ),
                                                   Text(
                                                     productdetailsState
@@ -317,7 +315,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                         .productCode,
                                                     style: TextStyle(
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         fontSize: 15),
                                                   ),
                                                   IconButton(
@@ -331,7 +329,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             ))),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(
                                           "Brand : ",
@@ -340,39 +338,48 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                               fontSize: 18),
                                         ),
                                         Text(
-                                          productdetailsState.productModel.data[0]
-                                              .products.brandName,
+                                          productdetailsState.productModel
+                                              .data[0].products.brandName,
                                           style: TextStyle(fontSize: 15),
                                         ),
-                                        Container(
-                                          height: 100,
-                                          child: Image.network(
-                                              "https://ecotech.xixotech.net/public/" +
-                                                  productdetailsState
-                                                      .productModel
-                                                      .data[0]
-                                                      .products
-                                                      .brandLogo),
-                                        ),
+                                        //brandlogo isnot valid sometimes
+                                        // Container(
+                                        //   height: 100,
+                                        //   child: Image.network(
+                                        //       "https://ecotech.xixotech.net/public/" +
+                                        //           productdetailsState
+                                        //               .productModel
+                                        //               .data[0]
+                                        //               .products
+                                        //               .brandLogo),
+                                        // ),
                                       ],
                                     ),
-
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     Text(
                                       "Product Price : " +
-                                          productdetailsState.productModel.data[0]
-                                              .products.sellingPrice,
+                                          productdetailsState.productModel
+                                              .data[0].products.sellingPrice,
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(height: 10,),
-
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     Padding(
-                                        padding: EdgeInsets.only(left: 30,right: 30,top: 10,bottom: 10),
+                                        padding: EdgeInsets.only(
+                                            left: 30,
+                                            right: 30,
+                                            top: 10,
+                                            bottom: 10),
                                         child: Html(
                                           data: productdetailsState.productModel
                                               .data[0].products.productDetails,
-                                          defaultTextStyle: TextStyle(fontSize: 14),
+                                          defaultTextStyle:
+                                              TextStyle(fontSize: 14),
                                           onLinkTap: (link) {
                                             launch(link);
                                           },
@@ -380,23 +387,36 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     Text("More Pictures :"),
                                     SizedBox(height: 15),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: <Widget>[
                                         Container(
                                           height: 80,
-                                          child: Image.network("https://ecotech.xixotech.net/public/" +
-                                              productdetailsState.productModel.data[0].products.imageTwo),
+                                          child: Image.network(
+                                              "https://ecotech.xixotech.net/public/" +
+                                                  productdetailsState
+                                                      .productModel
+                                                      .data[0]
+                                                      .products
+                                                      .imageTwo),
                                         ),
-                                        SizedBox(width: 20,),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
                                         Container(
                                           height: 80,
-                                          child: Image.network("https://ecotech.xixotech.net/public/" +
-                                              productdetailsState.productModel.data[0].products.imageThree),
+                                          child: Image.network(
+                                              "https://ecotech.xixotech.net/public/" +
+                                                  productdetailsState
+                                                      .productModel
+                                                      .data[0]
+                                                      .products
+                                                      .imageThree),
                                         ),
                                       ],
                                     ),
                                     SizedBox(
-                                      height:size.height*.6,
+                                      height: size.height * .1,
                                     ),
                                   ],
                                 ),
@@ -407,8 +427,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ],
                       ),
                     );
-                  }
-                  else {
+                  } else {
                     return Container();
                   }
                 },
@@ -595,8 +614,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ],
                               ),
                             );
-                          }
-                          else if (productState is ProductDetailsInitial) {
+                          } else if (productState is ProductDetailsInitial) {
                             return Text("");
                           } else {
                             return Container(
@@ -604,7 +622,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             );
                           }
                         });
-
                   }
                 },
               ))),
