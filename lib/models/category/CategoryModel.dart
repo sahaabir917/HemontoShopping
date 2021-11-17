@@ -29,6 +29,7 @@ class Datum {
     this.id,
     this.categoryName,
     this.status,
+    this.catPhoto,
     this.createdAt,
     this.updatedAt,
     this.isSelected,
@@ -37,6 +38,7 @@ class Datum {
   String id;
   String categoryName;
   String status;
+  String catPhoto;
   dynamic createdAt;
   dynamic updatedAt;
   bool isSelected;
@@ -45,17 +47,19 @@ class Datum {
     id: json["id"],
     categoryName: json["category_name"],
     status: json["status"],
+    catPhoto: json["cat_photo"] == null ? null : json["cat_photo"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
-    isSelected: json["is_selected"] == null ? false : json["is_selected"],
+    isSelected: json["isSelected"] == null ? false : json["isSelected"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "category_name": categoryName,
     "status": status,
+    "cat_photo": catPhoto == null ? null : catPhoto,
     "created_at": createdAt,
     "updated_at": updatedAt,
-    "is_selected": isSelected == null ? false : isSelected,
+    "isSelected": isSelected == null ? false : isSelected,
   };
 }

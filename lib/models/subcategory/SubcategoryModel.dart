@@ -29,21 +29,25 @@ class Subcategory {
     this.subId,
     this.categoryId,
     this.subcategoryName,
+    this.subCatPhoto,
   });
 
   String subId;
   String categoryId;
   String subcategoryName;
+  String subCatPhoto;
 
   factory Subcategory.fromJson(Map<String, dynamic> json) => Subcategory(
     subId: json["sub_id"],
     categoryId: json["category_id"],
     subcategoryName: json["subcategory_name"],
+    subCatPhoto: json["sub_cat_photo"] == null ? null : json["sub_cat_photo"],
   );
 
   Map<String, dynamic> toJson() => {
     "sub_id": subId,
     "category_id": categoryId,
     "subcategory_name": subcategoryName,
+    "sub_cat_photo": subCatPhoto == null ? null : subCatPhoto,
   };
 }

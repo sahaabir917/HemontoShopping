@@ -169,174 +169,182 @@ class _ProductPageState extends State<ProductPage> {
               BlocBuilder<MostPopularBloc, MostPopularState>(
                 bloc: BlocProvider.of<MostPopularBloc>(context),
                 builder: (context, mostpopularState) {
-                  if ((mostpopularState is MostPopularProductOperationSuccess &&
-                      mostpopularState.productModel.data.length > 0)) {
-                    return ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Stack(
-                            children: <Widget>[
-                              Text(
-                                "Most Popular",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25),
-                              ),
-                            ],
+                  if ((mostpopularState is MostPopularProductOperationSuccess
+                      )) {
+                    if(mostpopularState.productModel.data.length > 0){
+                      return ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Stack(
+                              children: <Widget>[
+                                Text(
+                                  "Most Popular",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          height: 230,
-                          padding: EdgeInsets.all(10.0),
-                          child: ListView.separated(
-                            itemCount:
-                                mostpopularState.productModel.data.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  BlocProvider.of<ProductDetailsBloc>(context)
-                                      .add(SetProductIds(mostpopularState
-                                          .productModel
-                                          .data[index]
-                                          .products
-                                          .productId));
-                                },
-                                child: Container(
-                                  width: 170,
-                                  padding: EdgeInsets.only(right: 0),
-                                  child: Card(
-                                    elevation: 4,
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(35.0),
-                                          child: Container(
-                                            child: Image.network(
-                                                "https://ecotech.xixotech.net/public/" +
-                                                    mostpopularState
-                                                        .productModel
-                                                        .data[index]
-                                                        .products
-                                                        .imageOne),
+                          Container(
+                            height: 230,
+                            padding: EdgeInsets.all(10.0),
+                            child: ListView.separated(
+                              itemCount:
+                              mostpopularState.productModel.data.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    BlocProvider.of<ProductDetailsBloc>(context)
+                                        .add(SetProductIds(mostpopularState
+                                        .productModel
+                                        .data[index]
+                                        .products
+                                        .productId));
+                                  },
+                                  child: Container(
+                                    width: 170,
+                                    padding: EdgeInsets.only(right: 0),
+                                    child: Card(
+                                      elevation: 4,
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(35.0),
+                                            child: Container(
+                                              child: Image.network(
+                                                  "https://ecotech.xixotech.net/public/" +
+                                                      mostpopularState
+                                                          .productModel
+                                                          .data[index]
+                                                          .products
+                                                          .imageOne),
+                                            ),
                                           ),
-                                        ),
-                                        Positioned(
-                                            right: -5,
-                                            top: -5,
-                                            child: Container(
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.shopping_cart,
-                                                  size: 22,
+                                          Positioned(
+                                              right: -5,
+                                              top: -5,
+                                              child: Container(
+                                                child: IconButton(
+                                                  icon: Icon(
+                                                    Icons.shopping_cart,
+                                                    size: 22,
+                                                  ),
+                                                  onPressed: () {
+                                                    if (!isLogin) {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                          "You have to login first",
+                                                          toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                          gravity:
+                                                          ToastGravity.CENTER,
+                                                          timeInSecForIos: 1);
+                                                    } else if (isLogin) {
+                                                      showModalBottomSheet(
+                                                          isScrollControlled:
+                                                          true,
+                                                          backgroundColor:
+                                                          Colors.transparent,
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              CustomCartBottomSheet(
+                                                                  mostpopularState
+                                                                      .productModel
+                                                                      .data[index]
+                                                                      .products
+                                                                      .productId));
+                                                    }
+                                                  },
                                                 ),
-                                                onPressed: () {
-                                                  if (!isLogin) {
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            "You have to login first",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        timeInSecForIos: 1);
-                                                  } else if (isLogin) {
-                                                    showModalBottomSheet(
-                                                        isScrollControlled:
-                                                            true,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        context: context,
-                                                        builder: (context) =>
-                                                            CustomCartBottomSheet(
-                                                                mostpopularState
-                                                                    .productModel
-                                                                    .data[index]
-                                                                    .products
-                                                                    .productId));
-                                                  }
-                                                },
-                                              ),
-                                            )),
-                                        Positioned(
-                                            bottom: 35,
-                                            child: Container(
-                                              width: 170,
-                                              child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 0,
-                                                      left: 2,
-                                                      right: 2),
-                                                  child: Text(
-                                                    mostpopularState
-                                                        .productModel
-                                                        .data[index]
-                                                        .products
-                                                        .productName,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )),
-                                            )),
-                                        Positioned(
-                                            bottom: 6,
-                                            child: Container(
-                                              width: 170,
-                                              height: 25,
-                                              child: Padding(
-                                                  padding:
-                                                      EdgeInsets.only(top: 5),
-                                                  child: Text(
-                                                    "\$" +
-                                                        mostpopularState
-                                                            .productModel
-                                                            .data[index]
-                                                            .products
-                                                            .sellingPrice,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 12),
-                                                  )),
-                                            )),
-                                      ],
+                                              )),
+                                          Positioned(
+                                              bottom: 35,
+                                              child: Container(
+                                                width: 170,
+                                                child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 0,
+                                                        left: 2,
+                                                        right: 2),
+                                                    child: Text(
+                                                      mostpopularState
+                                                          .productModel
+                                                          .data[index]
+                                                          .products
+                                                          .productName,
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                          FontWeight.bold),
+                                                    )),
+                                              )),
+                                          Positioned(
+                                              bottom: 6,
+                                              child: Container(
+                                                width: 170,
+                                                height: 25,
+                                                child: Padding(
+                                                    padding:
+                                                    EdgeInsets.only(top: 5),
+                                                    child: Text(
+                                                      "\$" +
+                                                          mostpopularState
+                                                              .productModel
+                                                              .data[index]
+                                                              .products
+                                                              .sellingPrice,
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 12),
+                                                    )),
+                                              )),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return index % 4 == 0
-                                  ? Container(
-                                      width: 200,
-                                      margin: EdgeInsets.all(5),
-                                      height: 240,
-                                      color: Colors.green,
-                                      child: NativeAdmob(
-                                        adUnitID: NativeAd.testAdUnitId,
-                                        controller: _nativeAdController,
-                                        type: NativeAdmobType.full,
-                                        loading: Center(
-                                            child: CircularProgressIndicator()),
-                                        error: Text('failed to load'),
-                                      ))
-                                  : Container();
-                            },
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return index % 4 == 0
+                                    ? Container(
+                                    width: 200,
+                                    margin: EdgeInsets.all(5),
+                                    height: 240,
+                                    color: Colors.green,
+                                    child: NativeAdmob(
+                                      adUnitID: NativeAd.testAdUnitId,
+                                      controller: _nativeAdController,
+                                      type: NativeAdmobType.full,
+                                      loading: Center(
+                                          child: CircularProgressIndicator()),
+                                      error: Text('failed to load'),
+                                    ))
+                                    : Container();
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    );
+                        ],
+                      );
+
+                    }
+                    else{
+                      return Container(
+                        child: Text("Coming soon"),
+                      );
+                    }
                   } else if (mostpopularState is MostPopularProductLoading) {
                     return Container(
                       child: CircularProgressIndicator(),
