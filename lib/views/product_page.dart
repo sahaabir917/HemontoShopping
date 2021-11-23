@@ -16,7 +16,8 @@ import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
 import 'package:hemontoshoppin/blocs/productdetailsbloc/product_details_bloc.dart';
 import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'drawer/main_drawer.dart';
 
 class ProductPage extends StatefulWidget {
@@ -1111,9 +1112,60 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+
+
   @override
   void initState() {
     checkLoginProduct();
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+      if (message != null) {
+        Navigator.pushNamed(context, "all_notification");
+      }});
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        // flutterLocalNotificationsPlugin.show(
+        //     notification.hashCode,
+        //     notification.title,
+        //     notification.body,
+        //     NotificationDetails(
+        //       android: AndroidNotificationDetails(
+        //         channel.id,
+        //         channel.name,
+        //         channel.description,
+        //         color: Colors.blue,
+        //         playSound: true,
+        //         icon: '@mipmap/ic_launcher',
+        //       ),
+        //     ));
+        Navigator.pushNamed(context, "/all_notification");
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        // showDialog(
+        //     context: context,
+        //     builder: (_) {
+        //       return AlertDialog(
+        //         title: Text(notification.title),
+        //         content: SingleChildScrollView(
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [Text(notification.body)],
+        //           ),
+        //         ),
+        //       );
+        //     });
+        Navigator.pushNamed(context, "/all_notification");
+      }
+    });
   }
 
   checkLoginStatus(BuildContext context, int index) async {
