@@ -13,9 +13,12 @@ part 'product_details_state.dart';
 
 class ProductDetailsBloc extends Bloc<ProductDetailsEvent, ProductDetailsState> {
   String _singleProductId;
+  String _singleProductCatId;
+  String _singleProductSubCatId;
   var token;
   var userId;
   ProductModel _singleProductModel;
+  ProductModel _relatedProducts;
   ApiService apiservices = ApiService();
   ApiService withLoginProductApiService = ApiService();
   @override
@@ -26,17 +29,20 @@ class ProductDetailsBloc extends Bloc<ProductDetailsEvent, ProductDetailsState> 
     if(event is ProductDetailsInitial){}
     else if(event is SetProductIds){
       _singleProductId = event.productId;
+      _singleProductCatId = event.categoryId;
+      _singleProductSubCatId =event.subCategoryId;
       yield setSingleProductIdsSucess();
     }
     else if (event is getProductIds) {
-      yield GetSingleProductIds(_singleProductId);
+      yield GetSingleProductIds(_singleProductId,_singleProductCatId,_singleProductSubCatId);
     }
     else if (event is LoadingSingleProducts) {
       yield ProductDetailsLoading();
       userId = await getUserId();
       _singleProductModel =
       await apiservices.getProductDetails(event.productId, userId);
-      yield LoadedSingleProducts(_singleProductModel);
+      _relatedProducts = await apiservices.getRelatedProducts(event.productCatId,event.productSubCatId);
+      yield LoadedSingleProducts(_singleProductModel,_relatedProducts);
     }
 
 

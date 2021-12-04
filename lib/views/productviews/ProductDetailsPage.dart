@@ -151,43 +151,47 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     return Container(
                       child: Text(productdetailsState.toString()),
                     );
-                  } else if (productdetailsState is GetSingleProductIds) {
+                  }
+                  else if (productdetailsState is GetSingleProductIds) {
                     BlocProvider.of<ProductDetailsBloc>(context).add(
-                        LoadingSingleProducts(productdetailsState.productId));
+                        LoadingSingleProducts(productdetailsState.productId,productdetailsState.productCatId,productdetailsState.productSubCatId));
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (productdetailsState is ProductDetailsLoading) {
+                  }
+                  else if (productdetailsState is ProductDetailsLoading) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (productdetailsState is LoadedSingleProducts) {
+                  }
+                  else if (productdetailsState is LoadedSingleProducts) {
                     return Padding(
-                      padding: EdgeInsets.all(2),
+                      padding: EdgeInsets.all(0),
                       child: Stack(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.all(0),
+                            padding: EdgeInsets.all(2),
                             child: Container(
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.of(context).size.width*4,
+                              height: MediaQuery.of(context).size.height*.3,
                               child: Image.network(
                                 "https://ecotech.xixotech.net/public/" +
                                     productdetailsState
                                         .productModel.data[0].products.imageOne,
-                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           Positioned(
-                            bottom: -10,
+                            bottom: -30,
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.vertical(
                                       bottom: Radius.zero,
                                       top: Radius.circular(40)),
-                                  color: Colors.white),
+                                  ),
                               child: SingleChildScrollView(
+                                physics: ScrollPhysics(),  //suggested and related products
                                 child: Column(
                                   children: <Widget>[
                                     SizedBox(
@@ -415,9 +419,51 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         ),
                                       ],
                                     ),
+                                    Text("related products"),
+                                    GridView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 1.5,
+                                          crossAxisSpacing: 0,
+                                          mainAxisSpacing: 0,
+                                        ),
+                                        itemCount: productdetailsState.relatedProducts.data.length,
+                                        itemBuilder: (ctx, i) => GridTile(
+                                          child: InkWell(
+                                            onTap: () {
+
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: Card(
+                                                elevation: 5,
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    productdetailsState.relatedProducts.data[i].products.productName,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                        FontWeight.normal),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )),
                                     SizedBox(
                                       height: size.height * .1,
                                     ),
+
+                                    //add the suggested products
+                                    // Text("Suggested products"),
+
+
+
                                   ],
                                 ),
                               ),

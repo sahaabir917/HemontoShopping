@@ -10,8 +10,10 @@ class setSingleProductIdsSucess extends ProductDetailsState{}
 class GetSingleProductIds extends ProductDetailsState{
 
   final String productId;
+  final String productCatId;
+  final String productSubCatId;
 
-  GetSingleProductIds(this.productId);
+  GetSingleProductIds(this.productId,this.productCatId,this.productSubCatId);
 
 }
 
@@ -21,7 +23,8 @@ class ProductDetailsLoading extends ProductDetailsState{
 
 class LoadedSingleProducts extends ProductDetailsState{
   final ProductModel productModel;
+  final ProductModel relatedProducts;
 
-  LoadedSingleProducts(this.productModel);
+  LoadedSingleProducts(this.productModel,this.relatedProducts);
 
 }

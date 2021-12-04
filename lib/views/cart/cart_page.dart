@@ -377,6 +377,8 @@ class _CartPageState extends State<CartPage> {
       SSLCTransactionInfoModel model = result;
       BlocProvider.of<CartBloc>(context).add(CheckOut());
       BlocProvider.of<CartBloc>(context).add(FetchUserCart());
+      print("transaction Id " + model.tranId);
+      print("bank id :"  + model.bankTranId);
       print("result ${result.toString()}");
     }
   }

@@ -63,7 +63,12 @@ class Products {
     this.createdAt,
     this.updatedAt,
     this.categoryName,
+    this.catPhoto,
     this.subcategoryName,
+    this.subCatPhoto,
+    this.spUserId,
+    this.spCategoryId,
+    this.spSubcatId,
     this.brandName,
     this.brandLogo,
     this.productId,
@@ -93,7 +98,12 @@ class Products {
   dynamic createdAt;
   dynamic updatedAt;
   String categoryName;
+  String catPhoto;
   String subcategoryName;
+  String subCatPhoto;
+  String spUserId;
+  String spCategoryId;
+  String spSubcatId;
   String brandName;
   String brandLogo;
   String productId;
@@ -123,7 +133,12 @@ class Products {
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     categoryName: json["category_name"],
+    catPhoto: json["cat_photo"],
     subcategoryName: json["subcategory_name"],
+    subCatPhoto: json["sub_cat_photo"],
+    spUserId: json["sp_user_id"],
+    spCategoryId: json["sp_category_id"],
+    spSubcatId: json["sp_subcat_id"],
     brandName: json["brand_name"],
     brandLogo: json["brand_logo"],
     productId: json["product_id"],
@@ -154,7 +169,12 @@ class Products {
     "created_at": createdAt,
     "updated_at": updatedAt,
     "category_name": categoryName,
+    "cat_photo": catPhoto,
     "subcategory_name": subcategoryName,
+    "sub_cat_photo": subCatPhoto,
+    "sp_user_id": spUserId,
+    "sp_category_id": spCategoryId,
+    "sp_subcat_id": spSubcatId,
     "brand_name": brandName,
     "brand_logo": brandLogo,
     "product_id": productId,

@@ -41,7 +41,7 @@ class ApiService {
     }
   }
 
-  Future<ProductModel> getPackageProduct() async{
+  Future<ProductModel> getPackageProduct() async {
     const _baseUrl = "ecotech.xixotech.net";
     const String _path = "/public/api/packageproduct";
     Uri uri = Uri.http(_baseUrl, _path);
@@ -53,7 +53,7 @@ class ApiService {
     }
   }
 
-  Future<ProductModel> getDiscountedProduct() async{
+  Future<ProductModel> getDiscountedProduct() async {
     const _baseUrl = "ecotech.xixotech.net";
     const String _path = "/public/api/discountedproduct";
     Uri uri = Uri.http(_baseUrl, _path);
@@ -76,6 +76,21 @@ class ApiService {
     if (response.statusCode == 200) {
       ProductModel productModel = productModelFromJson(response.body);
       print(response.body);
+      return productModel;
+    }
+  }
+
+  Future<ProductModel> getRelatedProducts(
+      String productCatId, String productSubCatId) async {
+    var body = {"category_id": productCatId, "subcategory_id": productSubCatId};
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/relatedproducts'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      ProductModel productModel = productModelFromJson(response.body);
+      print("related products : " + response.body);
       return productModel;
     }
   }
@@ -223,21 +238,24 @@ class ApiService {
       UserCartModel userCartModel = userCartModelFromJson(response.body);
       print(jsonString);
       return userCartModel;
-    }
-    else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       var jsonString = {"status": false, "message": "session out"};
       FailedModel failedModel = FailedModel.fromJson(jsonString);
       print(response.statusCode);
       preferenceHelper.LogoutData();
       return failedModel;
-    }
-    else {
+    } else {
       print(response.statusCode);
     }
   }
 
-  Future<dynamic> addToCart(token, userId, productId, productQuantity) async{
-    var body = {"user_id": userId,"product_id": productId,"cart_quantity": productQuantity,"isOrdered": "no"};
+  Future<dynamic> addToCart(token, userId, productId, productQuantity) async {
+    var body = {
+      "user_id": userId,
+      "product_id": productId,
+      "cart_quantity": productQuantity,
+      "isOrdered": "no"
+    };
 
     var response = await client.post(
       Uri.parse('https://ecotech.xixotech.net/public/api/carts'),
@@ -252,21 +270,24 @@ class ApiService {
       UserCartModel userCartModel = userCartModelFromJson(response.body);
       print(jsonString);
       return userCartModel;
-    }
-    else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       var jsonString = {"status": false, "message": "session out"};
       FailedModel failedModel = FailedModel.fromJson(jsonString);
       print(response.statusCode);
       preferenceHelper.LogoutData();
       return failedModel;
-    }
-    else {
+    } else {
       print(response.statusCode);
     }
   }
 
-  Future<dynamic> updateCartQuantity(token, userId,cartId,incrementOrDecrement) async{
-    var body = {"is_increment": incrementOrDecrement,"cart_id": cartId,"user_id" : userId};
+  Future<dynamic> updateCartQuantity(
+      token, userId, cartId, incrementOrDecrement) async {
+    var body = {
+      "is_increment": incrementOrDecrement,
+      "cart_id": cartId,
+      "user_id": userId
+    };
 
     var response = await client.post(
       Uri.parse('https://ecotech.xixotech.net/public/api/updateCart'),
@@ -281,21 +302,18 @@ class ApiService {
       UserCartModel userCartModel = userCartModelFromJson(response.body);
       print(jsonString);
       return userCartModel;
-    }
-    else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       var jsonString = {"status": false, "message": "session out"};
       FailedModel failedModel = FailedModel.fromJson(jsonString);
       print(response.statusCode);
       preferenceHelper.LogoutData();
       return failedModel;
-    }
-    else {
+    } else {
       print(response.statusCode);
     }
   }
 
-
-  Future<dynamic> CheckOut(userId, token) async{
+  Future<dynamic> CheckOut(userId, token) async {
     var body = {"user_id": userId};
 
     var response = await client.post(
@@ -311,15 +329,13 @@ class ApiService {
       var jsonString = response.body;
       print(jsonString);
       return jsonString;
-    }
-    else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       var jsonString = {"status": false, "message": "session out"};
       FailedModel failedModel = FailedModel.fromJson(jsonString);
       print(response.statusCode);
       preferenceHelper.LogoutData();
       return failedModel;
-    }
-    else {
+    } else {
       print(response.statusCode);
     }
   }

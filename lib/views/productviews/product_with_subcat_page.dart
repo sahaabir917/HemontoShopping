@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
-import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
 import 'package:hemontoshoppin/blocs/productdetailsbloc/product_details_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategory_bloc/subcategory_bloc.dart';
 import 'package:hemontoshoppin/blocs/subcategorywiseproductbloc/subcategorywiseproduct_bloc.dart';
@@ -199,7 +198,17 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                         .productModel
                                                         .data[index]
                                                         .products
-                                                        .productId));
+                                                        .productId,
+                                                    subcatbyproductstate
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .categoryId,
+                                                    subcatbyproductstate
+                                                        .productModel
+                                                        .data[index]
+                                                        .products
+                                                        .subcategoryId));
                                           },
                                           child: Container(
                                             width: 170,
@@ -241,8 +250,11 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                     Container(
                                                                   child:
                                                                       IconButton(
-                                                                    icon: Icon(Icons
-                                                                        .shopping_cart,size: 22,),
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .shopping_cart,
+                                                                      size: 22,
+                                                                    ),
                                                                     onPressed:
                                                                         () {
                                                                       showModalBottomSheet(
@@ -275,8 +287,11 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                     Container(
                                                                   child:
                                                                       IconButton(
-                                                                    icon: Icon(Icons
-                                                                        .shopping_cart,size: 22,),
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .shopping_cart,
+                                                                      size: 22,
+                                                                    ),
                                                                     onPressed:
                                                                         () {
                                                                       Navigator.pushNamed(
@@ -295,7 +310,9 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                         child: Padding(
                                                             padding:
                                                                 EdgeInsets.only(
-                                                                    top: 0,left: 2,right: 2),
+                                                                    top: 0,
+                                                                    left: 2,
+                                                                    right: 2),
                                                             child: Text(
                                                               subcatbyproductstate
                                                                   .productModel
@@ -303,7 +320,9 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                   .products
                                                                   .productName,
                                                               maxLines: 2,
-                                                              overflow: TextOverflow.ellipsis,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
@@ -338,7 +357,8 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                                       .center,
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .black,fontSize: 12),
+                                                                      .black,
+                                                                  fontSize: 12),
                                                             )),
                                                       )),
                                                 ],
