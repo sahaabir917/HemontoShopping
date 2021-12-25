@@ -27,9 +27,9 @@ class _CustomCartBottomSheetState extends State<CustomCartBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.3,
-      minChildSize: 0.3,
-      maxChildSize: 0.6,
+      initialChildSize: .8,
+      minChildSize: 0.4,
+      maxChildSize: .8,
       builder: (_, controller) => Container(
         decoration: BoxDecoration(
             color: Colors.white,
@@ -55,35 +55,7 @@ class _CustomCartBottomSheetState extends State<CustomCartBottomSheet> {
               ),
             ],
           ),
-          BlocBuilder<CartBloc, CartState>(
-              bloc: BlocProvider.of<CartBloc>(context),
-              builder: (context, cartState) {
-                if(cartState is CartInitial){
-                  return Center(child: CircularProgressIndicator());
-                }
-                else if(cartState is UserCartOperationSucess){
-                  return Container(
-                    child: Text(""),
-                  );
-                }
-                else if(cartState is AfterAddToCart){
-                   Fluttertoast.showToast(
-                       msg: 'Added successfully',
-                       toastLength: Toast.LENGTH_SHORT,
-                       gravity: ToastGravity.BOTTOM,
-                       backgroundColor: Colors.lightBlueAccent,
-                       textColor: Colors.black);
-                }
-                else if(cartState is fetchFailedCartProduct){
-                  Navigator.pushNamed(context, "/login_page");
-                  return Container();
-                }
-                else {
-                  Container(
-                      child : Center(child: CircularProgressIndicator())
-                  );
-                }
-              }),
+
           Padding(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -110,8 +82,10 @@ class _CustomCartBottomSheetState extends State<CustomCartBottomSheet> {
                     onPressed: () {
                       var quantity = cartQuantityController.text;
                       // reviewController.createReview(comment,tourController.tourModel[index].id,5);
+                   
                       BlocProvider.of<CartBloc>(context)
                           .add(AddToCart(productId, quantity));
+                      waitSecond();
                     },
                     color: Colors.deepOrangeAccent,
                     shape: RoundedRectangleBorder(
@@ -126,9 +100,43 @@ class _CustomCartBottomSheetState extends State<CustomCartBottomSheet> {
               ],
             ),
           ),
+          BlocBuilder<CartBloc, CartState>(
+              bloc: BlocProvider.of<CartBloc>(context),
+              builder: (context, cartState) {
+                if(cartState is CartInitial){
+                  return Center(child: CircularProgressIndicator());
+                }
+                else if(cartState is UserCartOperationSucess){
+                  return Container(
+                    child: Text(""),
+                  );
+                }
+                else if(cartState is AfterAddToCart){
+                  Fluttertoast.showToast(
+                      msg: 'Added successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.lightBlueAccent,
+                      textColor: Colors.black);
+                }
+                else if(cartState is fetchFailedCartProduct){
+                  Navigator.pushNamed(context, "/login_page");
+                  return Container();
+                }
+                else {
+                  Container(
+                      child : Center(child: CircularProgressIndicator())
+                  );
+                }
+              }),
 
         ]),
       ),
     );
+  }
+
+  void waitSecond() async{
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.pop(context);
   }
 }

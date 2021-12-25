@@ -42,7 +42,7 @@ class _CategoryPageState extends State<CategoryPage> {
         children: [
           SingleChildScrollView(
             child: Container(
-              width: 100,
+              width: MediaQuery.of(context).size.width*.29,
               color: Colors.white,
               child: BlocBuilder<CategoryBloc, CategoryState>(
                   bloc: BlocProvider.of<CategoryBloc>(context),
@@ -71,7 +71,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               child: Padding(
                                 padding: EdgeInsets.only(top: 3, bottom: 3,left: 5),
                                 child: Container(
-                                  width: 190,
+                                  width: MediaQuery.of(context).size.width*.1,
                                   child: Row(
                                     children: <Widget>[
                                       AnimatedContainer(
@@ -79,8 +79,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                           height: (categoryState.categoryModel
                                                       .data[index].isSelected ==
                                                   true)
-                                              ? 110
-                                              : 110,
+                                              ? MediaQuery.of(context).size.height*.15
+                                              : MediaQuery.of(context).size.height*.15,
                                           color: (categoryState.categoryModel
                                                       .data[index].isSelected ==
                                                   true)
@@ -94,7 +94,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   true)
                                               ? Colors.tealAccent
                                               : Colors.black12,
-                                          height: 110,
+                                          height: MediaQuery.of(context).size.height*.15,
                                           child: Column(
                                             children: [
                                               Container(

@@ -31,5 +31,22 @@ class CheckingLoginUtil{
     }
     return null;
   }
+
+  Future<bool> isLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool isLogin;
+    if (sharedPreferences.getBool("isLogin") != null) {
+      if (sharedPreferences.getBool("isLogin")) {
+        isLogin = true;
+      }
+      else{
+        isLogin = false;
+      }
+    }
+    else{
+      isLogin = false;
+    }
+    return isLogin;
+  }
 }
 

@@ -39,8 +39,10 @@ class ProductDetailsBloc extends Bloc<ProductDetailsEvent, ProductDetailsState> 
     else if (event is LoadingSingleProducts) {
       yield ProductDetailsLoading();
       userId = await getUserId();
+      print("my user Id $userId");
       _singleProductModel =
       await apiservices.getProductDetails(event.productId, userId);
+      await apiservices.storeSuggestedProduct(userId,event.productCatId,event.productSubCatId);
       _relatedProducts = await apiservices.getRelatedProducts(event.productCatId,event.productSubCatId);
       yield LoadedSingleProducts(_singleProductModel,_relatedProducts);
     }

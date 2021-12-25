@@ -146,113 +146,120 @@ class _CartPageState extends State<CartPage> {
                 builder: (context, cartState) {
                   if ((cartState is UserCartOperationSucess)) {
                     if (cartState.userCartModel.data.length > 0) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        child: Container(
-                          child: ListView(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            children: [
-                              Container(
-                                child: ListView.builder(
-                                    itemCount:
-                                        cartState.userCartModel.data.length,
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 85,
-                                            child: Image.network(
-                                                "https://ecotech.xixotech.net/public/" +
-                                                    cartState
-                                                        .userCartModel
-                                                        .data[index]
-                                                        .products
-                                                        .imageOne),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10,bottom: 80),
+                            child: Container(
+                              child: ListView(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                children: [
+                                  Container(
+                                    child: ListView.builder(
+                                        itemCount:
+                                            cartState.userCartModel.data.length,
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          return Card(
+                                              child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                child: Text(
-                                                  cartState
-                                                      .userCartModel
-                                                      .data[index]
-                                                      .products
-                                                      .productName,
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                padding: EdgeInsets.only(left: 12),
+                                                height: 85,
+                                                child: Image.network(
+                                                    "https://ecotech.xixotech.net/public/" +
+                                                        cartState
+                                                            .userCartModel
+                                                            .data[index]
+                                                            .products
+                                                            .imageOne),
                                               ),
                                               SizedBox(
-                                                height: 10,
+                                                width: 10,
                                               ),
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 12),
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Text(cartState
-                                                        .userCartModel
-                                                        .data[index]
-                                                        .products
-                                                        .sellingPrice),
-                                                    Text("×"),
-                                                    Text(cartState.userCartModel
-                                                        .data[index].cartQuantity
-                                                        .toString()),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              Row(
-                                                children: <Widget>[
-                                                  IconButton(
-                                                      icon: const Icon(
-                                                          Icons.add_box),
-                                                      onPressed: () {
-                                                        BlocProvider.of<CartBloc>(context).add(IncrementQuantity(cartState.userCartModel.data[index].products.cartId,"1"));
-                                                      }),
-                                                  SizedBox(width: 10,),
-                                                  Text(cartState
-                                                      .userCartModel
-                                                      .data[index]
-                                                      .products
-                                                      .cartQuantity),
-                                                  SizedBox(width: 10,),
-                                                  IconButton(
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .indeterminate_check_box,
-                                                      ),
-                                                      onPressed: () {
-                                                        BlocProvider.of<CartBloc>(context).add(IncrementQuantity(cartState.userCartModel.data[index].products.cartId,"0"));
-                                                      }),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    child: Text(
+                                                      cartState
+                                                          .userCartModel
+                                                          .data[index]
+                                                          .products
+                                                          .productName,
+                                                      style: TextStyle(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    padding: EdgeInsets.only(left: 12),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(left: 12),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Text(cartState
+                                                            .userCartModel
+                                                            .data[index]
+                                                            .products
+                                                            .sellingPrice),
+                                                        Text("×"),
+                                                        Text(cartState.userCartModel
+                                                            .data[index].cartQuantity
+                                                            .toString()),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 5,),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      IconButton(
+                                                          icon: const Icon(
+                                                              Icons.add_box),
+                                                          onPressed: () {
+                                                            BlocProvider.of<CartBloc>(context).add(IncrementQuantity(cartState.userCartModel.data[index].products.cartId,"1"));
+                                                          }),
+                                                      SizedBox(width: 10,),
+                                                      Text(cartState
+                                                          .userCartModel
+                                                          .data[index]
+                                                          .products
+                                                          .cartQuantity),
+                                                      SizedBox(width: 10,),
+                                                      IconButton(
+                                                          icon: const Icon(
+                                                            Icons
+                                                                .indeterminate_check_box,
+                                                          ),
+                                                          onPressed: () {
+                                                            BlocProvider.of<CartBloc>(context).add(IncrementQuantity(cartState.userCartModel.data[index].products.cartId,"0"));
+                                                          }),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 2,),
                                                 ],
-                                              )
+                                              ),
                                             ],
-                                          ),
-                                        ],
-                                      ));
-                                    }),
-                              )
-                            ],
+                                          ));
+                                        }),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       );
                     } else {
                       return Container(
@@ -275,7 +282,6 @@ class _CartPageState extends State<CartPage> {
                   } else if (cartState is fetchFailedCartProduct) {
                     return Container();
                   }
-
                   else {
                     return Container(
                       child: Text(cartState.toString()),

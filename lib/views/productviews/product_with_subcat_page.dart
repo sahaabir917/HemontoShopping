@@ -182,7 +182,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                         .productModel.data.length >
                                     0
                                 ? Container(
-                                    height: 230,
+                                    height: MediaQuery.of(context).size.height*.29,
                                     padding: EdgeInsets.all(10.0),
                                     child: ListView.separated(
                                       itemCount: subcatbyproductstate
@@ -306,7 +306,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                   Positioned(
                                                       bottom: 35,
                                                       child: Container(
-                                                        width: 170,
+                                                        width: MediaQuery.of(context).size.width*.42,
                                                         child: Padding(
                                                             padding:
                                                                 EdgeInsets.only(
@@ -338,7 +338,7 @@ class _ProductWithSubCategoryState extends State<ProductWithSubCategory> {
                                                   Positioned(
                                                       bottom: 6,
                                                       child: Container(
-                                                        width: 170,
+                                                        width: MediaQuery.of(context).size.width*.42,
                                                         height: 25,
                                                         child: Padding(
                                                             padding:

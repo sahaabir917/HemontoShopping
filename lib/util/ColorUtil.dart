@@ -27,4 +27,23 @@ class ColorUtil {
       return finalColor;
     }
   }
+
+
+
+  dynamic getColorofDeals(int index) {
+    var returnedColor = index % 3;
+    int finalColor;
+    if (returnedColor == 0) {
+      var finalColor = Color(hexColor("#d24141"));
+      return finalColor;
+    } else if (returnedColor == 1) {
+      var finalColor = Color(hexColor("#00a99d"));
+      return finalColor;
+    }
+    else if(returnedColor == 2){
+      var finalColor = Color(hexColor("#44bac4"));
+      return finalColor;
+    }
+  }
+
 }

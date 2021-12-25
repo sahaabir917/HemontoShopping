@@ -14,6 +14,7 @@ class PreferenceHelper {
   void setUserData(LoginModel userData) async {
     pref = await SharedPreferences.getInstance();
     pref.setString("userData", jsonEncode(userData));
+    pref.commit();
   }
 
   void setIsLoggedIn(bool isLogin) async {

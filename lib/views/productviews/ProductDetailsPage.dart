@@ -10,7 +10,11 @@ import 'package:hemontoshoppin/blocs/loginbloc/login_bloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'package:hemontoshoppin/blocs/productbloc/product_bloc.dart';
 import 'package:hemontoshoppin/blocs/productdetailsbloc/product_details_bloc.dart';
+import 'package:hemontoshoppin/blocs/suggestedproducts/suggested_bloc.dart';
 import 'package:hemontoshoppin/bottomsheet/CustomCartBottomSheet.dart';
+import 'package:hemontoshoppin/util/ColorUtil.dart';
+import 'package:hemontoshoppin/util/UserInfoUtils.dart';
+import 'package:hemontoshoppin/util/checkingLoginutill.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,6 +32,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final _nativeAdController = NativeAdmobController();
   bool isLogin = true;
   static PreferenceHelper preferenceHelper = new PreferenceHelper();
+  ColorUtil colorUtil = ColorUtil();
+  UserInfoUtils userInfoUtils = UserInfoUtils();
+  CheckingLoginUtil checkingLoginUtil = CheckingLoginUtil();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +42,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     return WillPopScope(
       onWillPop: () async {
         // checkLoginProduct();
+        BlocProvider.of<SuggestedBloc>(context).add(FetchSugggestedProducts());
         return true;
       },
       child: Scaffold(
@@ -151,20 +159,20 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     return Container(
                       child: Text(productdetailsState.toString()),
                     );
-                  }
-                  else if (productdetailsState is GetSingleProductIds) {
+                  } else if (productdetailsState is GetSingleProductIds) {
                     BlocProvider.of<ProductDetailsBloc>(context).add(
-                        LoadingSingleProducts(productdetailsState.productId,productdetailsState.productCatId,productdetailsState.productSubCatId));
+                        LoadingSingleProducts(
+                            productdetailsState.productId,
+                            productdetailsState.productCatId,
+                            productdetailsState.productSubCatId));
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
-                  else if (productdetailsState is ProductDetailsLoading) {
+                  } else if (productdetailsState is ProductDetailsLoading) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
-                  else if (productdetailsState is LoadedSingleProducts) {
+                  } else if (productdetailsState is LoadedSingleProducts) {
                     return Padding(
                       padding: EdgeInsets.all(0),
                       child: Stack(
@@ -172,8 +180,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           Padding(
                             padding: EdgeInsets.all(2),
                             child: Container(
-                              width: MediaQuery.of(context).size.width*4,
-                              height: MediaQuery.of(context).size.height*.3,
+                              width: MediaQuery.of(context).size.width * 4,
+                              height: MediaQuery.of(context).size.height * .3,
                               child: Image.network(
                                 "https://ecotech.xixotech.net/public/" +
                                     productdetailsState
@@ -186,12 +194,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
-                                      bottom: Radius.zero,
-                                      top: Radius.circular(40)),
-                                  ),
+                                borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.zero,
+                                    top: Radius.circular(40)),
+                              ),
                               child: SingleChildScrollView(
-                                physics: ScrollPhysics(),  //suggested and related products
+                                physics: ScrollPhysics(),
+                                //suggested and related products
                                 child: Column(
                                   children: <Widget>[
                                     SizedBox(
@@ -331,6 +340,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 ],
                                               ),
                                             ))),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
@@ -344,7 +356,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         Text(
                                           productdetailsState.productModel
                                               .data[0].products.brandName,
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                            backgroundColor: Colors.black,
+                                          ),
+                                        ),
+                                        Image.network(
+                                          "https://ecotech.xixotech.net/public/" +
+                                              productdetailsState.productModel
+                                                  .data[0].products.brandLogo,
+                                          height: 70,
+                                          width: 70,
                                         ),
                                         //brandlogo isnot valid sometimes
                                         // Container(
@@ -388,7 +411,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             launch(link);
                                           },
                                         )),
-                                    Text("More Pictures :"),
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                    Text(
+                                      "More Pictures :",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                          fontSize: 18),
+                                    ),
                                     SizedBox(height: 15),
                                     Row(
                                       mainAxisAlignment:
@@ -419,51 +451,126 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         ),
                                       ],
                                     ),
-                                    Text("related products"),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      "related products",
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.start,
+                                    ),
                                     GridView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
-                                          childAspectRatio: 1.5,
+                                          childAspectRatio: 1.6,
                                           crossAxisSpacing: 0,
                                           mainAxisSpacing: 0,
                                         ),
-                                        itemCount: productdetailsState.relatedProducts.data.length,
+                                        itemCount: productdetailsState
+                                            .relatedProducts.data.length,
                                         itemBuilder: (ctx, i) => GridTile(
-                                          child: InkWell(
-                                            onTap: () {
+                                              child: InkWell(
+                                                onTap: () {},
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20,
+                                                      right: 20,
+                                                      bottom: 20),
+                                                  child: Container(
+                                                    color: colorUtil
+                                                        .getColorofDeals(i),
+                                                    // child: Align(
+                                                    //   alignment:
+                                                    //       Alignment.center,
+                                                    //   child: Text(
+                                                    //     productdetailsState
+                                                    //         .relatedProducts
+                                                    //         .data[i]
+                                                    //         .products
+                                                    //         .productName,
+                                                    //     textAlign:
+                                                    //         TextAlign.center,
+                                                    //     style: TextStyle(
+                                                    //         color: Colors.black,
+                                                    //         fontWeight:
+                                                    //             FontWeight
+                                                    //                 .normal),
+                                                    //   ),
+                                                    // ),
 
-                                            },
-                                            child: Padding(
-                                              padding: EdgeInsets.all(8),
-                                              child: Card(
-                                                elevation: 5,
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    productdetailsState.relatedProducts.data[i].products.productName,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                        FontWeight.normal),
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        Container(
+                                                          color: Colors.white,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 4,
+                                                                    bottom: 4),
+                                                            child: Image.network(
+                                                                "https://ecotech.xixotech.net/public/" +
+                                                                    productdetailsState
+                                                                        .relatedProducts
+                                                                        .data[i]
+                                                                        .products
+                                                                        .imageOne,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    .08,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            productdetailsState
+                                                                .relatedProducts
+                                                                .data[i]
+                                                                .products
+                                                                .productName,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        )),
+                                            )),
                                     SizedBox(
-                                      height: size.height * .1,
+                                      height: size.height * .15,
                                     ),
 
                                     //add the suggested products
                                     // Text("Suggested products"),
-
-
-
                                   ],
                                 ),
                               ),
@@ -569,7 +676,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                       }
                                                     }),
                                                 SizedBox(
-                                                  width: 10,
+                                                  width: 2,
                                                 ),
                                                 Text("Add to favourite",
                                                     style: TextStyle(
@@ -677,6 +784,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     BlocProvider.of<ProductDetailsBloc>(context).add(getProductIds());
+    checkLogin();
+  }
+
+  void checkLogin() async {
+    isLogin = await checkingLoginUtil.isLogin();
+    print("isLogin: $isLogin");
   }
 
   void checkLoginProduct() async {

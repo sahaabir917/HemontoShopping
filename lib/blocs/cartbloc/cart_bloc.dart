@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hemontoshoppin/models/FailedModel.dart';
 import 'package:hemontoshoppin/models/usercart/UserCartModel.dart';
 import 'package:hemontoshoppin/services/Services.dart';
+import 'package:hemontoshoppin/util/UserInfoUtils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'cart_event.dart';
@@ -21,6 +22,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ApiService apiservices = ApiService();
   UserCartModel _userCartModel;
   FailedModel _failedModel;
+  UserInfoUtils userInfoUtils = UserInfoUtils();
 
   @override
   CartState get initialState => CartInitial();
@@ -29,8 +31,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Stream<CartState> mapEventToState(CartEvent event) async* {
     if (event is FetchUserCart) {
       var returnedModel;
-      userId = await getUserId();
-      token = await getJwtToken();
+      userId = await userInfoUtils.getUserId();
+      token = await userInfoUtils.getJwtToken();
       returnedModel = await apiservices.getUserCart(token, userId);
       if (returnedModel is UserCartModel) {
         _userCartModel = returnedModel;
@@ -43,8 +45,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } else if (event is AddToCart) {
       yield CartInitial();
       var returnedModel;
-      userId = await getUserId();
-      token = await getJwtToken();
+      userId = await userInfoUtils.getUserId();
+      token = await userInfoUtils.getJwtToken();
       productId = event.productId;
       productQuantity = event.quantity;
       returnedModel = await apiservices.addToCart(
@@ -61,8 +63,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
     else if(event is IncrementQuantity){
       var returnedModel;
-      userId = await getUserId();
-      token = await getJwtToken();
+      userId = await userInfoUtils.getUserId();
+      token = await userInfoUtils.getJwtToken();
       cartId = event.cartId;
       incrementOrDecrement = event.incrementOrDecrement;
       returnedModel = await apiservices.updateCartQuantity(
@@ -79,21 +81,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     else if(event is CheckOut){
       yield CartInitial();
       var returnedModel;
-      userId = await getUserId();
-      token = await getJwtToken();
+      userId = await userInfoUtils.getUserId();
+      token = await userInfoUtils.getJwtToken();
       returnedModel = await apiservices.CheckOut(userId,token);
     }
   }
 
-  Future<String> getJwtToken() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var jwttoken = sharedPreferences.getString("jwtToken");
-    return jwttoken;
-  }
-
-  Future<String> getUserId() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var userId = sharedPreferences.getString("user_id");
-    return userId;
-  }
+  // Future<String> getJwtToken() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   var jwttoken = sharedPreferences.getString("jwtToken");
+  //   return jwttoken;
+  // }
+  //
+  // Future<String> getUserId() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   var userId = sharedPreferences.getString("user_id");
+  //   return userId;
+  // }
 }

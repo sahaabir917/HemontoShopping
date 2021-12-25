@@ -179,7 +179,7 @@ class _MainDrawerState extends State<MainDrawer> {
                       child: InkWell(
                         onTap: () {
                           if (loginModel != null) {
-
+                            Navigator.pushNamed(context, "/my_orders");
                           }
                           else {
                             Fluttertoast.showToast(

@@ -1,9 +1,13 @@
 import 'dart:convert';
 
 import 'package:hemontoshoppin/SharedPreference/PreferenceHelper.dart';
+import 'package:hemontoshoppin/models/DealProducts/DealProductsModel.dart';
 import 'package:hemontoshoppin/models/FailedModel.dart';
 import 'package:hemontoshoppin/models/LoginModel.dart';
+import 'package:hemontoshoppin/models/OrderModelproducts/PendingOrderModel.dart';
+import 'package:hemontoshoppin/models/OrderModelproducts/PendingOrderModel.dart';
 import 'package:hemontoshoppin/models/category/CategoryModel.dart';
+import 'package:hemontoshoppin/models/deal/DealModel.dart';
 import 'package:hemontoshoppin/models/productModel.dart';
 import 'package:hemontoshoppin/models/subcategory/SubcategoryModel.dart';
 import 'package:hemontoshoppin/models/usercart/UserCartModel.dart';
@@ -77,6 +81,23 @@ class ApiService {
       ProductModel productModel = productModelFromJson(response.body);
       print(response.body);
       return productModel;
+    }
+  }
+
+  Future<void> storeSuggestedProduct(String userId,String catId,String subCatId) async{
+    var body = {"user_id": userId, "category_id": catId,"subcategory_id":subCatId};
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/storesuggestedProduct'),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      print("visited products updated");
+    } else {
+      print("visited products not updated");
     }
   }
 
@@ -339,4 +360,94 @@ class ApiService {
       print(response.statusCode);
     }
   }
+
+
+
+  Future<DealModel> getAllDeals() async {
+    const _baseUrl = "ecotech.xixotech.net";
+    const String _path = "/public/api/getAllDeals";
+    Uri uri = Uri.http(_baseUrl, _path);
+    Response response = await http.get(uri);
+    if (response.statusCode == 200) {
+      DealModel dealModel = dealModelFromJson(response.body);
+      print(response.body);
+      return dealModel;
+    }
+  }
+
+  Future<dynamic> getPendingOrder(String token,String userId,int page,String keyword) async{
+    var body = {
+      "keyword" : keyword,
+      "user_id" :userId
+    };
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/myOrder?page=$page'),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer ${token}",
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      PendingOrderProductModel pendingOrderProductModel = pendingOrderProductModelFromJson(response.body);
+      print(jsonString);
+      return pendingOrderProductModel;
+    }  else if(response.statusCode == 401) {
+      print(response.statusCode);
+      var jsonString = {"status": false, "message": "session out"};
+      FailedModel failedModel = FailedModel.fromJson(jsonString);
+      print(response.statusCode);
+      preferenceHelper.LogoutData();
+      return failedModel;
+    }
+  }
+
+  Future<DealProductsModel> getAllDealProducts(String dealId,String page) async{
+    var body = {
+      "deal_id": dealId
+    };
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/getDealProducts?page=$page'),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      DealProductsModel dealProductsModel = dealProductsModelFromJson(response.body);
+      print(jsonString);
+      return dealProductsModel;
+    }  else {
+      print(response.statusCode);
+    }
+  }
+
+  Future<dynamic> getSuggestedProducts(String userId) async{
+    var body = {
+      "user_id": userId
+    };
+
+    var response = await client.post(
+      Uri.parse('https://ecotech.xixotech.net/public/api/getsuggestedproduct'),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      ProductModel suggestedProductsModel = productModelFromJson(response.body);
+      print("suggested products :" + jsonString);
+      return suggestedProductsModel;
+    }  else {
+      print(response.statusCode);
+    }
+  }
+
 }
+
+
