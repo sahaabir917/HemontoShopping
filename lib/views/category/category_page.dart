@@ -178,6 +178,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     itemBuilder: (ctx, i) => GridTile(
                                           child: InkWell(
                                             onTap: () {
+                                              print("index"+i.toString());
                                               BlocProvider.of<
                                                           SubCategoryWiseProductBloc>(
                                                       context)

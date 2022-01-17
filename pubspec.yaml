@@ -50,6 +50,7 @@ dev_dependencies:
   pull_to_refresh: ^2.0.0
   scrollable_positioned_list: ^0.2.3
   indexed_list_view: ^2.0.1
+  font_awesome_flutter: ^9.2.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

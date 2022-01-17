@@ -8,6 +8,7 @@ import 'package:hemontoshoppin/blocs/favbloc/favbloc.dart';
 import 'package:hemontoshoppin/blocs/mostpopularbloc/mostpopular_bloc.dart';
 import 'package:hemontoshoppin/models/LoginModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainDrawer extends StatefulWidget {
   const MainDrawer({Key key}) : super(key: key);
@@ -146,10 +147,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     },
                     child: Row(
                       children: <Widget>[
-                        Image.asset(
-                          "assets/images/fav.png",
-                          height: 25,
-                        ),
+                        Icon(Icons.widgets_sharp,size: 25,),
                         SizedBox(
                           width: 20,
                         ),
@@ -209,6 +207,73 @@ class _MainDrawerState extends State<MainDrawer> {
                     ),
                   ),
                 )),
+            SizedBox(height: 20,),
+            Container(
+              height: 40,
+              color: Colors.greenAccent,
+              child: Padding(
+                padding: EdgeInsets.only(left: 30, top: 5, bottom: 5),
+                child: Container(
+                  height: 20,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/cart_page");
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.shopping_cart,size: 25.0,color:Colors.black),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "My Cart",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20,),
+            Container(
+              height: 40,
+              color: Colors.greenAccent,
+              child: Padding(
+                padding: EdgeInsets.only(left: 30, top: 5, bottom: 5),
+                child: Container(
+                  height: 20,
+                  child: InkWell(
+                    onTap: () {
+                      // Navigator.pushNamed(context, "/category_page");
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.share,size: 25.0,color:Colors.black),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Share",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 50,),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.facebook,size: 40,color: Colors.white,),
+                  FaIcon(FontAwesomeIcons.instagram,size: 40,color: Colors.white,),
+                  FaIcon(FontAwesomeIcons.twitter,size: 40,color: Colors.white,),
+                ],
+              ),
+            )
           ],
         ),
       ),

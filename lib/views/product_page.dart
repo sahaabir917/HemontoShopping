@@ -99,7 +99,7 @@ class _ProductPageState extends State<ProductPage> {
                                       children: <Widget>[
                                         IconButton(
                                           icon:
-                                          Icon(Icons.shopping_cart_rounded),
+                                              Icon(Icons.shopping_cart_rounded),
                                           onPressed: () {},
                                         ),
                                         Positioned(
@@ -122,12 +122,12 @@ class _ProductPageState extends State<ProductPage> {
                                       ],
                                     );
                                   } else if (cartState
-                                  is UserCartOperationSucess) {
+                                      is UserCartOperationSucess) {
                                     return Stack(
                                       children: <Widget>[
                                         IconButton(
                                           icon:
-                                          Icon(Icons.shopping_cart_rounded),
+                                              Icon(Icons.shopping_cart_rounded),
                                           onPressed: () {
                                             Navigator.pushNamed(
                                                 context, "/cart_page");
@@ -189,7 +189,7 @@ class _ProductPageState extends State<ProductPage> {
                 // ignore: missing_return
                 builder: (context, mostpopularState) {
                   if ((mostpopularState
-                  is MostPopularProductOperationSuccess)) {
+                      is MostPopularProductOperationSuccess)) {
                     if (mostpopularState.productModel.data.length > 0) {
                       return ListView(
                         physics: const NeverScrollableScrollPhysics(),
@@ -204,24 +204,23 @@ class _ProductPageState extends State<ProductPage> {
                               if (dealState is DealsInitial) {
                                 return Container();
                               } else if (dealState is LoadedDeals) {
-                                return ListView(
+                                return dealState.dealModel.deals.length >0 ? ListView(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 15, right: 15),
+                                      padding:
+                                          EdgeInsets.only(left: 15, right: 15),
                                       child: CarouselSlider(
                                         options: CarouselOptions(
                                             autoPlay: true,
                                             reverse: true,
                                             autoPlayInterval:
-                                            Duration(seconds: 4),
+                                                Duration(seconds: 4),
                                             viewportFraction: 1.0,
-                                            height: MediaQuery
-                                                .of(context)
-                                                .size
-                                                .height *
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
                                                 .21,
                                             onPageChanged: (index, reason) {
                                               setState(() {
@@ -238,9 +237,10 @@ class _ProductPageState extends State<ProductPage> {
                                               child: InkWell(
                                                 onTap: () {
                                                   BlocProvider.of<
-                                                      DealDetailsBloc>(context)
-                                                      .add(setDealId(
-                                                      item.id, item.dealName));
+                                                              DealDetailsBloc>(
+                                                          context)
+                                                      .add(setDealId(item.id,
+                                                          item.dealName));
                                                 },
                                                 child: Card(
                                                   elevation: 5,
@@ -251,58 +251,60 @@ class _ProductPageState extends State<ProductPage> {
                                                   // ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                    BorderRadius.circular(20),
+                                                        BorderRadius.circular(
+                                                            20),
                                                   ),
                                                   child: Column(
                                                     children: <Widget>[
                                                       Container(
                                                         color: Colors.white,
-                                                        width: MediaQuery
-                                                            .of(context)
+                                                        width: MediaQuery.of(
+                                                                context)
                                                             .size
                                                             .width,
                                                         child: Image.network(
                                                           "https://ecotech.xixotech.net/public/" +
                                                               item.dealPicture,
-                                                          height:
-                                                          MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .height *
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
                                                               .1,
-                                                          width:
-                                                          MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width *
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
                                                               .8,
                                                           fit: BoxFit.fill,
                                                         ),
                                                       ),
-                                                      SizedBox(height: 3,),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
                                                       Text(
                                                         item.dealName,
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 12,
                                                             fontWeight:
-                                                            FontWeight.bold),
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                       SizedBox(
                                                         height: 3,
                                                       ),
                                                       Padding(
-                                                        padding: EdgeInsets
-                                                            .only(
-                                                            left: 20),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20),
                                                         child: Html(
                                                           data: item
                                                               .dealDescription,
                                                           defaultTextStyle:
-                                                          TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize: 10),
+                                                              TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10),
                                                           onLinkTap: (link) {
                                                             launch(link);
                                                           },
@@ -319,31 +321,122 @@ class _ProductPageState extends State<ProductPage> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children:
-                                      map<Widget>(dealState.dealModel.deals,
+                                          map<Widget>(dealState.dealModel.deals,
                                               (index, url) {
-                                            return Container(
-                                              width: 10.0,
-                                              height: 10.0,
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 2.0),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: _current == index
-                                                    ? Colors.lightGreen
-                                                    : Colors.tealAccent,
-                                              ),
-                                            );
-                                          }),
+                                        return Container(
+                                          width: 10.0,
+                                          height: 10.0,
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 2.0),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: _current == index
+                                                ? Colors.lightGreen
+                                                : Colors.tealAccent,
+                                          ),
+                                        );
+                                      }),
                                     )
                                   ],
-                                );
+                                ) : Container(child: Text(""),);
                               }
                             },
                           ),
                           SizedBox(height: 15),
+
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, "/category_page");
+                                  },
+                                  child: Column(children: <Widget>[
+                                    SizedBox(height: 10,),
+                                    Icon(Icons.widgets_sharp,size: 35,),
+                                    Text("Category"),
+                                    SizedBox(height: 10,),
+                                  ]),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    if(isLogin){
+                                      // Navigator.pushNamed(context, "/");
+                                    }
+                                    else{
+                                      Fluttertoast.showToast(
+                                          msg:
+                                          "You have to login first",
+                                          toastLength: Toast
+                                              .LENGTH_SHORT,
+                                          gravity: ToastGravity
+                                              .CENTER,
+                                          timeInSecForIos: 1);
+                                    }
+                                  },
+                                  child: Column(children: <Widget>[
+                                    SizedBox(height: 10,),
+                                    Icon(Icons.favorite_outline_rounded,size: 35,),
+                                    Text("Wish List"),
+                                    SizedBox(height: 10,),
+                                  ]),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    if(isLogin){
+                                      Navigator.pushNamed(context, "/cart_page");
+                                    }
+                                    else{
+                                      Fluttertoast.showToast(
+                                          msg:
+                                          "You have to login first",
+                                          toastLength: Toast
+                                              .LENGTH_SHORT,
+                                          gravity: ToastGravity
+                                              .CENTER,
+                                          timeInSecForIos: 1);
+                                    }
+                                  },
+                                  child: Column(children: <Widget>[
+                                    SizedBox(height: 10,),
+                                    Icon(Icons.shopping_cart,size: 35,),
+                                    Text("Cart"),
+                                    SizedBox(height: 10,),
+                                  ]),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    if(isLogin){
+                                      Navigator.pushNamed(context, "/my_orders");
+                                    }
+                                    else{
+                                      Fluttertoast.showToast(
+                                          msg:
+                                          "You have to login first",
+                                          toastLength: Toast
+                                              .LENGTH_SHORT,
+                                          gravity: ToastGravity
+                                              .CENTER,
+                                          timeInSecForIos: 1);
+                                    }
+                                  },
+                                  child: Column(children: <Widget>[
+                                    SizedBox(height: 10,),
+                                    Image.asset("assets/images/order2.png",height: 35,color: Colors.black,),
+                                    Text("Order"),
+                                    SizedBox(height: 10,),
+                                  ]),
+                                ),
+                              ],
+                            ),
+                            color: Colors.white,
+                          ),
+
+                          SizedBox(height: 15),
+
                           //most popular blog
                           Container(
                             padding: EdgeInsets.only(left: 15),
@@ -364,38 +457,35 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                           SizedBox(height: 15),
                           Container(
-                            height: MediaQuery.of(context).size.height*.29,
+                            height: MediaQuery.of(context).size.height * .29,
                             padding: EdgeInsets.all(10.0),
                             child: ListView.separated(
                               itemCount:
-                              mostpopularState.productModel.data.length,
+                                  mostpopularState.productModel.data.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
                                     BlocProvider.of<ProductDetailsBloc>(context)
                                         .add(SetProductIds(
-                                        mostpopularState.productModel
-                                            .data[index].products.productId,
-                                        mostpopularState
-                                            .productModel
-                                            .data[index]
-                                            .products
-                                            .categoryId,
-                                        mostpopularState
-                                            .productModel
-                                            .data[index]
-                                            .products
-                                            .subcategoryId));
+                                            mostpopularState.productModel
+                                                .data[index].products.productId,
+                                            mostpopularState
+                                                .productModel
+                                                .data[index]
+                                                .products
+                                                .categoryId,
+                                            mostpopularState
+                                                .productModel
+                                                .data[index]
+                                                .products
+                                                .subcategoryId));
                                   },
                                   child: Container(
                                     width:
-                                    MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width * .5,
+                                        MediaQuery.of(context).size.width * .5,
                                     padding:
-                                    EdgeInsets.only(right: 10, left: 10),
+                                        EdgeInsets.only(right: 10, left: 10),
                                     child: Card(
                                       elevation: 4,
                                       child: Stack(
@@ -425,7 +515,7 @@ class _ProductPageState extends State<ProductPage> {
                                                     if (!isLogin) {
                                                       Fluttertoast.showToast(
                                                           msg:
-                                                          "You have to login first",
+                                                              "You have to login first",
                                                           toastLength: Toast
                                                               .LENGTH_SHORT,
                                                           gravity: ToastGravity
@@ -434,17 +524,17 @@ class _ProductPageState extends State<ProductPage> {
                                                     } else if (isLogin) {
                                                       showModalBottomSheet(
                                                           isScrollControlled:
-                                                          true,
+                                                              true,
                                                           backgroundColor:
-                                                          Colors
-                                                              .transparent,
+                                                              Colors
+                                                                  .transparent,
                                                           context: context,
                                                           builder: (context) =>
                                                               CustomCartBottomSheet(
                                                                   mostpopularState
                                                                       .productModel
                                                                       .data[
-                                                                  index]
+                                                                          index]
                                                                       .products
                                                                       .productId));
                                                     }
@@ -454,10 +544,9 @@ class _ProductPageState extends State<ProductPage> {
                                           Positioned(
                                               bottom: 35,
                                               child: Container(
-                                                width: MediaQuery
-                                                    .of(context)
-                                                    .size
-                                                    .width *
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
                                                     .4,
                                                 child: Padding(
                                                     padding: EdgeInsets.only(
@@ -471,25 +560,28 @@ class _ProductPageState extends State<ProductPage> {
                                                           .products
                                                           .productName,
                                                       overflow:
-                                                      TextOverflow.ellipsis,
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                       textAlign:
-                                                      TextAlign.center,
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 13,
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     )),
                                               )),
                                           Positioned(
                                               bottom: 6,
                                               child: Container(
-                                                width: MediaQuery.of(context).size.width*.42,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .42,
                                                 height: 25,
                                                 child: Padding(
                                                     padding:
-                                                    EdgeInsets.only(top: 5),
+                                                        EdgeInsets.only(top: 5),
                                                     child: Text(
                                                       "\$" +
                                                           mostpopularState
@@ -498,7 +590,7 @@ class _ProductPageState extends State<ProductPage> {
                                                               .products
                                                               .sellingPrice,
                                                       textAlign:
-                                                      TextAlign.center,
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 12),
@@ -514,21 +606,21 @@ class _ProductPageState extends State<ProductPage> {
                                 return index == 0
                                     ? SizedBox(height: 0)
                                     : index % 6 == 0
-                                    ? Container(
-                                    width: 200,
-                                    margin: EdgeInsets.all(5),
-                                    height: 240,
-                                    color: Colors.green,
-                                    child: NativeAdmob(
-                                      adUnitID: NativeAd.testAdUnitId,
-                                      controller: _nativeAdController,
-                                      type: NativeAdmobType.full,
-                                      loading: Center(
-                                          child:
-                                          CircularProgressIndicator()),
-                                      error: Text('failed to load'),
-                                    ))
-                                    : Container();
+                                        ? Container(
+                                            width: 200,
+                                            margin: EdgeInsets.all(5),
+                                            height: 240,
+                                            color: Colors.green,
+                                            child: NativeAdmob(
+                                              adUnitID: NativeAd.testAdUnitId,
+                                              controller: _nativeAdController,
+                                              type: NativeAdmobType.full,
+                                              loading: Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                              error: Text('failed to load'),
+                                            ))
+                                        : Container();
                               },
                             ),
                           ),
@@ -540,7 +632,7 @@ class _ProductPageState extends State<ProductPage> {
                             bloc: BlocProvider.of<PackageProductBloc>(context),
                             builder: (context, packageProductState) {
                               if ((packageProductState
-                              is PackageProductLoaded &&
+                                      is PackageProductLoaded &&
                                   packageProductState.productModel.data.length >
                                       0)) {
                                 return ListView(
@@ -562,13 +654,14 @@ class _ProductPageState extends State<ProductPage> {
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20),
                                             ),
-
                                           ),
                                         ],
                                       ),
                                     ),
                                     Container(
-                                      height: MediaQuery.of(context).size.height*.29,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .29,
                                       padding: EdgeInsets.all(10.0),
                                       child: ListView.separated(
                                         itemCount: packageProductState
@@ -578,30 +671,29 @@ class _ProductPageState extends State<ProductPage> {
                                           return InkWell(
                                             onTap: () {
                                               BlocProvider.of<
-                                                  ProductDetailsBloc>(
-                                                  context)
+                                                          ProductDetailsBloc>(
+                                                      context)
                                                   .add(SetProductIds(
-                                                  packageProductState
-                                                      .productModel
-                                                      .data[index]
-                                                      .products
-                                                      .productId,
-                                                  packageProductState
-                                                      .productModel
-                                                      .data[index]
-                                                      .products
-                                                      .categoryId,
-                                                  packageProductState
-                                                      .productModel
-                                                      .data[index]
-                                                      .products
-                                                      .subcategoryId));
+                                                      packageProductState
+                                                          .productModel
+                                                          .data[index]
+                                                          .products
+                                                          .productId,
+                                                      packageProductState
+                                                          .productModel
+                                                          .data[index]
+                                                          .products
+                                                          .categoryId,
+                                                      packageProductState
+                                                          .productModel
+                                                          .data[index]
+                                                          .products
+                                                          .subcategoryId));
                                             },
                                             child: Container(
-                                              width: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width *
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
                                                   .5,
                                               padding: EdgeInsets.only(
                                                   left: 8, right: 8),
@@ -611,8 +703,8 @@ class _ProductPageState extends State<ProductPage> {
                                                   children: <Widget>[
                                                     Padding(
                                                       padding:
-                                                      const EdgeInsets.all(
-                                                          35.0),
+                                                          const EdgeInsets.all(
+                                                              35.0),
                                                       child: Container(
                                                         child: Image.network(
                                                             "https://ecotech.xixotech.net/public/" +
@@ -656,37 +748,32 @@ class _ProductPageState extends State<ProductPage> {
                                                             ),
                                                             onPressed: () {
                                                               if (!isLogin) {
-                                                                Fluttertoast
-                                                                    .showToast(
+                                                                Fluttertoast.showToast(
                                                                     msg:
-                                                                    "You have to login first",
+                                                                        "You have to login first",
                                                                     toastLength:
-                                                                    Toast
-                                                                        .LENGTH_SHORT,
+                                                                        Toast
+                                                                            .LENGTH_SHORT,
                                                                     gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
+                                                                        ToastGravity
+                                                                            .CENTER,
                                                                     timeInSecForIos:
-                                                                    1);
-                                                              } else
-                                                              if (isLogin) {
+                                                                        1);
+                                                              } else if (isLogin) {
                                                                 showModalBottomSheet(
                                                                     isScrollControlled:
-                                                                    true,
+                                                                        true,
                                                                     backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
+                                                                        Colors
+                                                                            .transparent,
                                                                     context:
-                                                                    context,
-                                                                    builder: (
-                                                                        context) =>
-                                                                        CustomCartBottomSheet(
-                                                                            packageProductState
-                                                                                .productModel
-                                                                                .data[
+                                                                        context,
+                                                                    builder: (context) => CustomCartBottomSheet(packageProductState
+                                                                        .productModel
+                                                                        .data[
                                                                             index]
-                                                                                .products
-                                                                                .productId));
+                                                                        .products
+                                                                        .productId));
                                                               }
                                                             },
                                                           ),
@@ -694,13 +781,17 @@ class _ProductPageState extends State<ProductPage> {
                                                     Positioned(
                                                         bottom: 35,
                                                         child: Container(
-                                                          width: MediaQuery.of(context).size.width*.42,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              .42,
                                                           child: Padding(
                                                               padding: EdgeInsets
                                                                   .only(
-                                                                  top: 0,
-                                                                  left: 2,
-                                                                  right: 2),
+                                                                      top: 0,
+                                                                      left: 2,
+                                                                      right: 2),
                                                               child: Text(
                                                                 packageProductState
                                                                     .productModel
@@ -708,26 +799,30 @@ class _ProductPageState extends State<ProductPage> {
                                                                     .products
                                                                     .productName,
                                                                 textAlign:
-                                                                TextAlign
-                                                                    .center,
+                                                                    TextAlign
+                                                                        .center,
                                                                 maxLines: 2,
                                                                 overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
-                                                                    13,
+                                                                        13,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                        FontWeight
+                                                                            .bold),
                                                               )),
                                                         )),
                                                     Positioned(
                                                         bottom: 6,
                                                         child: Container(
-                                                          width: MediaQuery.of(context).size.width*.42,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              .42,
                                                           height: 25,
                                                           child: Padding(
                                                               padding: EdgeInsets
@@ -737,17 +832,17 @@ class _ProductPageState extends State<ProductPage> {
                                                                     packageProductState
                                                                         .productModel
                                                                         .data[
-                                                                    index]
+                                                                            index]
                                                                         .products
                                                                         .sellingPrice,
                                                                 textAlign:
-                                                                TextAlign
-                                                                    .center,
+                                                                    TextAlign
+                                                                        .center,
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
-                                                                    12),
+                                                                        12),
                                                               )),
                                                         )),
                                                   ],
@@ -757,33 +852,37 @@ class _ProductPageState extends State<ProductPage> {
                                           );
                                         },
                                         separatorBuilder: (context, index) {
-                                          return index == 0 ? SizedBox(
-                                            height: 0,) : index % 8 == 0
-                                              ? Container(
-                                              width: 200,
-                                              margin: EdgeInsets.all(5),
-                                              height: 240,
-                                              color: Colors.green,
-                                              child: NativeAdmob(
-                                                adUnitID:
-                                                NativeAd.testAdUnitId,
-                                                controller:
-                                                _nativeAdController,
-                                                type: NativeAdmobType.full,
-                                                loading: Center(
-                                                    child:
-                                                    CircularProgressIndicator()),
-                                                error:
-                                                Text('failed to load'),
-                                              ))
-                                              : Container();
+                                          return index == 0
+                                              ? SizedBox(
+                                                  height: 0,
+                                                )
+                                              : index % 8 == 0
+                                                  ? Container(
+                                                      width: 200,
+                                                      margin: EdgeInsets.all(5),
+                                                      height: 240,
+                                                      color: Colors.green,
+                                                      child: NativeAdmob(
+                                                        adUnitID: NativeAd
+                                                            .testAdUnitId,
+                                                        controller:
+                                                            _nativeAdController,
+                                                        type: NativeAdmobType
+                                                            .full,
+                                                        loading: Center(
+                                                            child:
+                                                                CircularProgressIndicator()),
+                                                        error: Text(
+                                                            'failed to load'),
+                                                      ))
+                                                  : Container();
                                         },
                                       ),
                                     ),
                                   ],
                                 );
                               } else if (packageProductState
-                              is PackageProductInitail) {
+                                  is PackageProductInitail) {
                                 return Container(
                                   child: Text(""),
                                 );
@@ -797,12 +896,12 @@ class _ProductPageState extends State<ProductPage> {
                           BlocBuilder<DiscountedProductBloc,
                               DiscountedProductState>(
                             bloc:
-                            BlocProvider.of<DiscountedProductBloc>(context),
+                                BlocProvider.of<DiscountedProductBloc>(context),
                             builder: (context, discountedProductState) {
                               if ((discountedProductState
-                              is DiscountedProductLoaded &&
+                                      is DiscountedProductLoaded &&
                                   discountedProductState
-                                      .productModel.data.length >
+                                          .productModel.data.length >
                                       0)) {
                                 return ListView(
                                   shrinkWrap: true,
@@ -837,30 +936,29 @@ class _ProductPageState extends State<ProductPage> {
                                             return InkWell(
                                               onTap: () {
                                                 BlocProvider.of<
-                                                    ProductDetailsBloc>(
-                                                    context)
+                                                            ProductDetailsBloc>(
+                                                        context)
                                                     .add(SetProductIds(
-                                                    discountedProductState
-                                                        .productModel
-                                                        .data[index]
-                                                        .products
-                                                        .productId,
-                                                    discountedProductState
-                                                        .productModel
-                                                        .data[index]
-                                                        .products
-                                                        .categoryId,
-                                                    discountedProductState
-                                                        .productModel
-                                                        .data[index]
-                                                        .products
-                                                        .subcategoryId));
+                                                        discountedProductState
+                                                            .productModel
+                                                            .data[index]
+                                                            .products
+                                                            .productId,
+                                                        discountedProductState
+                                                            .productModel
+                                                            .data[index]
+                                                            .products
+                                                            .categoryId,
+                                                        discountedProductState
+                                                            .productModel
+                                                            .data[index]
+                                                            .products
+                                                            .subcategoryId));
                                               },
                                               child: Container(
-                                                width: MediaQuery
-                                                    .of(context)
-                                                    .size
-                                                    .width *
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
                                                     .5,
                                                 padding: EdgeInsets.only(
                                                     left: 10, right: 10),
@@ -870,15 +968,15 @@ class _ProductPageState extends State<ProductPage> {
                                                     children: <Widget>[
                                                       Padding(
                                                         padding:
-                                                        const EdgeInsets
-                                                            .all(35.0),
+                                                            const EdgeInsets
+                                                                .all(35.0),
                                                         child: Container(
                                                           child: Image.network(
                                                               "https://ecotech.xixotech.net/public/" +
                                                                   discountedProductState
                                                                       .productModel
                                                                       .data[
-                                                                  index]
+                                                                          index]
                                                                       .products
                                                                       .imageOne),
                                                         ),
@@ -916,37 +1014,32 @@ class _ProductPageState extends State<ProductPage> {
                                                               ),
                                                               onPressed: () {
                                                                 if (!isLogin) {
-                                                                  Fluttertoast
-                                                                      .showToast(
+                                                                  Fluttertoast.showToast(
                                                                       msg:
-                                                                      "You have to login first",
+                                                                          "You have to login first",
                                                                       toastLength:
-                                                                      Toast
-                                                                          .LENGTH_SHORT,
+                                                                          Toast
+                                                                              .LENGTH_SHORT,
                                                                       gravity:
-                                                                      ToastGravity
-                                                                          .CENTER,
+                                                                          ToastGravity
+                                                                              .CENTER,
                                                                       timeInSecForIos:
-                                                                      1);
-                                                                } else
-                                                                if (isLogin) {
+                                                                          1);
+                                                                } else if (isLogin) {
                                                                   showModalBottomSheet(
                                                                       isScrollControlled:
-                                                                      true,
+                                                                          true,
                                                                       backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
+                                                                          Colors
+                                                                              .transparent,
                                                                       context:
-                                                                      context,
-                                                                      builder: (
-                                                                          context) =>
-                                                                          CustomCartBottomSheet(
-                                                                              discountedProductState
-                                                                                  .productModel
-                                                                                  .data[
+                                                                          context,
+                                                                      builder: (context) => CustomCartBottomSheet(discountedProductState
+                                                                          .productModel
+                                                                          .data[
                                                                               index]
-                                                                                  .products
-                                                                                  .productId));
+                                                                          .products
+                                                                          .productId));
                                                                 }
                                                               },
                                                             ),
@@ -954,36 +1047,40 @@ class _ProductPageState extends State<ProductPage> {
                                                       Positioned(
                                                           bottom: 35,
                                                           child: Container(
-                                                            width: MediaQuery.of(context).size.width*.42,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .42,
                                                             child: Padding(
                                                                 padding: EdgeInsets
                                                                     .only(
-                                                                    top: 0,
-                                                                    left: 2,
-                                                                    right:
-                                                                    2),
+                                                                        top: 0,
+                                                                        left: 2,
+                                                                        right:
+                                                                            2),
                                                                 child: Text(
                                                                   discountedProductState
                                                                       .productModel
                                                                       .data[
-                                                                  index]
+                                                                          index]
                                                                       .products
                                                                       .productName,
                                                                   textAlign:
-                                                                  TextAlign
-                                                                      .center,
+                                                                      TextAlign
+                                                                          .center,
                                                                   maxLines: 2,
                                                                   overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                                      TextOverflow
+                                                                          .ellipsis,
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
-                                                                      13,
+                                                                          13,
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                                          FontWeight
+                                                                              .bold),
                                                                 )),
                                                           )),
                                                       Positioned(
@@ -994,23 +1091,23 @@ class _ProductPageState extends State<ProductPage> {
                                                             child: Padding(
                                                                 padding: EdgeInsets
                                                                     .only(
-                                                                    top: 5),
+                                                                        top: 5),
                                                                 child: Text(
                                                                   "\$" +
                                                                       discountedProductState
                                                                           .productModel
                                                                           .data[
-                                                                      index]
+                                                                              index]
                                                                           .products
                                                                           .sellingPrice,
                                                                   textAlign:
-                                                                  TextAlign
-                                                                      .center,
+                                                                      TextAlign
+                                                                          .center,
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
-                                                                      12),
+                                                                          12),
                                                                 )),
                                                           )),
                                                     ],
@@ -1020,27 +1117,31 @@ class _ProductPageState extends State<ProductPage> {
                                             );
                                           },
                                           separatorBuilder: (context, index) {
-                                            return index == 0 ? SizedBox(
-                                              height: 0,) : index % 8 == 0
-                                                ? Container(
-                                                width: 200,
-                                                margin: EdgeInsets.all(5),
-                                                height: 240,
-                                                color: Colors.green,
-                                                child: NativeAdmob(
-                                                  adUnitID:
-                                                  NativeAd.testAdUnitId,
-                                                  controller:
-                                                  _nativeAdController,
-                                                  type:
-                                                  NativeAdmobType.full,
-                                                  loading: Center(
-                                                      child:
-                                                      CircularProgressIndicator()),
-                                                  error: Text(
-                                                      'failed to load'),
-                                                ))
-                                                : Container();
+                                            return index == 0
+                                                ? SizedBox(
+                                                    height: 0,
+                                                  )
+                                                : index % 8 == 0
+                                                    ? Container(
+                                                        width: 200,
+                                                        margin:
+                                                            EdgeInsets.all(5),
+                                                        height: 240,
+                                                        color: Colors.green,
+                                                        child: NativeAdmob(
+                                                          adUnitID: NativeAd
+                                                              .testAdUnitId,
+                                                          controller:
+                                                              _nativeAdController,
+                                                          type: NativeAdmobType
+                                                              .full,
+                                                          loading: Center(
+                                                              child:
+                                                                  CircularProgressIndicator()),
+                                                          error: Text(
+                                                              'failed to load'),
+                                                        ))
+                                                    : Container();
                                           },
                                         ),
                                       ),
@@ -1050,7 +1151,7 @@ class _ProductPageState extends State<ProductPage> {
                                   ],
                                 );
                               } else if (discountedProductState
-                              is DiscountedProductInitial) {
+                                  is DiscountedProductInitial) {
                                 return Container(
                                   child: Text(""),
                                 );
@@ -1071,7 +1172,7 @@ class _ProductPageState extends State<ProductPage> {
                                     labelColor: Colors.black,
                                     unselectedLabelColor: Colors.grey,
                                     unselectedLabelStyle:
-                                    TextStyle(fontSize: 10.0),
+                                        TextStyle(fontSize: 10.0),
                                     tabs: [
                                       Tab(text: "All Products"),
                                       Tab(text: "All Brand"),
@@ -1080,42 +1181,42 @@ class _ProductPageState extends State<ProductPage> {
                                   ),
                                 ),
                                 Container(
-                                    height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height * .67,
+                                    height: MediaQuery.of(context).size.height *
+                                        .67,
                                     child: TabBarView(children: [
                                       BlocBuilder<ProductBloc, ProductState>(
                                         bloc: BlocProvider.of<ProductBloc>(
                                             context),
                                         builder: (context, productState) {
                                           if ((productState
-                                          is ProductOperationSuccess &&
+                                                  is ProductOperationSuccess &&
                                               productState.productModel.data
-                                                  .length >
+                                                      .length >
                                                   0)) {
                                             return ListView(
                                               shrinkWrap: true,
                                               physics:
-                                              const NeverScrollableScrollPhysics(),
+                                                  const NeverScrollableScrollPhysics(),
                                               scrollDirection: Axis.vertical,
                                               children: [
                                                 Container(
                                                   padding:
-                                                  EdgeInsets.only(left: 15),
+                                                      EdgeInsets.only(left: 15),
                                                   child: Stack(
                                                     children: <Widget>[
                                                       Padding(
-                                                        padding: EdgeInsets
-                                                            .only(left: 20,
-                                                            top: 15),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20,
+                                                                top: 15),
                                                         child: Text(
                                                           "New Arrived",
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                              FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               fontSize: 20),
                                                         ),
                                                       ),
@@ -1123,10 +1224,9 @@ class _ProductPageState extends State<ProductPage> {
                                                   ),
                                                 ),
                                                 Container(
-                                                  height: MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .height *
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
                                                       .65,
                                                   padding: EdgeInsets.all(30.0),
                                                   child: ListView.separated(
@@ -1135,32 +1235,31 @@ class _ProductPageState extends State<ProductPage> {
                                                         .data
                                                         .length,
                                                     scrollDirection:
-                                                    Axis.vertical,
+                                                        Axis.vertical,
                                                     itemBuilder:
                                                         (context, index) {
                                                       return InkWell(
                                                         onTap: () {
                                                           BlocProvider.of<
-                                                              ProductDetailsBloc>(
-                                                              context)
-                                                              .add(
-                                                              SetProductIds(
+                                                                      ProductDetailsBloc>(
+                                                                  context)
+                                                              .add(SetProductIds(
                                                                   productState
                                                                       .productModel
                                                                       .data[
-                                                                  index]
+                                                                          index]
                                                                       .products
                                                                       .productId,
                                                                   productState
                                                                       .productModel
                                                                       .data[
-                                                                  index]
+                                                                          index]
                                                                       .products
                                                                       .categoryId,
                                                                   productState
                                                                       .productModel
                                                                       .data[
-                                                                  index]
+                                                                          index]
                                                                       .products
                                                                       .subcategoryId));
                                                         },
@@ -1168,15 +1267,15 @@ class _ProductPageState extends State<ProductPage> {
                                                           width: 180,
                                                           height: 100,
                                                           padding:
-                                                          EdgeInsets.only(
-                                                              right: 0),
+                                                              EdgeInsets.only(
+                                                                  right: 0),
                                                           child: Card(
                                                             shape:
-                                                            RoundedRectangleBorder(
+                                                                RoundedRectangleBorder(
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  10.0),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
                                                             ),
                                                             elevation: 4,
                                                             child: Stack(
@@ -1184,18 +1283,16 @@ class _ProductPageState extends State<ProductPage> {
                                                                   Widget>[
                                                                 Padding(
                                                                   padding:
-                                                                  const EdgeInsets
-                                                                      .all(10),
+                                                                      const EdgeInsets
+                                                                          .all(10),
                                                                   child:
-                                                                  Container(
-                                                                    child: Image
-                                                                        .network(
-                                                                        "https://ecotech.xixotech.net/public/" +
-                                                                            productState
-                                                                                .productModel
-                                                                                .data[index]
-                                                                                .products
-                                                                                .imageOne),
+                                                                      Container(
+                                                                    child: Image.network("https://ecotech.xixotech.net/public/" +
+                                                                        productState
+                                                                            .productModel
+                                                                            .data[index]
+                                                                            .products
+                                                                            .imageOne),
                                                                   ),
                                                                 ),
                                                                 // Positioned(
@@ -1223,42 +1320,30 @@ class _ProductPageState extends State<ProductPage> {
                                                                     right: -5,
                                                                     top: -5,
                                                                     child:
-                                                                    Container(
+                                                                        Container(
                                                                       child:
-                                                                      IconButton(
+                                                                          IconButton(
                                                                         icon:
-                                                                        Icon(
+                                                                            Icon(
                                                                           Icons
                                                                               .shopping_cart,
                                                                           size:
-                                                                          22,
+                                                                              22,
                                                                         ),
                                                                         onPressed:
                                                                             () {
                                                                           if (!isLogin) {
-                                                                            Fluttertoast
-                                                                                .showToast(
+                                                                            Fluttertoast.showToast(
                                                                                 msg: "You have to login first",
-                                                                                toastLength: Toast
-                                                                                    .LENGTH_SHORT,
-                                                                                gravity: ToastGravity
-                                                                                    .CENTER,
+                                                                                toastLength: Toast.LENGTH_SHORT,
+                                                                                gravity: ToastGravity.CENTER,
                                                                                 timeInSecForIos: 1);
-                                                                          } else
-                                                                          if (isLogin) {
+                                                                          } else if (isLogin) {
                                                                             showModalBottomSheet(
                                                                                 isScrollControlled: true,
-                                                                                backgroundColor: Colors
-                                                                                    .transparent,
+                                                                                backgroundColor: Colors.transparent,
                                                                                 context: context,
-                                                                                builder: (
-                                                                                    context) =>
-                                                                                    CustomCartBottomSheet(
-                                                                                        productState
-                                                                                            .productModel
-                                                                                            .data[index]
-                                                                                            .products
-                                                                                            .productId));
+                                                                                builder: (context) => CustomCartBottomSheet(productState.productModel.data[index].products.productId));
                                                                           }
                                                                         },
                                                                       ),
@@ -1268,64 +1353,42 @@ class _ProductPageState extends State<ProductPage> {
                                                                     left: 90,
                                                                     top: 20,
                                                                     child:
-                                                                    Container(
+                                                                        Container(
                                                                       width:
-                                                                      200,
+                                                                          200,
                                                                       child: Padding(
-                                                                          padding: EdgeInsets
-                                                                              .only(
-                                                                              top: 0,
-                                                                              left: 2,
-                                                                              right: 2),
+                                                                          padding: EdgeInsets.only(top: 0, left: 2, right: 2),
                                                                           child: Text(
-                                                                            productState
-                                                                                .productModel
-                                                                                .data[index]
-                                                                                .products
-                                                                                .productName,
+                                                                            productState.productModel.data[index].products.productName,
                                                                             textAlign:
-                                                                            TextAlign
-                                                                                .center,
+                                                                                TextAlign.center,
                                                                             maxLines:
-                                                                            1,
+                                                                                1,
                                                                             overflow:
-                                                                            TextOverflow
-                                                                                .ellipsis,
+                                                                                TextOverflow.ellipsis,
                                                                             style: TextStyle(
-                                                                                color: Colors
-                                                                                    .black,
+                                                                                color: Colors.black,
                                                                                 fontSize: 15,
-                                                                                fontWeight: FontWeight
-                                                                                    .bold),
+                                                                                fontWeight: FontWeight.bold),
                                                                           )),
                                                                     )),
                                                                 Positioned(
                                                                     top: 40,
                                                                     left: 140,
                                                                     child:
-                                                                    Container(
+                                                                        Container(
                                                                       width: 90,
                                                                       height:
-                                                                      25,
+                                                                          25,
                                                                       child: Padding(
-                                                                          padding: EdgeInsets
-                                                                              .only(
-                                                                              top: 5),
+                                                                          padding: EdgeInsets.only(top: 5),
                                                                           child: Text(
                                                                             "\$" +
-                                                                                productState
-                                                                                    .productModel
-                                                                                    .data[index]
-                                                                                    .products
-                                                                                    .sellingPrice,
+                                                                                productState.productModel.data[index].products.sellingPrice,
                                                                             textAlign:
-                                                                            TextAlign
-                                                                                .center,
+                                                                                TextAlign.center,
                                                                             style:
-                                                                            TextStyle(
-                                                                                color: Colors
-                                                                                    .black,
-                                                                                fontSize: 15),
+                                                                                TextStyle(color: Colors.black, fontSize: 15),
                                                                           )),
                                                                     )),
                                                               ],
@@ -1337,73 +1400,75 @@ class _ProductPageState extends State<ProductPage> {
                                                     separatorBuilder:
                                                         (context, index) {
                                                       return index == 0
-                                                          ? SizedBox(height: 0,)
+                                                          ? SizedBox(
+                                                              height: 0,
+                                                            )
                                                           : index % 4 == 0
-                                                          ? Container(
-                                                          width: 200,
-                                                          margin: EdgeInsets
-                                                              .all(5),
-                                                          height: 180,
-                                                          color:
-                                                          Colors.green,
-                                                          child:
-                                                          NativeAdmob(
-                                                            adUnitID: NativeAd
-                                                                .testAdUnitId,
-                                                            controller:
-                                                            _nativeAdController,
-                                                            type:
-                                                            NativeAdmobType
-                                                                .full,
-                                                            loading: Center(
-                                                                child:
-                                                                CircularProgressIndicator()),
-                                                            error: Text(
-                                                                'failed to load'),
-                                                          ))
-                                                          : Container();
+                                                              ? Container(
+                                                                  width: 200,
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              5),
+                                                                  height: 180,
+                                                                  color: Colors
+                                                                      .green,
+                                                                  child:
+                                                                      NativeAdmob(
+                                                                    adUnitID:
+                                                                        NativeAd
+                                                                            .testAdUnitId,
+                                                                    controller:
+                                                                        _nativeAdController,
+                                                                    type: NativeAdmobType
+                                                                        .full,
+                                                                    loading: Center(
+                                                                        child:
+                                                                            CircularProgressIndicator()),
+                                                                    error: Text(
+                                                                        'failed to load'),
+                                                                  ))
+                                                              : Container();
                                                     },
                                                   ),
                                                 ),
                                               ],
                                             );
                                           } else if (productState
-                                          is LoadedMostPopularProduct) {
+                                              is LoadedMostPopularProduct) {
                                             return Container(
                                               child: Text("sad asdasd"),
                                             );
                                           } else if (productState
-                                          is ProductLoading) {
+                                              is ProductLoading) {
                                             return Center(
                                               child:
-                                              CircularProgressIndicator(),
+                                                  CircularProgressIndicator(),
                                             );
                                           } else if (productState
-                                          is ProductInitial) {
+                                              is ProductInitial) {
                                             return Center(
                                               child:
-                                              CircularProgressIndicator(),
+                                                  CircularProgressIndicator(),
                                             );
                                           } else if (productState
-                                          is FetchFailedProduct) {
-                                            scheduleMicrotask(() =>
-                                                Navigator
+                                              is FetchFailedProduct) {
+                                            scheduleMicrotask(() => Navigator
                                                     .of(context)
-                                                    .pushAndRemoveUntil(
+                                                .pushAndRemoveUntil(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             ProductPage()),
-                                                        (
-                                                        Route<dynamic> route) =>
-                                                    false));
+                                                    (Route<dynamic> route) =>
+                                                        false));
                                             return CircularProgressIndicator();
                                           } else if (productState
-                                          is SetProductItem) {
+                                              is SetProductItem) {
                                             return Container(
                                               child: Text("Loading"),
                                             );
                                           } else if (productState
-                                          is setProductItemSuccess) {
+                                              is setProductItemSuccess) {
                                             scheduleMicrotask(() =>
                                                 Navigator.of(context).pushNamed(
                                                     "/product_details",
@@ -1412,10 +1477,10 @@ class _ProductPageState extends State<ProductPage> {
                                                     }));
                                             return CircularProgressIndicator();
                                           } else if (productState
-                                          is SingleProductLoaded) {
+                                              is SingleProductLoaded) {
                                             return Container(
                                               child:
-                                              Text(productState.toString()),
+                                                  Text(productState.toString()),
                                             );
                                           }
                                           // else if (productState is SetProductId) {
@@ -1452,37 +1517,37 @@ class _ProductPageState extends State<ProductPage> {
                                           SuggestedState>(
                                         bloc: BlocProvider.of<SuggestedBloc>(
                                             context),
-                                        builder: (context,
-                                            suggestedproductState) {
+                                        builder:
+                                            (context, suggestedproductState) {
                                           if ((suggestedproductState
-                                          is LoadedSuggestedProducts)) {
-                                            if (
-                                            suggestedproductState.productModel
-                                                .data
-                                                .length >
+                                              is LoadedSuggestedProducts)) {
+                                            if (suggestedproductState
+                                                    .productModel.data.length >
                                                 0) {
                                               return ListView(
                                                 shrinkWrap: true,
                                                 physics:
-                                                const NeverScrollableScrollPhysics(),
+                                                    const NeverScrollableScrollPhysics(),
                                                 scrollDirection: Axis.vertical,
                                                 children: [
                                                   Container(
-                                                    padding:
-                                                    EdgeInsets.only(left: 15),
+                                                    padding: EdgeInsets.only(
+                                                        left: 15),
                                                     child: Stack(
                                                       children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets
-                                                              .only(left: 20,
-                                                              top: 15),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 20,
+                                                                  top: 15),
                                                           child: Text(
                                                             "Suggested Products",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontWeight:
-                                                                FontWeight.bold,
+                                                                    FontWeight
+                                                                        .bold,
                                                                 fontSize: 20),
                                                           ),
                                                         ),
@@ -1490,61 +1555,55 @@ class _ProductPageState extends State<ProductPage> {
                                                     ),
                                                   ),
                                                   Container(
-                                                    height: MediaQuery
-                                                        .of(context)
-                                                        .size
-                                                        .height *
-                                                        .65,
-                                                    padding: EdgeInsets.all(
-                                                        30.0),
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            .65,
+                                                    padding:
+                                                        EdgeInsets.all(30.0),
                                                     child: ListView.separated(
-                                                      itemCount: suggestedproductState
-                                                          .productModel
-                                                          .data
-                                                          .length,
+                                                      itemCount:
+                                                          suggestedproductState
+                                                              .productModel
+                                                              .data
+                                                              .length,
                                                       scrollDirection:
-                                                      Axis.vertical,
+                                                          Axis.vertical,
                                                       itemBuilder:
                                                           (context, index) {
                                                         return InkWell(
                                                           onTap: () {
-                                                            BlocProvider.of<
-                                                                ProductDetailsBloc>(
-                                                                context)
-                                                                .add(
-                                                                SetProductIds(
-                                                                    suggestedproductState
-                                                                        .productModel
-                                                                        .data[
-                                                                    index]
-                                                                        .products
-                                                                        .productId,
-                                                                    suggestedproductState
-                                                                        .productModel
-                                                                        .data[
-                                                                    index]
-                                                                        .products
-                                                                        .categoryId,
-                                                                    suggestedproductState
-                                                                        .productModel
-                                                                        .data[
-                                                                    index]
-                                                                        .products
-                                                                        .subcategoryId));
+                                                            BlocProvider.of<ProductDetailsBloc>(context).add(SetProductIds(
+                                                                suggestedproductState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .productId,
+                                                                suggestedproductState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .categoryId,
+                                                                suggestedproductState
+                                                                    .productModel
+                                                                    .data[index]
+                                                                    .products
+                                                                    .subcategoryId));
                                                           },
                                                           child: Container(
                                                             width: 180,
                                                             height: 100,
                                                             padding:
-                                                            EdgeInsets.only(
-                                                                right: 0),
+                                                                EdgeInsets.only(
+                                                                    right: 0),
                                                             child: Card(
                                                               shape:
-                                                              RoundedRectangleBorder(
+                                                                  RoundedRectangleBorder(
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    10.0),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.0),
                                                               ),
                                                               elevation: 4,
                                                               child: Stack(
@@ -1552,19 +1611,16 @@ class _ProductPageState extends State<ProductPage> {
                                                                     Widget>[
                                                                   Padding(
                                                                     padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        10),
+                                                                        const EdgeInsets.all(
+                                                                            10),
                                                                     child:
-                                                                    Container(
-                                                                      child: Image
-                                                                          .network(
-                                                                          "https://ecotech.xixotech.net/public/" +
-                                                                              suggestedproductState
-                                                                                  .productModel
-                                                                                  .data[index]
-                                                                                  .products
-                                                                                  .imageOne),
+                                                                        Container(
+                                                                      child: Image.network("https://ecotech.xixotech.net/public/" +
+                                                                          suggestedproductState
+                                                                              .productModel
+                                                                              .data[index]
+                                                                              .products
+                                                                              .imageOne),
                                                                     ),
                                                                   ),
                                                                   // Positioned(
@@ -1592,42 +1648,21 @@ class _ProductPageState extends State<ProductPage> {
                                                                       right: -5,
                                                                       top: -5,
                                                                       child:
-                                                                      Container(
+                                                                          Container(
                                                                         child:
-                                                                        IconButton(
+                                                                            IconButton(
                                                                           icon:
-                                                                          Icon(
-                                                                            Icons
-                                                                                .shopping_cart,
+                                                                              Icon(
+                                                                            Icons.shopping_cart,
                                                                             size:
-                                                                            22,
+                                                                                22,
                                                                           ),
                                                                           onPressed:
                                                                               () {
                                                                             if (!isLogin) {
-                                                                              Fluttertoast
-                                                                                  .showToast(
-                                                                                  msg: "You have to login first",
-                                                                                  toastLength: Toast
-                                                                                      .LENGTH_SHORT,
-                                                                                  gravity: ToastGravity
-                                                                                      .CENTER,
-                                                                                  timeInSecForIos: 1);
-                                                                            } else
-                                                                            if (isLogin) {
-                                                                              showModalBottomSheet(
-                                                                                  isScrollControlled: true,
-                                                                                  backgroundColor: Colors
-                                                                                      .transparent,
-                                                                                  context: context,
-                                                                                  builder: (
-                                                                                      context) =>
-                                                                                      CustomCartBottomSheet(
-                                                                                          suggestedproductState
-                                                                                              .productModel
-                                                                                              .data[index]
-                                                                                              .products
-                                                                                              .productId));
+                                                                              Fluttertoast.showToast(msg: "You have to login first", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIos: 1);
+                                                                            } else if (isLogin) {
+                                                                              showModalBottomSheet(isScrollControlled: true, backgroundColor: Colors.transparent, context: context, builder: (context) => CustomCartBottomSheet(suggestedproductState.productModel.data[index].products.productId));
                                                                             }
                                                                           },
                                                                         ),
@@ -1637,64 +1672,34 @@ class _ProductPageState extends State<ProductPage> {
                                                                       left: 90,
                                                                       top: 20,
                                                                       child:
-                                                                      Container(
+                                                                          Container(
                                                                         width:
-                                                                        200,
+                                                                            200,
                                                                         child: Padding(
-                                                                            padding: EdgeInsets
-                                                                                .only(
-                                                                                top: 0,
-                                                                                left: 2,
-                                                                                right: 2),
+                                                                            padding: EdgeInsets.only(top: 0, left: 2, right: 2),
                                                                             child: Text(
-                                                                              suggestedproductState
-                                                                                  .productModel
-                                                                                  .data[index]
-                                                                                  .products
-                                                                                  .productName,
-                                                                              textAlign:
-                                                                              TextAlign
-                                                                                  .center,
-                                                                              maxLines:
-                                                                              1,
-                                                                              overflow:
-                                                                              TextOverflow
-                                                                                  .ellipsis,
-                                                                              style: TextStyle(
-                                                                                  color: Colors
-                                                                                      .black,
-                                                                                  fontSize: 15,
-                                                                                  fontWeight: FontWeight
-                                                                                      .bold),
+                                                                              suggestedproductState.productModel.data[index].products.productName,
+                                                                              textAlign: TextAlign.center,
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
                                                                             )),
                                                                       )),
                                                                   Positioned(
                                                                       top: 40,
                                                                       left: 140,
                                                                       child:
-                                                                      Container(
-                                                                        width: 90,
+                                                                          Container(
+                                                                        width:
+                                                                            90,
                                                                         height:
-                                                                        25,
+                                                                            25,
                                                                         child: Padding(
-                                                                            padding: EdgeInsets
-                                                                                .only(
-                                                                                top: 5),
+                                                                            padding: EdgeInsets.only(top: 5),
                                                                             child: Text(
-                                                                              "\$" +
-                                                                                  suggestedproductState
-                                                                                      .productModel
-                                                                                      .data[index]
-                                                                                      .products
-                                                                                      .sellingPrice,
-                                                                              textAlign:
-                                                                              TextAlign
-                                                                                  .center,
-                                                                              style:
-                                                                              TextStyle(
-                                                                                  color: Colors
-                                                                                      .black,
-                                                                                  fontSize: 15),
+                                                                              "\$" + suggestedproductState.productModel.data[index].products.sellingPrice,
+                                                                              textAlign: TextAlign.center,
+                                                                              style: TextStyle(color: Colors.black, fontSize: 15),
                                                                             )),
                                                                       )),
                                                                 ],
@@ -1707,48 +1712,49 @@ class _ProductPageState extends State<ProductPage> {
                                                           (context, index) {
                                                         return index == 0
                                                             ? SizedBox(
-                                                          height: 0,)
+                                                                height: 0,
+                                                              )
                                                             : index % 4 == 0
-                                                            ? Container(
-                                                            width: 200,
-                                                            margin: EdgeInsets
-                                                                .all(5),
-                                                            height: 180,
-                                                            color:
-                                                            Colors.green,
-                                                            child:
-                                                            NativeAdmob(
-                                                              adUnitID: NativeAd
-                                                                  .testAdUnitId,
-                                                              controller:
-                                                              _nativeAdController,
-                                                              type:
-                                                              NativeAdmobType
-                                                                  .full,
-                                                              loading: Center(
-                                                                  child:
-                                                                  CircularProgressIndicator()),
-                                                              error: Text(
-                                                                  'failed to load'),
-                                                            ))
-                                                            : Container();
+                                                                ? Container(
+                                                                    width: 200,
+                                                                    margin: EdgeInsets
+                                                                        .all(5),
+                                                                    height: 180,
+                                                                    color: Colors
+                                                                        .green,
+                                                                    child:
+                                                                        NativeAdmob(
+                                                                      adUnitID:
+                                                                          NativeAd
+                                                                              .testAdUnitId,
+                                                                      controller:
+                                                                          _nativeAdController,
+                                                                      type: NativeAdmobType
+                                                                          .full,
+                                                                      loading: Center(
+                                                                          child:
+                                                                              CircularProgressIndicator()),
+                                                                      error: Text(
+                                                                          'failed to load'),
+                                                                    ))
+                                                                : Container();
                                                       },
                                                     ),
                                                   ),
                                                 ],
                                               );
-                                            }
-                                            else {
+                                            } else {
                                               return Center(
                                                 child: Text("No Products Show"),
                                               );
                                             }
                                           } else if (suggestedproductState
-                                          is LoadingSuggestedProducts ||
-                                              suggestedproductState is SuggestedInitial) {
+                                                  is LoadingSuggestedProducts ||
+                                              suggestedproductState
+                                                  is SuggestedInitial) {
                                             return Center(
                                               child:
-                                              CircularProgressIndicator(),
+                                                  CircularProgressIndicator(),
                                             );
                                           }
                                           // else if (productState is SetProductId) {
@@ -1806,10 +1812,9 @@ class _ProductPageState extends State<ProductPage> {
                   bloc: BlocProvider.of<ProductDetailsBloc>(context),
                   builder: (context, productdetailsState) {
                     if (productdetailsState is setSingleProductIdsSucess) {
-                      scheduleMicrotask(() =>
-                          Navigator.of(context).pushNamed(
-                              "/product_details",
-                              arguments: {"isLogin": isLogin}));
+                      scheduleMicrotask(() => Navigator.of(context).pushNamed(
+                          "/product_details",
+                          arguments: {"isLogin": isLogin}));
                       return CircularProgressIndicator();
                     } else if (productdetailsState is ProductDetailsInitial) {
                       return Container();
@@ -1827,18 +1832,12 @@ class _ProductPageState extends State<ProductPage> {
                   builder: (context, dealDetailsState) {
                     if (dealDetailsState is DealsDetailsInitial) {
                       return Container();
-                    }
-                    else if (dealDetailsState is SetSuccessDealId) {
-                      scheduleMicrotask(() =>
-                          Navigator.of(context).pushNamed(
-                              "/all_deals",
-                              arguments: {
-                                "deal_name": dealDetailsState.dealName
-                              }
-                          ));
+                    } else if (dealDetailsState is SetSuccessDealId) {
+                      scheduleMicrotask(() => Navigator.of(context).pushNamed(
+                          "/all_deals",
+                          arguments: {"deal_name": dealDetailsState.dealName}));
                       return CircularProgressIndicator();
-                    }
-                    else {
+                    } else {
                       return Container();
                     }
                   }),
@@ -1857,6 +1856,7 @@ class _ProductPageState extends State<ProductPage> {
         .then((RemoteMessage message) {
       if (message != null) {
         Navigator.pushNamed(context, "all_notification");
+        print("action is :" + message.data["action"]);
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -1864,6 +1864,10 @@ class _ProductPageState extends State<ProductPage> {
       AndroidNotification android = message.notification?.android;
       if (notification != null && android != null) {
         print(message.data.toString());
+        print("action is :" + message.data["action"]);
+
+
+
         // flutterLocalNotificationsPlugin.show(
         //     notification.hashCode,
         //     notification.title,
@@ -1914,7 +1918,11 @@ class _ProductPageState extends State<ProductPage> {
         //       );
         //     });
         // print(message.data.toString());
-        Navigator.pushNamed(context, "/all_notification");
+        if (isLogin) {
+          Navigator.pushNamed(context, "/my_orders");
+        } else {
+          Navigator.pushNamed(context, "/login_page");
+        }
       }
     });
   }

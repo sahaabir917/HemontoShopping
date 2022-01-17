@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -369,6 +371,10 @@ class _OrderPageState extends State<OrderPage> {
                           return Container();
                         } else if (allOrdertState is FailedToFetchAllOrder) {
                           //logout and send to the login page..
+                          scheduleMicrotask(() => Navigator
+                              .of(context)
+                              .pushNamed(
+                              "/login_page"));
                           return Container(
                             child: Text("logout"),
                           );
@@ -614,6 +620,10 @@ class _OrderPageState extends State<OrderPage> {
                         } else if (pendingOrdertState
                             is FailedToFetchPendingOrder) {
                           //logout and send to the login page..
+                          scheduleMicrotask(() => Navigator
+                              .of(context)
+                              .pushNamed(
+                              "/login_page"));
                           return Container(
                             child: Text("logout"),
                           );
